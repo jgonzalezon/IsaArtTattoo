@@ -1,10 +1,17 @@
-import { defineConfig } from 'vite';
-import plugin from '@vitejs/plugin-react';
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
-// https://vitejs.dev/config/
+// Configuración del entorno de desarrollo
 export default defineConfig({
-    plugins: [plugin()],
-    server: {
-        port: 54395,
-    }
-})
+  plugins: [react()],
+  server: {
+    port: 54395, // puerto por defecto de Vite
+    proxy: {
+      "/api": {
+        target: "http://localhost:5088", // puerto de tu API Identity
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },
+});

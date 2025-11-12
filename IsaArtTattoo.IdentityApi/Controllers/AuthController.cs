@@ -1,11 +1,11 @@
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using IsaArtTattoo.IdentityApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace IsaArtTattoo.IdentityApi.Controllers;
@@ -17,39 +17,126 @@ public class AuthController : ControllerBase
     private readonly UserManager<ApplicationUser> _um;
     private readonly SignInManager<ApplicationUser> _sm;
     private readonly IConfiguration _cfg;
+    private readonly IEmailSender _emailSender;
 
-    public AuthController(UserManager<ApplicationUser> um, SignInManager<ApplicationUser> sm, IConfiguration cfg)
-    { _um = um; _sm = sm; _cfg = cfg; }
+    public AuthController(
+        UserManager<ApplicationUser> um,
+        SignInManager<ApplicationUser> sm,
+        IConfiguration cfg,
+        IEmailSender emailSender)
+    {
+        _um = um;
+        _sm = sm;
+        _cfg = cfg;
+        _emailSender = emailSender;
+    }
 
     public record RegisterDto(string Email, string Password);
     public record LoginDto(string Email, string Password);
+    public record ResetDto(string Email);
+    public record NewPasswordDto(string Email, string Token, string NewPassword);
 
+    //  Registro con envío de mail
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterDto dto)
     {
         var user = new ApplicationUser { UserName = dto.Email, Email = dto.Email };
         var result = await _um.CreateAsync(user, dto.Password);
+
         if (!result.Succeeded) return BadRequest(result.Errors);
-        return Ok();
+
+        var token = await _um.GenerateEmailConfirmationTokenAsync(user);
+        var encoded = Uri.EscapeDataString(token);
+        var confirmUrl = $"{Request.Scheme}://{Request.Host}/api/auth/confirm?email={dto.Email}&token={encoded}";
+
+        await _emailSender.SendEmailAsync(dto.Email, "Confirma tu cuenta",
+            $"<p>Gracias por registrarte en <b>IsaArtTattoo</b>.<br>" +
+            $"Haz clic <a href='{confirmUrl}'>aquí</a> para confirmar tu correo.</p>");
+
+        return Ok(new { Message = "Usuario creado. Revisa tu email para confirmar la cuenta." });
     }
 
+    // 🔹 Confirmar email
+    [HttpGet("confirm")]
+    public async Task<IActionResult> Confirm(string email, string token)
+    {
+        var user = await _um.FindByEmailAsync(email);
+        if (user == null) return BadRequest("Usuario no encontrado.");
+
+        var result = await _um.ConfirmEmailAsync(user, token);
+        if (!result.Succeeded) return BadRequest("Token inválido o expirado.");
+
+        return Ok("Correo confirmado correctamente.");
+    }
+
+    // 🔹 Login solo si confirmado
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDto dto)
     {
         var user = await _um.FindByEmailAsync(dto.Email);
-        if (user is null) return Unauthorized();
+        if (user is null) return Unauthorized("Usuario no encontrado.");
+        if (!user.EmailConfirmed)
+            return Unauthorized("Debe confirmar su cuenta antes de iniciar sesión.");
 
-        var check = await _sm.CheckPasswordSignInAsync(user, dto.Password, lockoutOnFailure: false);
-        if (!check.Succeeded) return Unauthorized();
+        var check = await _sm.CheckPasswordSignInAsync(user, dto.Password, false);
+        if (!check.Succeeded) return Unauthorized("Credenciales incorrectas.");
 
         var token = await CreateTokenAsync(user);
         return Ok(new { token });
+    }
+
+    // 🔹 Reenviar confirmación
+    [HttpPost("resend-confirmation")]
+    public async Task<IActionResult> ResendConfirmation([FromBody] string email)
+    {
+        var user = await _um.FindByEmailAsync(email);
+        if (user == null) return NotFound();
+
+        var token = await _um.GenerateEmailConfirmationTokenAsync(user);
+        var encoded = Uri.EscapeDataString(token);
+        var confirmUrl = $"{Request.Scheme}://{Request.Host}/api/auth/confirm?email={email}&token={encoded}";
+
+        await _emailSender.SendEmailAsync(email, "Confirma tu cuenta",
+            $"<p>Haz clic <a href='{confirmUrl}'>aquí</a> para confirmar tu correo.</p>");
+
+        return Ok("Correo de confirmación reenviado.");
+    }
+
+    // 🔹 Solicitar reset de contraseña
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword(ResetDto dto)
+    {
+        var user = await _um.FindByEmailAsync(dto.Email);
+        if (user == null) return NotFound();
+
+        var token = await _um.GeneratePasswordResetTokenAsync(user);
+        var encoded = Uri.EscapeDataString(token);
+        var resetUrl = $"{Request.Scheme}://{Request.Host}/reset-password?email={dto.Email}&token={encoded}";
+
+        await _emailSender.SendEmailAsync(dto.Email, "Restablece tu contraseña",
+            $"<p>Para restablecer tu contraseña haz clic <a href='{resetUrl}'>aquí</a>.</p>");
+
+        return Ok("Se ha enviado un correo con las instrucciones para restablecer la contraseña.");
+    }
+
+    // 🔹 Restablecer contraseña
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword(NewPasswordDto dto)
+    {
+        var user = await _um.FindByEmailAsync(dto.Email);
+        if (user == null) return NotFound();
+
+        var result = await _um.ResetPasswordAsync(user, dto.Token, dto.NewPassword);
+        if (!result.Succeeded) return BadRequest(result.Errors);
+
+        return Ok("Contraseña restablecida correctamente.");
     }
 
     [Authorize]
     [HttpGet("me")]
     public IActionResult Me() => Ok(new { User.Identity!.Name });
 
+    // 🔹 Crear JWT
     private async Task<string> CreateTokenAsync(ApplicationUser user)
     {
         var jwt = _cfg.GetSection("Jwt");

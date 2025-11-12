@@ -3,6 +3,7 @@ using IsaArtTattoo.IdentityApi.Models;
 using IsaArtTattoo.IdentityApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -74,7 +75,19 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+
+var allowWeb = "AllowWeb";
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy(allowWeb, p =>
+        p.WithOrigins("http://localhost:51034")
+         .AllowAnyHeader()
+         .AllowAnyMethod()
+         .AllowCredentials());
+});
+
 builder.Services.AddHostedService<SeedHostedService>();
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 var app = builder.Build();
 
@@ -89,7 +102,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
-app.UseCors();
+app.UseCors(allowWeb);
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

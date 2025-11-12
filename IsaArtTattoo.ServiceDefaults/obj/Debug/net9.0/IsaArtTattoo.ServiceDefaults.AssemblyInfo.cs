@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("IsaArtTattoo.ServiceDefaults")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+005affaa443504634211b5ef59a9ee636356e18a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ec825773968579f847c9693c085d9b9e8a2056d5")]
 [assembly: System.Reflection.AssemblyProductAttribute("IsaArtTattoo.ServiceDefaults")]
 [assembly: System.Reflection.AssemblyTitleAttribute("IsaArtTattoo.ServiceDefaults")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
