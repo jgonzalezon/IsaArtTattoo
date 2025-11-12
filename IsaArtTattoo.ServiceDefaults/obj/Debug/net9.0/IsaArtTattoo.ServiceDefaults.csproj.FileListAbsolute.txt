@@ -1,0 +1,12 @@
+C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.ServiceDefaults\bin\Debug\net9.0\IsaArtTattoo.ServiceDefaults.deps.json
+C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.ServiceDefaults\bin\Debug\net9.0\IsaArtTattoo.ServiceDefaults.dll
+C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.ServiceDefaults\bin\Debug\net9.0\IsaArtTattoo.ServiceDefaults.pdb
+C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.ServiceDefaults\obj\Debug\net9.0\IsaArtTattoo.ServiceDefaults.csproj.AssemblyReference.cache
+C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.ServiceDefaults\obj\Debug\net9.0\IsaArtTattoo.ServiceDefaults.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.ServiceDefaults\obj\Debug\net9.0\IsaArtTattoo.ServiceDefaults.AssemblyInfoInputs.cache
+C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.ServiceDefaults\obj\Debug\net9.0\IsaArtTattoo.ServiceDefaults.AssemblyInfo.cs
+C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.ServiceDefaults\obj\Debug\net9.0\IsaArtTattoo.ServiceDefaults.csproj.CoreCompileInputs.cache
+C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.ServiceDefaults\obj\Debug\net9.0\IsaArtTattoo.ServiceDefaults.dll
+C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.ServiceDefaults\obj\Debug\net9.0\refint\IsaArtTattoo.ServiceDefaults.dll
+C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.ServiceDefaults\obj\Debug\net9.0\IsaArtTattoo.ServiceDefaults.pdb
+C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.ServiceDefaults\obj\Debug\net9.0\ref\IsaArtTattoo.ServiceDefaults.dll

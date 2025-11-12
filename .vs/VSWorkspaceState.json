@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\IsaArtTattoo.AppHost",
+    "\\IsaArtTattoo.AppHost\\Properties",
+    "\\IsaArtTattoo.IdentityApi",
+    "\\IsaArtTattoo.IdentityApi\\Controllers",
+    "\\IsaArtTattoo.IdentityApi\\Data",
+    "\\IsaArtTattoo.IdentityApi\\Models"
+  ],
+  "SelectedNode": "\\IsaArtTattoo.IdentityApi\\appsettings.json",
+  "PreviewInSolutionExplorer": false
+}
