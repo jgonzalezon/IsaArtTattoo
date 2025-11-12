@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("IsaArtTattoo.ServiceDefaults")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3993df10bb62805b29d7f4ac6250e11ea9a49c47")]
 [assembly: System.Reflection.AssemblyProductAttribute("IsaArtTattoo.ServiceDefaults")]
 [assembly: System.Reflection.AssemblyTitleAttribute("IsaArtTattoo.ServiceDefaults")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
