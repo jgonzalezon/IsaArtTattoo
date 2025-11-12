@@ -15,7 +15,7 @@ public class IsaArtTattoo_IdentityApi : global::Aspire.Hosting.IProjectMetadata
     /// <summary>
     /// The path to the IsaArtTattoo_IdentityApi project.
     /// </summary>
-    public string ProjectPath => """C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\IsaArtTattoo.IdentityApi.csproj""";
+    public string ProjectPath => """C:\Users\Oceano\Desktop\Curso NET\IsaArtTattoo\IsaArtTattoo\IsaArtTattoo.IdentityApi\IsaArtTattoo.IdentityApi.csproj""";
 
     /// <summary>
     /// Gets a value indicating whether building the project before running it should be suppressed.

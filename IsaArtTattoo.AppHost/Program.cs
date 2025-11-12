@@ -16,7 +16,16 @@ var postgres = builder.AddPostgres("pg")
 
 var identityDb = postgres.AddDatabase("identitydb");
 
-builder.AddProject<Projects.IsaArtTattoo_IdentityApi>("identity-api")
+var identityApi= builder.AddProject<Projects.IsaArtTattoo_IdentityApi>("identity-api")
        .WithReference(identityDb);
+
+
+
+
+var frontendPath = Path.Combine(builder.AppHostDirectory, "..", "isaarttattoo-web");
+
+builder.AddExecutable("isaarttattoo-web", "npm", frontendPath, "run", "dev")
+       .WithHttpEndpoint(targetPort: 54395, name: "http")
+       .WithReference(identityApi);
 
 builder.Build().Run();
