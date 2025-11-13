@@ -20,11 +20,15 @@ public class EmailSender : IEmailSender
     {
         try
         {
-            var smtpHost = _cfg["Smtp:Host"];
-            var smtpPort = int.Parse(_cfg["Smtp:Port"] ?? "587");
-            var smtpUser = _cfg["Smtp:User"];
-            var smtpPass = _cfg["Smtp:Pass"];
-            var from = _cfg["Smtp:From"] ?? smtpUser;
+            // Lee de Email:Smtp
+            var smtpHost = _cfg["Email:Smtp:Host"];
+            var smtpPort = int.Parse(_cfg["Email:Smtp:Port"] ?? "587");
+            var smtpUser = _cfg["Email:Smtp:User"];
+            var smtpPass = _cfg["Email:Smtp:Pass"];
+            var fromAddress = _cfg["Email:FromAddress"] ?? smtpUser;
+            var fromName = _cfg["Email:FromName"] ?? "IsaArt";
+
+            var from = new MailAddress(fromAddress, fromName);
 
             using var client = new SmtpClient(smtpHost, smtpPort)
             {
@@ -32,12 +36,19 @@ public class EmailSender : IEmailSender
                 EnableSsl = true
             };
 
-            var mail = new MailMessage(from, email, subject, htmlMessage)
+            var mail = new MailMessage()
             {
-                IsBodyHtml = true
+                From = from,
+                Subject = subject,
+                Body = htmlMessage,
+                IsBodyHtml = true,
             };
 
+            mail.To.Add(email);
+
             await client.SendMailAsync(mail);
+
+            _logger.LogInformation("Email enviado correctamente a {Email}", email);
         }
         catch (Exception ex)
         {

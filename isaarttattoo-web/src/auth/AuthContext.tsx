@@ -6,7 +6,8 @@ import {
     useEffect,
     ReactNode,
 } from "react";
-import { login as loginApi, LoginRequest, LoginResponse } from "../api/auth";
+import { login as loginApi } from "../api/auth";
+import type { LoginRequest, LoginResponse } from "../api/auth";
 
 interface AuthState {
     token: string | null;

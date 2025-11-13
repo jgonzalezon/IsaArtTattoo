@@ -3,8 +3,100 @@
   "WorkspaceRootPath": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo-web\\src\\pages\\confirmemail.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|solutionrelative:isaarttattoo-web\\src\\pages\\confirmemail.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo-web\\src\\pages\\forgotpassword.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|solutionrelative:isaarttattoo-web\\src\\pages\\forgotpassword.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo-web\\src\\pages\\login.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|solutionrelative:isaarttattoo-web\\src\\pages\\login.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo-web\\src\\pages\\me.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|solutionrelative:isaarttattoo-web\\src\\pages\\me.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo-web\\src\\pages\\register.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|solutionrelative:isaarttattoo-web\\src\\pages\\register.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo-web\\src\\pages\\resetpassword.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|solutionrelative:isaarttattoo-web\\src\\pages\\resetpassword.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo-web\\src\\components\\authcard.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|solutionrelative:isaarttattoo-web\\src\\components\\authcard.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo-web\\src\\auth\\authcontext.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|solutionrelative:isaarttattoo-web\\src\\auth\\authcontext.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BA630B1B-986E-9361-B078-5C4DC6F06C79}|IsaArtTattoo.IdentityApi\\IsaArtTattoo.IdentityApi.csproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo.identityapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BA630B1B-986E-9361-B078-5C4DC6F06C79}|IsaArtTattoo.IdentityApi\\IsaArtTattoo.IdentityApi.csproj|solutionrelative:isaarttattoo.identityapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo-web\\src\\app.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|solutionrelative:isaarttattoo-web\\src\\app.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo-web\\src\\main.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|solutionrelative:isaarttattoo-web\\src\\main.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo-web\\src\\api\\auth.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|solutionrelative:isaarttattoo-web\\src\\api\\auth.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo-web\\src\\api\\client.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|solutionrelative:isaarttattoo-web\\src\\api\\client.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo-web\\src\\auth\\protectedroute.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|solutionrelative:isaarttattoo-web\\src\\auth\\protectedroute.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{BA630B1B-986E-9361-B078-5C4DC6F06C79}|IsaArtTattoo.IdentityApi\\IsaArtTattoo.IdentityApi.csproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo.identityapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{BA630B1B-986E-9361-B078-5C4DC6F06C79}|IsaArtTattoo.IdentityApi\\IsaArtTattoo.IdentityApi.csproj|solutionrelative:isaarttattoo.identityapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo-web\\src\\lib\\api.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|solutionrelative:isaarttattoo-web\\src\\lib\\api.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo-web\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|solutionrelative:isaarttattoo-web\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{43A2C0B3-4B65-4580-8D5F-62D9EDDAEB13}|IsaArtTattoo.AppHost\\IsaArtTattoo.AppHost.csproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo.apphost\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43A2C0B3-4B65-4580-8D5F-62D9EDDAEB13}|IsaArtTattoo.AppHost\\IsaArtTattoo.AppHost.csproj|solutionrelative:isaarttattoo.apphost\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BA630B1B-986E-9361-B078-5C4DC6F06C79}|IsaArtTattoo.IdentityApi\\IsaArtTattoo.IdentityApi.csproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo.identityapi\\services\\seedhostedservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BA630B1B-986E-9361-B078-5C4DC6F06C79}|IsaArtTattoo.IdentityApi\\IsaArtTattoo.IdentityApi.csproj|solutionrelative:isaarttattoo.identityapi\\services\\seedhostedservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BA630B1B-986E-9361-B078-5C4DC6F06C79}|IsaArtTattoo.IdentityApi\\IsaArtTattoo.IdentityApi.csproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo.identityapi\\services\\emailsender.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BA630B1B-986E-9361-B078-5C4DC6F06C79}|IsaArtTattoo.IdentityApi\\IsaArtTattoo.IdentityApi.csproj|solutionrelative:isaarttattoo.identityapi\\services\\emailsender.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BA630B1B-986E-9361-B078-5C4DC6F06C79}|IsaArtTattoo.IdentityApi\\IsaArtTattoo.IdentityApi.csproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo.identityapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{BA630B1B-986E-9361-B078-5C4DC6F06C79}|IsaArtTattoo.IdentityApi\\IsaArtTattoo.IdentityApi.csproj|solutionrelative:isaarttattoo.identityapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BA630B1B-986E-9361-B078-5C4DC6F06C79}|IsaArtTattoo.IdentityApi\\IsaArtTattoo.IdentityApi.csproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo.identityapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{BA630B1B-986E-9361-B078-5C4DC6F06C79}|IsaArtTattoo.IdentityApi\\IsaArtTattoo.IdentityApi.csproj|solutionrelative:isaarttattoo.identityapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BA630B1B-986E-9361-B078-5C4DC6F06C79}|IsaArtTattoo.IdentityApi\\IsaArtTattoo.IdentityApi.csproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo.identityapi\\models\\aplicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BA630B1B-986E-9361-B078-5C4DC6F06C79}|IsaArtTattoo.IdentityApi\\IsaArtTattoo.IdentityApi.csproj|solutionrelative:isaarttattoo.identityapi\\models\\aplicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BA630B1B-986E-9361-B078-5C4DC6F06C79}|IsaArtTattoo.IdentityApi\\IsaArtTattoo.IdentityApi.csproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo.identityapi\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BA630B1B-986E-9361-B078-5C4DC6F06C79}|IsaArtTattoo.IdentityApi\\IsaArtTattoo.IdentityApi.csproj|solutionrelative:isaarttattoo.identityapi\\data\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo-web\\.env.local||{8B382828-6202-11D1-8870-0000F87579D2}",
@@ -13,26 +105,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo-web\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
       "RelativeMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|solutionrelative:isaarttattoo-web\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo-web\\src\\auth\\authcontext.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|solutionrelative:isaarttattoo-web\\src\\auth\\authcontext.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo-web\\src\\pages\\login.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|solutionrelative:isaarttattoo-web\\src\\pages\\login.tsx||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo-web\\src\\lib\\api.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|solutionrelative:isaarttattoo-web\\src\\lib\\api.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo-web\\src\\api\\auth.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{64451A0E-A678-009B-C54F-FFB51DED231E}|isaarttattoo-web\\isaarttattoo-web.esproj|solutionrelative:isaarttattoo-web\\src\\api\\auth.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{BA630B1B-986E-9361-B078-5C4DC6F06C79}|IsaArtTattoo.IdentityApi\\IsaArtTattoo.IdentityApi.csproj|c:\\users\\oceano\\desktop\\curso net\\isaarttattoo\\isaarttattoo\\isaarttattoo.identityapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{BA630B1B-986E-9361-B078-5C4DC6F06C79}|IsaArtTattoo.IdentityApi\\IsaArtTattoo.IdentityApi.csproj|solutionrelative:isaarttattoo.identityapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -47,45 +119,71 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\IsaArtTattoo.IdentityApi\\Program.cs",
-              "RelativeDocumentMoniker": "IsaArtTattoo.IdentityApi\\Program.cs",
-              "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\IsaArtTattoo.IdentityApi\\Program.cs",
-              "RelativeToolTip": "IsaArtTattoo.IdentityApi\\Program.cs",
-              "ViewState": "AgIAAFEAAAAAAAAAAAAAAGQAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-13T16:11:26.355Z",
+              "Title": "ConfirmEmail.tsx",
+              "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\pages\\ConfirmEmail.tsx",
+              "RelativeDocumentMoniker": "isaarttattoo-web\\src\\pages\\ConfirmEmail.tsx",
+              "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\pages\\ConfirmEmail.tsx",
+              "RelativeToolTip": "isaarttattoo-web\\src\\pages\\ConfirmEmail.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-11-13T16:45:56.03Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": ".env.local",
-              "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\.env.local",
-              "RelativeDocumentMoniker": "isaarttattoo-web\\.env.local",
-              "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\.env.local",
-              "RelativeToolTip": "isaarttattoo-web\\.env.local",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-11-13T16:00:22.201Z",
+              "Title": "ForgotPassword.tsx",
+              "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\pages\\ForgotPassword.tsx",
+              "RelativeDocumentMoniker": "isaarttattoo-web\\src\\pages\\ForgotPassword.tsx",
+              "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\pages\\ForgotPassword.tsx",
+              "RelativeToolTip": "isaarttattoo-web\\src\\pages\\ForgotPassword.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-11-13T18:53:39.167Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": ".gitignore",
-              "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\.gitignore",
-              "RelativeDocumentMoniker": "isaarttattoo-web\\.gitignore",
-              "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\.gitignore",
-              "RelativeToolTip": "isaarttattoo-web\\.gitignore",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-11-13T15:59:15.874Z",
+              "DocumentIndex": 3,
+              "Title": "Me.tsx",
+              "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\pages\\Me.tsx",
+              "RelativeDocumentMoniker": "isaarttattoo-web\\src\\pages\\Me.tsx",
+              "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\pages\\Me.tsx",
+              "RelativeToolTip": "isaarttattoo-web\\src\\pages\\Me.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-11-13T18:53:30.594Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
+              "Title": "Register.tsx",
+              "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\pages\\Register.tsx",
+              "RelativeDocumentMoniker": "isaarttattoo-web\\src\\pages\\Register.tsx",
+              "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\pages\\Register.tsx",
+              "RelativeToolTip": "isaarttattoo-web\\src\\pages\\Register.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-11-13T18:53:27.547Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ResetPassword.tsx",
+              "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\pages\\ResetPassword.tsx",
+              "RelativeDocumentMoniker": "isaarttattoo-web\\src\\pages\\ResetPassword.tsx",
+              "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\pages\\ResetPassword.tsx",
+              "RelativeToolTip": "isaarttattoo-web\\src\\pages\\ResetPassword.tsx",
+              "ViewState": "AgIAAGIAAAAAAAAAAAArwHAAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-11-13T16:47:36.996Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "Login.tsx",
               "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\pages\\Login.tsx",
               "RelativeDocumentMoniker": "isaarttattoo-web\\src\\pages\\Login.tsx",
@@ -98,55 +196,261 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 6,
+              "Title": "AuthCard.tsx",
+              "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\components\\AuthCard.tsx",
+              "RelativeDocumentMoniker": "isaarttattoo-web\\src\\components\\AuthCard.tsx",
+              "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\components\\AuthCard.tsx",
+              "RelativeToolTip": "isaarttattoo-web\\src\\components\\AuthCard.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-11-13T18:46:45.877Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
               "Title": "AuthContext.tsx",
               "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\auth\\AuthContext.tsx",
               "RelativeDocumentMoniker": "isaarttattoo-web\\src\\auth\\AuthContext.tsx",
               "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\auth\\AuthContext.tsx",
               "RelativeToolTip": "isaarttattoo-web\\src\\auth\\AuthContext.tsx",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAZAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
               "WhenOpened": "2025-11-13T15:38:03.021Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "api.ts",
-              "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\lib\\api.ts",
-              "RelativeDocumentMoniker": "isaarttattoo-web\\src\\lib\\api.ts",
-              "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\lib\\api.ts",
-              "RelativeToolTip": "isaarttattoo-web\\src\\lib\\api.ts",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 9,
+              "Title": "App.tsx",
+              "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\App.tsx",
+              "RelativeDocumentMoniker": "isaarttattoo-web\\src\\App.tsx",
+              "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\App.tsx",
+              "RelativeToolTip": "isaarttattoo-web\\src\\App.tsx",
+              "ViewState": "AgIAABEAAAAAAAAAAAAAwB4AAAAEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-11-13T15:37:29.907Z",
+              "WhenOpened": "2025-11-13T18:20:12.979Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 10,
+              "Title": "main.tsx",
+              "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\main.tsx",
+              "RelativeDocumentMoniker": "isaarttattoo-web\\src\\main.tsx",
+              "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\main.tsx",
+              "RelativeToolTip": "isaarttattoo-web\\src\\main.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-11-13T18:18:38.55Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
               "Title": "auth.ts",
               "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\api\\auth.ts",
               "RelativeDocumentMoniker": "isaarttattoo-web\\src\\api\\auth.ts",
               "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\api\\auth.ts",
               "RelativeToolTip": "isaarttattoo-web\\src\\api\\auth.ts",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAAwB4AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAACoAAAAAAAAAAAAowCkAAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
               "WhenOpened": "2025-11-13T15:36:30.654Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\IsaArtTattoo.IdentityApi\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "IsaArtTattoo.IdentityApi\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\IsaArtTattoo.IdentityApi\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "IsaArtTattoo.IdentityApi\\Controllers\\AuthController.cs",
+              "ViewState": "AgIAAKMAAAAAAAAAAAAqwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-13T16:31:32.474Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "ProtectedRoute.tsx",
+              "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\auth\\ProtectedRoute.tsx",
+              "RelativeDocumentMoniker": "isaarttattoo-web\\src\\auth\\ProtectedRoute.tsx",
+              "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\auth\\ProtectedRoute.tsx",
+              "RelativeToolTip": "isaarttattoo-web\\src\\auth\\ProtectedRoute.tsx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-11-13T17:54:13.91Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "client.ts",
+              "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\api\\client.ts",
+              "RelativeDocumentMoniker": "isaarttattoo-web\\src\\api\\client.ts",
+              "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\api\\client.ts",
+              "RelativeToolTip": "isaarttattoo-web\\src\\api\\client.ts",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-11-13T17:20:29.662Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "api.ts",
+              "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\lib\\api.ts",
+              "RelativeDocumentMoniker": "isaarttattoo-web\\src\\lib\\api.ts",
+              "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\src\\lib\\api.ts",
+              "RelativeToolTip": "isaarttattoo-web\\src\\lib\\api.ts",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAAACoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-11-13T15:37:29.907Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "index.html",
+              "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\index.html",
+              "RelativeDocumentMoniker": "isaarttattoo-web\\index.html",
+              "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\index.html",
+              "RelativeToolTip": "isaarttattoo-web\\index.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2025-11-13T17:53:46.141Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\IsaArtTattoo.IdentityApi\\Program.cs",
+              "RelativeDocumentMoniker": "IsaArtTattoo.IdentityApi\\Program.cs",
+              "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\IsaArtTattoo.IdentityApi\\Program.cs",
+              "RelativeToolTip": "IsaArtTattoo.IdentityApi\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEMAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-13T16:11:26.355Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\IsaArtTattoo.AppHost\\Program.cs",
+              "RelativeDocumentMoniker": "IsaArtTattoo.AppHost\\Program.cs",
+              "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\IsaArtTattoo.AppHost\\Program.cs",
+              "RelativeToolTip": "IsaArtTattoo.AppHost\\Program.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAqwB4AAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-13T17:00:23.236Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "SeedHostedService.cs",
+              "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\IsaArtTattoo.IdentityApi\\Services\\SeedHostedService.cs",
+              "RelativeDocumentMoniker": "IsaArtTattoo.IdentityApi\\Services\\SeedHostedService.cs",
+              "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\IsaArtTattoo.IdentityApi\\Services\\SeedHostedService.cs",
+              "RelativeToolTip": "IsaArtTattoo.IdentityApi\\Services\\SeedHostedService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-13T16:51:38.942Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\IsaArtTattoo.IdentityApi\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "IsaArtTattoo.IdentityApi\\Properties\\launchSettings.json",
+              "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\IsaArtTattoo.IdentityApi\\Properties\\launchSettings.json",
+              "RelativeToolTip": "IsaArtTattoo.IdentityApi\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-11-13T16:24:03.389Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "AplicationUser.cs",
+              "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\IsaArtTattoo.IdentityApi\\Models\\AplicationUser.cs",
+              "RelativeDocumentMoniker": "IsaArtTattoo.IdentityApi\\Models\\AplicationUser.cs",
+              "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\IsaArtTattoo.IdentityApi\\Models\\AplicationUser.cs",
+              "RelativeToolTip": "IsaArtTattoo.IdentityApi\\Models\\AplicationUser.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-13T16:23:50.708Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "EmailSender.cs",
+              "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\IsaArtTattoo.IdentityApi\\Services\\EmailSender.cs",
+              "RelativeDocumentMoniker": "IsaArtTattoo.IdentityApi\\Services\\EmailSender.cs",
+              "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\IsaArtTattoo.IdentityApi\\Services\\EmailSender.cs",
+              "RelativeToolTip": "IsaArtTattoo.IdentityApi\\Services\\EmailSender.cs",
+              "ViewState": "AgIAADoAAAAAAAAAAAAAADoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-13T16:21:30.97Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\IsaArtTattoo.IdentityApi\\Data\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "IsaArtTattoo.IdentityApi\\Data\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\IsaArtTattoo.IdentityApi\\Data\\ApplicationDbContext.cs",
+              "RelativeToolTip": "IsaArtTattoo.IdentityApi\\Data\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-13T16:23:29.556Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\IsaArtTattoo.IdentityApi\\appsettings.json",
               "RelativeDocumentMoniker": "IsaArtTattoo.IdentityApi\\appsettings.json",
               "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\IsaArtTattoo.IdentityApi\\appsettings.json",
               "RelativeToolTip": "IsaArtTattoo.IdentityApi\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAfAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2025-11-13T14:57:45.683Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": ".env.local",
+              "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\.env.local",
+              "RelativeDocumentMoniker": "isaarttattoo-web\\.env.local",
+              "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\.env.local",
+              "RelativeToolTip": "isaarttattoo-web\\.env.local",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-11-13T16:00:22.201Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": ".gitignore",
+              "DocumentMoniker": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\.gitignore",
+              "RelativeDocumentMoniker": "isaarttattoo-web\\.gitignore",
+              "ToolTip": "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\isaarttattoo-web\\.gitignore",
+              "RelativeToolTip": "isaarttattoo-web\\.gitignore",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-11-13T15:59:15.874Z"
             }
           ]
         }

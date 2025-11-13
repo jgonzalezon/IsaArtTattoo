@@ -1,30 +1,31 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import AuthCard from "./components/AuthCard";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider } from "./auth/AuthContext";
 
-export default function App() {
-    const [apiBase, setApiBase] = useState<string>(
-        import.meta.env.VITE_API_BASE_URL ?? ""
-    );
+import LoginPage from "./pages/Login";
+import RegisterPage from "./pages/Register";
+import ConfirmEmailPage from "./pages/ConfirmEmail";
+import ResetPasswordPage from "./pages/ResetPassword";
 
-    useEffect(() => {
-        // fallback para dev con proxy de Vite
-        if (!apiBase) setApiBase("");
-    }, [apiBase]);
-
+function App() {
     return (
-        <div className="relative min-h-dvh overflow-hidden bg-slate-950 text-slate-100">
-            {/* gradient animado */}
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_0%,rgba(56,189,248,.25),rgba(2,6,23,0))]"></div>
-            <div className="absolute -top-1/3 left-1/2 h-[80vmin] w-[80vmin] -translate-x-1/2 rounded-full bg-gradient-to-tr from-fuchsia-500/30 via-cyan-400/30 to-indigo-400/30 blur-3xl animate-pulse"></div>
+        <AuthProvider>
+            <Routes>
+                <Route path="/" element={<LoginPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
 
-            <div className="relative z-10 mx-auto grid min-h-dvh max-w-7xl place-items-center px-4">
-                <div className="w-full max-w-md">
-                    <AuthCard apiBase={apiBase} />
-                    <p className="mt-6 text-center text-sm text-slate-400">
-                        API base: <code className="text-slate-300">{apiBase || "/api"}</code>
-                    </p>
-                </div>
-            </div>
-        </div>
+                {/* 🔹 ESTA es la ruta del enlace del correo */}
+                <Route path="/confirm-email" element={<ConfirmEmailPage />} />
+
+                <Route path="/reset-password" element={<ResetPasswordPage />} />
+
+                {/* fallback */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+        </AuthProvider>
     );
 }
+
+export default App;

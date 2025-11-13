@@ -46,24 +46,33 @@ public class AuthController : ControllerBase
         if (!result.Succeeded) return BadRequest(result.Errors);
 
         var token = await _um.GenerateEmailConfirmationTokenAsync(user);
-        var encoded = Uri.EscapeDataString(token);
-        var confirmUrl = $"{Request.Scheme}://{Request.Host}/api/auth/confirm?email={dto.Email}&token={encoded}";
+        var encodedToken = Uri.EscapeDataString(token);
+
+        // URL del front
+        var frontendBase = _cfg["Frontend:BaseUrl"] ?? "http://localhost:5173";
+        var confirmUrl =
+            $"{frontendBase}/confirm-email?email={Uri.EscapeDataString(dto.Email)}&token={encodedToken}";
 
         await _emailSender.SendEmailAsync(dto.Email, "Confirma tu cuenta",
-            $"<p>Gracias por registrarte en <b>IsaArtTattoo</b>.<br>" +
-            $"Haz clic <a href='{confirmUrl}'>aquí</a> para confirmar tu correo.</p>");
+            $"""
+        <p>Gracias por registrarte en <b>IsaArtTattoo</b>.</p>
+        <p>Haz clic <a href="{confirmUrl}">aquí</a> para confirmar tu correo.</p>
+        """);
 
         return Ok(new { Message = "Usuario creado. Revisa tu email para confirmar la cuenta." });
     }
 
-    // 🔹 Confirmar email
+
+    //  Confirmar email
     [HttpGet("confirm")]
     public async Task<IActionResult> Confirm(string email, string token)
     {
         var user = await _um.FindByEmailAsync(email);
         if (user == null) return BadRequest("Usuario no encontrado.");
 
-        var result = await _um.ConfirmEmailAsync(user, token);
+        var decodedToken = Uri.UnescapeDataString(token);
+
+        var result = await _um.ConfirmEmailAsync(user, decodedToken);
         if (!result.Succeeded) return BadRequest("Token inválido o expirado.");
 
         return Ok("Correo confirmado correctamente.");
@@ -85,24 +94,29 @@ public class AuthController : ControllerBase
         return Ok(new { token });
     }
 
-    // 🔹 Reenviar confirmación
+    public record ResendConfirmDto(string Email);
+
     [HttpPost("resend-confirmation")]
-    public async Task<IActionResult> ResendConfirmation([FromBody] string email)
+    public async Task<IActionResult> ResendConfirmation([FromBody] ResendConfirmDto dto)
     {
-        var user = await _um.FindByEmailAsync(email);
+        var user = await _um.FindByEmailAsync(dto.Email);
         if (user == null) return NotFound();
 
         var token = await _um.GenerateEmailConfirmationTokenAsync(user);
-        var encoded = Uri.EscapeDataString(token);
-        var confirmUrl = $"{Request.Scheme}://{Request.Host}/api/auth/confirm?email={email}&token={encoded}";
+        var encodedToken = Uri.EscapeDataString(token);
 
-        await _emailSender.SendEmailAsync(email, "Confirma tu cuenta",
-            $"<p>Haz clic <a href='{confirmUrl}'>aquí</a> para confirmar tu correo.</p>");
+        var frontendBase = _cfg["Frontend:BaseUrl"] ?? "http://localhost:5173";
+        var confirmUrl =
+            $"{frontendBase}/confirm-email?email={Uri.EscapeDataString(dto.Email)}&token={encodedToken}";
+
+        await _emailSender.SendEmailAsync(dto.Email, "Confirma tu cuenta",
+            $"""<p>Haz clic <a href="{confirmUrl}">aquí</a> para confirmar tu correo.</p>""");
 
         return Ok("Correo de confirmación reenviado.");
     }
 
-    // 🔹 Solicitar reset de contraseña
+
+    //  Solicitar reset de contraseña
     [HttpPost("forgot-password")]
     public async Task<IActionResult> ForgotPassword(ResetDto dto)
     {
@@ -110,14 +124,18 @@ public class AuthController : ControllerBase
         if (user == null) return NotFound();
 
         var token = await _um.GeneratePasswordResetTokenAsync(user);
-        var encoded = Uri.EscapeDataString(token);
-        var resetUrl = $"{Request.Scheme}://{Request.Host}/reset-password?email={dto.Email}&token={encoded}";
+        var encodedToken = Uri.EscapeDataString(token);
+
+        var frontendBase = _cfg["Frontend:BaseUrl"] ?? "http://localhost:5173";
+        var resetUrl =
+            $"{frontendBase}/reset-password?email={Uri.EscapeDataString(dto.Email)}&token={encodedToken}";
 
         await _emailSender.SendEmailAsync(dto.Email, "Restablece tu contraseña",
-            $"<p>Para restablecer tu contraseña haz clic <a href='{resetUrl}'>aquí</a>.</p>");
+            $"""<p>Para restablecer tu contraseña haz clic <a href="{resetUrl}">aquí</a>.</p>""");
 
         return Ok("Se ha enviado un correo con las instrucciones para restablecer la contraseña.");
     }
+
 
     // 🔹 Restablecer contraseña
     [HttpPost("reset-password")]
@@ -126,7 +144,11 @@ public class AuthController : ControllerBase
         var user = await _um.FindByEmailAsync(dto.Email);
         if (user == null) return NotFound();
 
-        var result = await _um.ResetPasswordAsync(user, dto.Token, dto.NewPassword);
+
+        var decodedToken = Uri.UnescapeDataString(dto.Token);
+
+
+        var result = await _um.ResetPasswordAsync(user, decodedToken, dto.NewPassword);
         if (!result.Succeeded) return BadRequest(result.Errors);
 
         return Ok("Contraseña restablecida correctamente.");

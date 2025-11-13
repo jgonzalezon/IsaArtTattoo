@@ -19,10 +19,24 @@ export async function apiFetch<T>(
         ...options,
     });
 
+    // Errores 4xx/5xx
     if (!res.ok) {
         const text = await res.text();
         throw new Error(text || `Error HTTP ${res.status}`);
     }
 
-    return (await res.json()) as T;
+    // Sin contenido (204, etc.)
+    if (res.status === 204) {
+        return undefined as T;
+    }
+
+    const contentType = res.headers.get("content-type") ?? "";
+
+    if (contentType.includes("application/json")) {
+        const json = await res.json();
+        return json as T;
+    }
+
+    const text = await res.text();
+    return text as unknown as T;
 }

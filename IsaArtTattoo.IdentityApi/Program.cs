@@ -61,12 +61,11 @@ var allowWeb = "AllowWeb";
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy(allowWeb, p =>
-        p.WithOrigins(
-            "http://localhost:5173"   // ← PUERTO DEL FRONT EN ASPIRE
-        )
+        p.AllowAnyOrigin()
+        
         .AllowAnyHeader()
         .AllowAnyMethod()
-        .AllowCredentials()
+        
     );
 });
 
