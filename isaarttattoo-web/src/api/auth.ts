@@ -6,11 +6,8 @@ export interface LoginRequest {
     password: string;
 }
 
-// Ajusta esto al JSON REAL que te devuelve el AuthController
 export interface LoginResponse {
     token: string;
-    // userEmail?: string;
-    // roles?: string[];
 }
 
 export function login(data: LoginRequest) {
@@ -31,9 +28,3 @@ export function register(data: RegisterRequest) {
         body: JSON.stringify(data),
     });
 }
-
-// Más adelante aquí meteremos:
-// - confirmEmail
-// - forgotPassword
-// - resetPassword
-// etc., apuntando a tus endpoints reales.

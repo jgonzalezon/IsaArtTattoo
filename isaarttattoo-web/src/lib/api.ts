@@ -24,6 +24,5 @@ export async function apiFetch<T>(
         throw new Error(text || `Error HTTP ${res.status}`);
     }
 
-    // si algún endpoint no devuelve JSON, ya lo afinaremos
     return (await res.json()) as T;
 }

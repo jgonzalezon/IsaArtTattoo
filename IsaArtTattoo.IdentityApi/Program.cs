@@ -62,7 +62,7 @@ builder.Services.AddCors(opt =>
 {
     opt.AddPolicy(allowWeb, p =>
         p.WithOrigins(
-            "http://localhost:60563"   // ← PUERTO DEL FRONT EN ASPIRE
+            "http://localhost:5173"   // ← PUERTO DEL FRONT EN ASPIRE
         )
         .AllowAnyHeader()
         .AllowAnyMethod()

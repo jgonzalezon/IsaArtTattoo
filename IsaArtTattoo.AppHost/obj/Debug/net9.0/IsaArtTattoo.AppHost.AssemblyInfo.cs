@@ -12,21 +12,22 @@ using System;
 using System.Reflection;
 
 [assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("7d9f9ae2-3488-435c-9d19-0051c4a250d4")]
-[assembly: System.Reflection.AssemblyMetadata("dcpclipath", "C:\\Users\\jgonz\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\13.0.0\\tools\\" +
-    "dcp.exe")]
-[assembly: System.Reflection.AssemblyMetadata("dcpextensionpaths", "C:\\Users\\jgonz\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\13.0.0\\tools\\" +
-    "ext\\")]
-[assembly: System.Reflection.AssemblyMetadata("dcpbinpath", "C:\\Users\\jgonz\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\13.0.0\\tools\\" +
-    "ext\\bin\\")]
-[assembly: System.Reflection.AssemblyMetadata("apphostprojectpath", "C:\\Users\\jgonz\\Javier\\PROGRAMACIÓN\\IsaArtTattoo\\IsaArtTattoo.AppHost")]
+[assembly: System.Reflection.AssemblyMetadata("dcpclipath", "C:\\Users\\Oceano\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\13.0.0\\tools" +
+    "\\dcp.exe")]
+[assembly: System.Reflection.AssemblyMetadata("dcpextensionpaths", "C:\\Users\\Oceano\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\13.0.0\\tools" +
+    "\\ext\\")]
+[assembly: System.Reflection.AssemblyMetadata("dcpbinpath", "C:\\Users\\Oceano\\.nuget\\packages\\aspire.hosting.orchestration.win-x64\\13.0.0\\tools" +
+    "\\ext\\bin\\")]
+[assembly: System.Reflection.AssemblyMetadata("apphostprojectpath", "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\IsaArtTattoo.AppHost")]
 [assembly: System.Reflection.AssemblyMetadata("apphostprojectname", "IsaArtTattoo.AppHost.csproj")]
-[assembly: System.Reflection.AssemblyMetadata("aspiredashboardpath", "C:\\Users\\jgonz\\.nuget\\packages\\aspire.dashboard.sdk.win-x64\\13.0.0\\tools\\Aspire.D" +
-    "ashboard.exe")]
-[assembly: System.Reflection.AssemblyMetadataAttribute("apphostprojectbaseintermediateoutputpath", "C:\\Users\\jgonz\\Javier\\PROGRAMACIÓN\\IsaArtTattoo\\IsaArtTattoo.AppHost\\obj\\")]
+[assembly: System.Reflection.AssemblyMetadata("aspiredashboardpath", "C:\\Users\\Oceano\\.nuget\\packages\\aspire.dashboard.sdk.win-x64\\13.0.0\\tools\\Aspire." +
+    "Dashboard.exe")]
+[assembly: System.Reflection.AssemblyMetadataAttribute("apphostprojectbaseintermediateoutputpath", "C:\\Users\\Oceano\\Desktop\\Curso NET\\IsaArtTattoo\\IsaArtTattoo\\IsaArtTattoo.AppHost\\" +
+    "obj\\")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("IsaArtTattoo.AppHost")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fdb694d7a9ecb9f3f3091811bfbffacd378f1105")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6eb9bbf8a86c050476d10780674f81185c3c6b95")]
 [assembly: System.Reflection.AssemblyProductAttribute("IsaArtTattoo.AppHost")]
 [assembly: System.Reflection.AssemblyTitleAttribute("IsaArtTattoo.AppHost")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

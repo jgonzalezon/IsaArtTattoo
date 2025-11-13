@@ -28,9 +28,12 @@ export default function LoginPage() {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            {/* aquí ya metes tu AuthCard, estilos, etc. */}
-            {/* ... */}
+        <form onSubmit={onSubmit} style={{ maxWidth: 360, margin: "40px auto" }}>
+            <h2>Login</h2>
+            <input placeholder="email" value={email} onChange={e => setEmail(e.target.value)} />
+            <input placeholder="password" type="password" value={password} onChange={e => setPass(e.target.value)} />
+            <button>Entrar</button>
+            {err && <p style={{ color: "crimson" }}>{err}</p>}
         </form>
     );
 }
