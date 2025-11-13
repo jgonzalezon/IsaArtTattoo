@@ -265,3 +265,4 @@ C:\Users\Oceano\Desktop\Curso NET\IsaArtTattoo\IsaArtTattoo\IsaArtTattoo.AppHost
 C:\Users\Oceano\Desktop\Curso NET\IsaArtTattoo\IsaArtTattoo\IsaArtTattoo.AppHost\obj\Debug\net9.0\IsaArtTattoo.AppHost.pdb
 C:\Users\Oceano\Desktop\Curso NET\IsaArtTattoo\IsaArtTattoo\IsaArtTattoo.AppHost\obj\Debug\net9.0\IsaArtTattoo.AppHost.genruntimeconfig.cache
 C:\Users\Oceano\Desktop\Curso NET\IsaArtTattoo\IsaArtTattoo\IsaArtTattoo.AppHost\obj\Debug\net9.0\ref\IsaArtTattoo.AppHost.dll
+C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.AppHost\obj\Debug\net9.0\IsaArtTattoo.AppHost.sourcelink.json

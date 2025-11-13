@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("IsaArtTattoo.IdentityApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ec825773968579f847c9693c085d9b9e8a2056d5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fdb694d7a9ecb9f3f3091811bfbffacd378f1105")]
 [assembly: System.Reflection.AssemblyProductAttribute("IsaArtTattoo.IdentityApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("IsaArtTattoo.IdentityApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

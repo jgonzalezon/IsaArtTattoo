@@ -1,14 +1,29 @@
-import axios from "axios";
+// src/lib/api.ts
+const BASE_URL = import.meta.env.VITE_IDENTITY_API_URL as string;
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL ?? "http://localhost:5088",
-});
+if (!BASE_URL) {
+    console.warn("VITE_IDENTITY_API_URL no está definido");
+}
 
-// Adjunta el token si existe
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
+export async function apiFetch<T>(
+    path: string,
+    options: RequestInit = {}
+): Promise<T> {
+    const url = `${BASE_URL}${path}`;
 
-export default api;
+    const res = await fetch(url, {
+        headers: {
+            "Content-Type": "application/json",
+            ...(options.headers || {}),
+        },
+        ...options,
+    });
+
+    if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || `Error HTTP ${res.status}`);
+    }
+
+    // si algún endpoint no devuelve JSON, ya lo afinaremos
+    return (await res.json()) as T;
+}

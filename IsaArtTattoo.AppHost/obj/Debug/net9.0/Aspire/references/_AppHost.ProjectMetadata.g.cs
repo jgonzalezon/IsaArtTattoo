@@ -17,5 +17,5 @@ public class IsaArtTattoo_AppHost
     /// <summary>
     /// The path to the Aspire Host project.
     /// </summary>
-    public static string ProjectPath => """C:\Users\Oceano\Desktop\Curso NET\IsaArtTattoo\IsaArtTattoo\IsaArtTattoo.AppHost""";
+    public static string ProjectPath => """C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.AppHost""";
 }

@@ -1,58 +1,48 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
-import api from "../lib/api";
+// src/auth/AuthContext.tsx
+import { createContext, useContext, useState, ReactNode } from "react";
+import { login as loginApi, LoginRequest, LoginResponse } from "../api/auth";
 
-type User = { name: string | null };
-type AuthCtx = {
-  user: User | null;
-  loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string) => Promise<void>;
-  logout: () => void;
-  refreshMe: () => Promise<void>;
-};
+interface AuthState {
+    token: string | null;
+    // puedes guardar también email, roles, etc.
+}
 
-const Ctx = createContext<AuthCtx>({} as AuthCtx);
-export const useAuth = () => useContext(Ctx);
+interface AuthContextValue extends AuthState {
+    login: (data: LoginRequest) => Promise<void>;
+    logout: () => void;
+}
 
-export const AuthProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
-  const refreshMe = async () => {
-    try {
-      const { data } = await api.get("/api/auth/me");
-      setUser({ name: data.user?.identity?.name ?? data.user?.name ?? null });
-    } catch {
-      setUser(null);
-    }
-  };
+export function AuthProvider({ children }: { children: ReactNode }) {
+    const [token, setToken] = useState<string | null>(null);
 
-  const login = async (email: string, password: string) => {
-    const { data } = await api.post("/api/auth/login", { email, password });
-    localStorage.setItem("token", data.token);
-    await refreshMe();
-  };
+    const login = async (data: LoginRequest) => {
+        const res: LoginResponse = await loginApi(data);
 
-  const register = async (email: string, password: string) => {
-    await api.post("/api/auth/register", { email, password });
-    // El correo de confirmación lo envía el backend
-  };
+        // Aquí asumimos que la API devuelve { token: "..." }
+        setToken(res.token);
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    setUser(null);
-  };
+        // Si quieres persistirlo:
+        // localStorage.setItem("token", res.token);
+    };
 
-  useEffect(() => {
-    // Si hay token, intenta hidratar
-    const t = localStorage.getItem("token");
-    if (!t) { setLoading(false); return; }
-    refreshMe().finally(() => setLoading(false));
-  }, []);
+    const logout = () => {
+        setToken(null);
+        // localStorage.removeItem("token");
+    };
 
-  return (
-    <Ctx.Provider value={{ user, loading, login, register, logout, refreshMe }}>
-      {children}
-    </Ctx.Provider>
-  );
-};
+    const value: AuthContextValue = {
+        token,
+        login,
+        logout,
+    };
+
+    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
+
+export function useAuth() {
+    const ctx = useContext(AuthContext);
+    if (!ctx) throw new Error("useAuth debe usarse dentro de AuthProvider");
+    return ctx;
+}

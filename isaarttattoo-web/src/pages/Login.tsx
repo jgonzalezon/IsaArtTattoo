@@ -1,30 +1,36 @@
+// src/pages/Login.tsx
 import { FormEvent, useState } from "react";
 import { useAuth } from "../auth/AuthContext";
+// si usas react-router:
+import { useNavigate } from "react-router-dom";
 
-export default function Login() {
-  const { login } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [msg, setMsg] = useState<string | null>(null);
+export default function LoginPage() {
+    const { login } = useAuth();
+    const navigate = useNavigate();
+    const [email, setEmail] = useState("test@isaarttattoo.com");
+    const [password, setPassword] = useState("Prueba123!");
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
 
-  const onSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setMsg(null);
-    try {
-      await login(email, password);
-      setMsg("¡Login correcto!");
-    } catch (err: any) {
-      setMsg(err?.response?.data ?? "Error de login");
-    }
-  };
+    const handleSubmit = async (e: FormEvent) => {
+        e.preventDefault();
+        setError(null);
+        setLoading(true);
 
-  return (
-    <form onSubmit={onSubmit}>
-      <h2>Login</h2>
-      <input placeholder="Email" value={email} onChange={e=>setEmail(e.target.value)} />
-      <input placeholder="Password" type="password" value={password} onChange={e=>setPassword(e.target.value)} />
-      <button>Entrar</button>
-      {msg && <p>{msg}</p>}
-    </form>
-  );
+        try {
+            await login({ email, password });
+            navigate("/me"); // o donde quieras
+        } catch (err: any) {
+            setError(err.message ?? "Error al iniciar sesión");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <form onSubmit={handleSubmit}>
+            {/* aquí ya metes tu AuthCard, estilos, etc. */}
+            {/* ... */}
+        </form>
+    );
 }

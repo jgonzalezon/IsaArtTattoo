@@ -151,22 +151,16 @@ C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\bin\De
 C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\bin\Debug\net9.0\IsaArtTattoo.ServiceDefaults.dll
 C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\bin\Debug\net9.0\IsaArtTattoo.ServiceDefaults.pdb
 C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\IsaArtTattoo.IdentityApi.csproj.AssemblyReference.cache
-C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\rpswa.dswa.cache.json
 C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\IsaArtTattoo.IdentityApi.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\IsaArtTattoo.IdentityApi.AssemblyInfoInputs.cache
 C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\IsaArtTattoo.IdentityApi.AssemblyInfo.cs
 C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\IsaArtTattoo.IdentityApi.csproj.CoreCompileInputs.cache
 C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\IsaArtTattoo.IdentityApi.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\IsaArtTattoo.IdentityApi.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\rjimswa.dswa.cache.json
-C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
-C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
 C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\scopedcss\bundle\IsaArtTattoo.IdentityApi.styles.css
 C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\staticwebassets.build.json
-C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\staticwebassets.build.json.cache
 C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\staticwebassets.development.json
 C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\staticwebassets.build.endpoints.json
-C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\swae.build.ex.cache
 C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\IsaArtTa.D96B21AB.Up2Date
 C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\IsaArtTattoo.IdentityApi.dll
 C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\refint\IsaArtTattoo.IdentityApi.dll
@@ -348,3 +342,10 @@ C:\Users\Oceano\Desktop\Curso NET\IsaArtTattoo\IsaArtTattoo\IsaArtTattoo.Identit
 C:\Users\Oceano\Desktop\Curso NET\IsaArtTattoo\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\IsaArtTattoo.IdentityApi.pdb
 C:\Users\Oceano\Desktop\Curso NET\IsaArtTattoo\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\IsaArtTattoo.IdentityApi.genruntimeconfig.cache
 C:\Users\Oceano\Desktop\Curso NET\IsaArtTattoo\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\ref\IsaArtTattoo.IdentityApi.dll
+C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\IsaArtTattoo.IdentityApi.sourcelink.json
+C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\rpswa.dswa.cache.json
+C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\rjimswa.dswa.cache.json
+C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\rjsmrazor.dswa.cache.json
+C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\rjsmcshtml.dswa.cache.json
+C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\staticwebassets.build.json.cache
+C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.IdentityApi\obj\Debug\net9.0\swae.build.ex.cache

@@ -8,24 +8,20 @@
     ".NETCoreApp,Version=v9.0": {
       "IsaArtTattoo.AppHost/1.0.0": {
         "dependencies": {
-          "Aspire.Dashboard.Sdk.win-x64": "13.0.0",
           "Aspire.Hosting": "13.0.0",
           "Aspire.Hosting.AppHost": "13.0.0",
-          "Aspire.Hosting.Orchestration.win-x64": "13.0.0",
           "Aspire.Hosting.PostgreSQL": "13.0.0"
         },
         "runtime": {
           "IsaArtTattoo.AppHost.dll": {}
         }
       },
-      "Aspire.Dashboard.Sdk.win-x64/13.0.0": {},
       "Aspire.Hosting/13.0.0": {
         "dependencies": {
           "AspNetCore.HealthChecks.Uris": "9.0.0",
           "Google.Protobuf": "3.33.0",
           "Grpc.AspNetCore": "2.71.0",
           "Grpc.Net.ClientFactory": "2.71.0",
-          "Grpc.Tools": "2.72.0",
           "Humanizer.Core": "2.14.1",
           "JsonPatch.Net": "3.3.0",
           "KubernetesClient": "18.0.5",
@@ -100,7 +96,6 @@
           "Google.Protobuf": "3.33.0",
           "Grpc.AspNetCore": "2.71.0",
           "Grpc.Net.ClientFactory": "2.71.0",
-          "Grpc.Tools": "2.72.0",
           "Humanizer.Core": "2.14.1",
           "JsonPatch.Net": "3.3.0",
           "KubernetesClient": "18.0.5",
@@ -127,7 +122,6 @@
           }
         }
       },
-      "Aspire.Hosting.Orchestration.win-x64/13.0.0": {},
       "Aspire.Hosting.PostgreSQL/13.0.0": {
         "dependencies": {
           "AspNetCore.HealthChecks.NpgSql": "9.0.0",
@@ -136,7 +130,6 @@
           "Google.Protobuf": "3.33.0",
           "Grpc.AspNetCore": "2.71.0",
           "Grpc.Net.ClientFactory": "2.71.0",
-          "Grpc.Tools": "2.72.0",
           "Humanizer.Core": "2.14.1",
           "JsonPatch.Net": "3.3.0",
           "KubernetesClient": "18.0.5",
@@ -206,8 +199,7 @@
       "Grpc.AspNetCore/2.71.0": {
         "dependencies": {
           "Google.Protobuf": "3.33.0",
-          "Grpc.AspNetCore.Server.ClientFactory": "2.71.0",
-          "Grpc.Tools": "2.72.0"
+          "Grpc.AspNetCore.Server.ClientFactory": "2.71.0"
         }
       },
       "Grpc.AspNetCore.Server/2.71.0": {
@@ -276,7 +268,6 @@
           }
         }
       },
-      "Grpc.Tools/2.72.0": {},
       "Humanizer.Core/2.14.1": {
         "runtime": {
           "lib/net6.0/Humanizer.dll": {
@@ -857,8 +848,7 @@
       "Nerdbank.Streams/2.12.87": {
         "dependencies": {
           "Microsoft.VisualStudio.Threading.Only": "17.13.61",
-          "Microsoft.VisualStudio.Validation": "17.8.8",
-          "System.IO.Pipelines": "8.0.0"
+          "Microsoft.VisualStudio.Validation": "17.8.8"
         },
         "runtime": {
           "lib/net8.0/Nerdbank.Streams.dll": {
@@ -911,8 +901,7 @@
           "Microsoft.VisualStudio.Threading.Only": "17.13.61",
           "Microsoft.VisualStudio.Validation": "17.8.8",
           "Nerdbank.Streams": "2.12.87",
-          "Newtonsoft.Json": "13.0.4",
-          "System.IO.Pipelines": "8.0.0"
+          "Newtonsoft.Json": "13.0.4"
         },
         "runtime": {
           "lib/net8.0/StreamJsonRpc.dll": {
@@ -986,7 +975,6 @@
           }
         }
       },
-      "System.IO.Pipelines/8.0.0": {},
       "YamlDotNet/16.3.0": {
         "runtime": {
           "lib/net8.0/YamlDotNet.dll": {
@@ -1003,13 +991,6 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Aspire.Dashboard.Sdk.win-x64/13.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-eJPOJBv1rMhJoKllqWzqnO18uSYNY0Ja7u5D25XrHE9XSI2w5OGgFWJLs4gru7F/OeAdE26v8radfCQ3RVlakg==",
-      "path": "aspire.dashboard.sdk.win-x64/13.0.0",
-      "hashPath": "aspire.dashboard.sdk.win-x64.13.0.0.nupkg.sha512"
-    },
     "Aspire.Hosting/13.0.0": {
       "type": "package",
       "serviceable": true,
@@ -1023,13 +1004,6 @@
       "sha512": "sha512-gweWCOk8Vrhnr08sO+963DLD/NVP/csrrvIXmhl9bZmFTN/PH1j9ZN1zaTnwZ9ztla0lP4l2aBk+OV0k1QXUcw==",
       "path": "aspire.hosting.apphost/13.0.0",
       "hashPath": "aspire.hosting.apphost.13.0.0.nupkg.sha512"
-    },
-    "Aspire.Hosting.Orchestration.win-x64/13.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-nWzmMDjYJhgT7LwNmDx1Ri4qNQT15wbcujW3CuyvBW/e0y20tyLUZG0/4N81Wzp53VjPFHetAGSNCS8jXQGy9Q==",
-      "path": "aspire.hosting.orchestration.win-x64/13.0.0",
-      "hashPath": "aspire.hosting.orchestration.win-x64.13.0.0.nupkg.sha512"
     },
     "Aspire.Hosting.PostgreSQL/13.0.0": {
       "type": "package",
@@ -1114,13 +1088,6 @@
       "sha512": "sha512-v0c8R97TwRYwNXlC8GyRXwYTCNufpDfUtj9la+wUrZFzVWkFJuNAltU+c0yI3zu0jl54k7en6u2WKgZgd57r2Q==",
       "path": "grpc.net.common/2.71.0",
       "hashPath": "grpc.net.common.2.71.0.nupkg.sha512"
-    },
-    "Grpc.Tools/2.72.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-BCiuQ03EYjLHCo9hqZmY5barsz5vvcz/+/ICt5wCbukaePHZmMPDGelKlkxWx3q+f5xOMNHa9zXQ2N6rQZ4B+w==",
-      "path": "grpc.tools/2.72.0",
-      "hashPath": "grpc.tools.2.72.0.nupkg.sha512"
     },
     "Humanizer.Core/2.14.1": {
       "type": "package",
@@ -1457,13 +1424,6 @@
       "sha512": "sha512-9gv5z71xaWWmcGEs4bXdreIhKp2kYLK2fvPK5gQkgnWMYvZ8ieaxKofDjxL3scZiEYfi/yW2nJTiKV2awcWEdA==",
       "path": "system.io.hashing/9.0.10",
       "hashPath": "system.io.hashing.9.0.10.nupkg.sha512"
-    },
-    "System.IO.Pipelines/8.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-FHNOatmUq0sqJOkTx+UF/9YK1f180cnW5FVqnQMvYUN0elp6wFzbtPSiqbo1/ru8ICp43JM1i7kKkk6GsNGHlA==",
-      "path": "system.io.pipelines/8.0.0",
-      "hashPath": "system.io.pipelines.8.0.0.nupkg.sha512"
     },
     "YamlDotNet/16.3.0": {
       "type": "package",

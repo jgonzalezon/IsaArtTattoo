@@ -23,3 +23,4 @@ C:\Users\Oceano\Desktop\Curso NET\IsaArtTattoo\IsaArtTattoo\IsaArtTattoo.Service
 C:\Users\Oceano\Desktop\Curso NET\IsaArtTattoo\IsaArtTattoo\IsaArtTattoo.ServiceDefaults\obj\Debug\net9.0\refint\IsaArtTattoo.ServiceDefaults.dll
 C:\Users\Oceano\Desktop\Curso NET\IsaArtTattoo\IsaArtTattoo\IsaArtTattoo.ServiceDefaults\obj\Debug\net9.0\IsaArtTattoo.ServiceDefaults.pdb
 C:\Users\Oceano\Desktop\Curso NET\IsaArtTattoo\IsaArtTattoo\IsaArtTattoo.ServiceDefaults\obj\Debug\net9.0\ref\IsaArtTattoo.ServiceDefaults.dll
+C:\Users\jgonz\Javier\PROGRAMACIÓN\IsaArtTattoo\IsaArtTattoo.ServiceDefaults\obj\Debug\net9.0\IsaArtTattoo.ServiceDefaults.sourcelink.json
