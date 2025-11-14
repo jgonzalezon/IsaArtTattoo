@@ -75,6 +75,8 @@ builder.Services.AddCors(opt =>
 builder.Services.AddControllers();
 builder.Services.AddHostedService<SeedHostedService>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
+builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+
 
 // -----------------------------------------
 // SWAGGER

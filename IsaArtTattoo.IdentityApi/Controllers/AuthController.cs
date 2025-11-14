@@ -1,12 +1,10 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+﻿using IsaArtTattoo.IdentityApi.Dtos;
 using IsaArtTattoo.IdentityApi.Models;
+using IsaArtTattoo.IdentityApi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 
 namespace IsaArtTattoo.IdentityApi.Controllers;
 
@@ -18,23 +16,21 @@ public class AuthController : ControllerBase
     private readonly SignInManager<ApplicationUser> _sm;
     private readonly IConfiguration _cfg;
     private readonly IEmailSender _emailSender;
+    private readonly IJwtTokenService _jwtTokenService;
 
     public AuthController(
         UserManager<ApplicationUser> um,
         SignInManager<ApplicationUser> sm,
         IConfiguration cfg,
-        IEmailSender emailSender)
+        IEmailSender emailSender,
+        IJwtTokenService jwtTokenService)
     {
         _um = um;
         _sm = sm;
         _cfg = cfg;
         _emailSender = emailSender;
+        _jwtTokenService = jwtTokenService;
     }
-
-    public record RegisterDto(string Email, string Password);
-    public record LoginDto(string Email, string Password);
-    public record ResetDto(string Email);
-    public record NewPasswordDto(string Email, string Token, string NewPassword);
 
     //  Registro con envío de mail
     [HttpPost("register")]
@@ -44,26 +40,26 @@ public class AuthController : ControllerBase
         var result = await _um.CreateAsync(user, dto.Password);
 
         if (!result.Succeeded) return BadRequest(result.Errors);
+        // Asignar rol USER por defecto
+        await _um.AddToRoleAsync(user, "User");
 
         var token = await _um.GenerateEmailConfirmationTokenAsync(user);
         var encodedToken = Uri.EscapeDataString(token);
 
-        // URL del front
         var frontendBase = _cfg["Frontend:BaseUrl"] ?? "http://localhost:5173";
         var confirmUrl =
             $"{frontendBase}/confirm-email?email={Uri.EscapeDataString(dto.Email)}&token={encodedToken}";
 
         await _emailSender.SendEmailAsync(dto.Email, "Confirma tu cuenta",
             $"""
-        <p>Gracias por registrarte en <b>IsaArtTattoo</b>.</p>
-        <p>Haz clic <a href="{confirmUrl}">aquí</a> para confirmar tu correo.</p>
-        """);
+            <p>Gracias por registrarte en <b>IsaArtTattoo</b>.</p>
+            <p>Haz clic <a href="{confirmUrl}">aquí</a> para confirmar tu correo.</p>
+            """);
 
         return Ok(new { Message = "Usuario creado. Revisa tu email para confirmar la cuenta." });
     }
 
-
-    //  Confirmar email
+    // Confirmar email
     [HttpGet("confirm")]
     public async Task<IActionResult> Confirm(string email, string token)
     {
@@ -78,7 +74,7 @@ public class AuthController : ControllerBase
         return Ok("Correo confirmado correctamente.");
     }
 
-    // 🔹 Login solo si confirmado
+    // Login solo si confirmado
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDto dto)
     {
@@ -90,11 +86,9 @@ public class AuthController : ControllerBase
         var check = await _sm.CheckPasswordSignInAsync(user, dto.Password, false);
         if (!check.Succeeded) return Unauthorized("Credenciales incorrectas.");
 
-        var token = await CreateTokenAsync(user);
+        var token = await _jwtTokenService.CreateTokenAsync(user);
         return Ok(new { token });
     }
-
-    public record ResendConfirmDto(string Email);
 
     [HttpPost("resend-confirmation")]
     public async Task<IActionResult> ResendConfirmation([FromBody] ResendConfirmDto dto)
@@ -115,8 +109,7 @@ public class AuthController : ControllerBase
         return Ok("Correo de confirmación reenviado.");
     }
 
-
-    //  Solicitar reset de contraseña
+    // Solicitar reset de contraseña
     [HttpPost("forgot-password")]
     public async Task<IActionResult> ForgotPassword(ResetDto dto)
     {
@@ -136,52 +129,23 @@ public class AuthController : ControllerBase
         return Ok("Se ha enviado un correo con las instrucciones para restablecer la contraseña.");
     }
 
-
-    // 🔹 Restablecer contraseña
+    // Restablecer contraseña
     [HttpPost("reset-password")]
     public async Task<IActionResult> ResetPassword(NewPasswordDto dto)
     {
         var user = await _um.FindByEmailAsync(dto.Email);
         if (user == null) return NotFound();
 
-
         var decodedToken = Uri.UnescapeDataString(dto.Token);
-
 
         var result = await _um.ResetPasswordAsync(user, decodedToken, dto.NewPassword);
         if (!result.Succeeded) return BadRequest(result.Errors);
 
         return Ok("Contraseña restablecida correctamente.");
+
     }
 
     [Authorize]
     [HttpGet("me")]
     public IActionResult Me() => Ok(new { User.Identity!.Name });
-
-    // 🔹 Crear JWT
-    private async Task<string> CreateTokenAsync(ApplicationUser user)
-    {
-        var jwt = _cfg.GetSection("Jwt");
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt["Key"]!));
-
-        var claims = new List<Claim>
-        {
-            new(JwtRegisteredClaimNames.Sub, user.Id),
-            new(JwtRegisteredClaimNames.Email, user.Email ?? ""),
-            new(ClaimTypes.Name, user.UserName ?? "")
-        };
-
-        var roles = await _um.GetRolesAsync(user);
-        claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
-
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-        var token = new JwtSecurityToken(
-            issuer: jwt["Issuer"],
-            audience: jwt["Audience"],
-            claims: claims,
-            expires: DateTime.UtcNow.AddHours(8),
-            signingCredentials: creds);
-
-        return new JwtSecurityTokenHandler().WriteToken(token);
-    }
 }
