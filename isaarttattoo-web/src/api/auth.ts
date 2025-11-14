@@ -51,3 +51,10 @@ export function resetPassword(data: ResetPasswordRequest) {
         body: JSON.stringify(data),
     });
 }
+
+export function resendConfirmation(email: string) {
+    return apiFetch<string>("/api/Auth/resend-confirmation", {
+        method: "POST",
+        body: JSON.stringify({ email }), 
+    });
+}

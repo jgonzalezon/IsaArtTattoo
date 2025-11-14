@@ -1,8 +1,8 @@
-// src/lib/api.ts
-const BASE_URL = import.meta.env.VITE_IDENTITY_API_URL as string;
+ï»¿// src/lib/api.ts
+const BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
 
 if (!BASE_URL) {
-    console.warn("VITE_IDENTITY_API_URL no está definido");
+    console.warn("VITE_API_BASE_URL no estÃ¡ definido");
 }
 
 export async function apiFetch<T>(
@@ -19,11 +19,32 @@ export async function apiFetch<T>(
         ...options,
     });
 
+    // Errores 4xx / 5xx
     if (!res.ok) {
         const text = await res.text();
         throw new Error(text || `Error HTTP ${res.status}`);
     }
 
-    // si algún endpoint no devuelve JSON, ya lo afinaremos
-    return (await res.json()) as T;
+    // Sin contenido (204, etc.)
+    if (res.status === 204) {
+        return undefined as T;
+    }
+
+    const contentType = res.headers.get("content-type") ?? "";
+
+    // Si parece JSON, intentamos leer como JSON,
+    // pero si falla (porque realmente es HTML), devolvemos texto.
+    if (contentType.includes("application/json")) {
+        try {
+            const json = await res.json();
+            return json as T;
+        } catch {
+            const text = await res.text();
+            return text as unknown as T;
+        }
+    }
+
+    // Cualquier otra cosa (text/plain, text/html, etc.) â†’ texto
+    const text = await res.text();
+    return text as unknown as T;
 }

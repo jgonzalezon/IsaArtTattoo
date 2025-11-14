@@ -1,5 +1,9 @@
-﻿import { useEffect, useState } from "react";
+﻿// src/App.tsx
+import { useEffect, useState } from "react";
 import AuthCard from "./components/AuthCard";
+import { Routes, Route, Navigate } from "react-router-dom";
+import ConfirmEmailPage from "./pages/ConfirmEmail";
+import ResetPasswordPage from "./pages/ResetPassword";
 
 export default function App() {
     const [apiBase, setApiBase] = useState<string>(
@@ -7,7 +11,6 @@ export default function App() {
     );
 
     useEffect(() => {
-        // fallback para dev con proxy de Vite
         if (!apiBase) setApiBase("");
     }, [apiBase]);
 
@@ -19,9 +22,25 @@ export default function App() {
 
             <div className="relative z-10 mx-auto grid min-h-dvh max-w-7xl place-items-center px-4">
                 <div className="w-full max-w-md">
-                    <AuthCard apiBase={apiBase} />
+                    {/* 🔹 Aquí decidimos qué pantalla mostrar según la ruta */}
+                    <Routes>
+                        {/* Login / app principal con AuthCard */}
+                        <Route path="/" element={<AuthCard apiBase={apiBase} />} />
+                        <Route path="/login" element={<AuthCard apiBase={apiBase} />} />
+
+                        {/* Confirmación de email (enlace del correo) */}
+                        <Route path="/confirm-email" element={<ConfirmEmailPage />} />
+
+                        {/* Reset de contraseña */}
+                        <Route path="/reset-password" element={<ResetPasswordPage />} />
+
+                        {/* Fallback: cualquier otra ruta vuelve al login */}
+                        <Route path="*" element={<Navigate to="/" replace />} />
+                    </Routes>
+
                     <p className="mt-6 text-center text-sm text-slate-400">
-                        API base: <code className="text-slate-300">{apiBase || "/api"}</code>
+                        API base:{" "}
+                        <code className="text-slate-300">{apiBase || "/api"}</code>
                     </p>
                 </div>
             </div>
