@@ -29,7 +29,7 @@ export function register(data: RegisterRequest) {
     });
 }
 
-//  Confirmar email
+// 🔹 Confirmar email
 export function confirmEmail(email: string, token: string) {
     const url =
         `/api/Auth/confirm?` +
@@ -38,8 +38,7 @@ export function confirmEmail(email: string, token: string) {
     return apiFetch<string>(url, { method: "GET" });
 }
 
-
-//  Reset contraseña
+// 🔹 Reset contraseña
 export interface ResetPasswordRequest {
     email: string;
     token: string;

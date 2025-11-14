@@ -26,7 +26,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("IsaArtTattoo.AppHost")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c4e79b3c1db88ee11e2cc3346d3acc42881c8697")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2dd6323a58acb0c67b4f03e2d576997def2d504b")]
 [assembly: System.Reflection.AssemblyProductAttribute("IsaArtTattoo.AppHost")]
 [assembly: System.Reflection.AssemblyTitleAttribute("IsaArtTattoo.AppHost")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -2,7 +2,8 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { resetPassword } from "../api/auth";
-import AuthCard from "../components/AuthCard";
+import  AuthCard  from "../components/AuthCard";
+
 export default function ResetPasswordPage() {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
@@ -115,5 +116,5 @@ export default function ResetPasswordPage() {
 
     // Si tienes AuthCard:
     return <AuthCard title="Restablecer contraseña">{content}</AuthCard>;
-
+    return content;
 }

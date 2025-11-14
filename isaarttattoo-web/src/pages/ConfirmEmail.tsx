@@ -29,11 +29,7 @@ export default function ConfirmEmailPage() {
                 const res = await confirmEmail(email, token);
                 console.log("confirmEmail response:", res);
                 setStatus("success");
-                setMessage(
-                    typeof res === "string"
-                        ? res
-                        : res?.message ?? "Correo confirmado correctamente."
-                );
+                setMessage(res || "Correo confirmado correctamente.");
             } catch (err: any) {
                 console.error("confirmEmail error:", err);
                 setStatus("error");
