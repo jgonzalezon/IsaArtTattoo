@@ -1,30 +1,67 @@
-**/.classpath
-**/.dockerignore
-**/.env
-**/.git
-**/.gitignore
-**/.project
-**/.settings
-**/.toolstarget
-**/.vs
-**/.vscode
-**/*.*proj.user
-**/*.dbmdl
-**/*.jfm
-**/azds.yaml
-**/bin
-**/charts
-**/docker-compose*
-**/Dockerfile*
-**/node_modules
-**/npm-debug.log
-**/obj
-**/secrets.dev.yaml
-**/values.dev.yaml
-LICENSE
-README.md
-!**/.gitignore
-!.git/HEAD
-!.git/config
-!.git/packed-refs
-!.git/refs/heads/**
+############################
+# Visual Studio / Rider
+############################
+.vs/
+.vscode/
+.idea/
+
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+############################
+# Build .NET
+############################
+[Bb]in/
+[Oo]bj/
+*.log
+*.cache
+*.ilk
+*.pdb
+
+# Publicaciones locales
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Ll]og/
+
+############################
+# Aspire / herramientas
+############################
+*.db
+*.db-shm
+*.db-wal
+
+############################
+# Node / Frontend (isaarttattoo-web)
+############################
+**/node_modules/
+**/.npm/
+**/.vite/
+**/dist/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+############################
+# Configuración local / secretos
+############################
+# *.env
+# *.env.local
+*.env.development.local
+*.env.test.local
+*.env.production.local
+
+############################
+# Sistema operativo
+############################
+.DS_Store
+Thumbs.db
+
+############################
+# Cosas que SÍ quiero subir
+############################
+!README.md
+!LICENSE

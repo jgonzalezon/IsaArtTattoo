@@ -1,0 +1,89 @@
+########################################
+#   GITIGNORE PARA ISAARTTATTOO
+#   (.NET + Aspire + React/Vite)
+########################################
+
+###############
+# .NET / C#
+###############
+# Directorios temporales
+bin/
+obj/
+[Bb]uild/
+[Ll]ogs/
+[Dd]ebug/
+[Rr]elease/
+
+# Archivos temporales de VS
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Cache AspNet
+*.db
+*.db-shm
+*.db-wal
+
+########################
+# Visual Studio / IDEs
+########################
+.vs/
+.vscode/
+.idea/
+
+###############
+# Frontend
+###############
+# Node modules
+**/node_modules/
+# Build Vite/React
+**/dist/
+# Cachés
+**/.vite/
+**/.npm/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+############################
+# Entornos (NO subir secrets)
+############################
+# Ignora todos los .env por defecto
+*.env
+*.env.*
+
+# PERO permite los de frontend si quieres subirlos
+!isaarttattoo-web/.env
+!isaarttattoo-web/.env.local
+!isaarttattoo-web/.env.development
+
+#########################
+# Docker
+#########################
+docker-data/
+**/.dockerignore
+
+# No subir imágenes creadas localmente
+*.tar
+
+#########################
+# Sistema operativo
+#########################
+.DS_Store
+Thumbs.db
+
+#########################
+# Otros
+#########################
+*.cache
+*.tmp
+*.bak
+*.swp
+
+#####################################
+# Archivos que sí deben subirse
+#####################################
+!README.md
+!LICENSE
+!.gitignore
