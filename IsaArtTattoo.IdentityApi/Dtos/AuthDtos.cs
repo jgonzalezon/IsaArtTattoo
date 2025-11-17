@@ -1,4 +1,6 @@
-namespace IsaArtTattoo.IdentityApi.Dtos;
+﻿namespace IsaArtTattoo.IdentityApi.Dtos;
+
+//Validaciones en los DTOs
 
 public record RegisterDto(string Email, string Password);
 public record LoginDto(string Email, string Password);

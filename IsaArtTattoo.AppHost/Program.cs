@@ -22,10 +22,19 @@ var identityApi= builder.AddProject<Projects.IsaArtTattoo_IdentityApi>("identity
 
 
 
+
+
 var frontendPath = Path.Combine(builder.AppHostDirectory, "..", "isaarttattoo-web");
 
-builder.AddExecutable("isaarttattoo-web", "npm", frontendPath, "run", "dev")
-       .WithHttpEndpoint(targetPort: 54395, name: "http")
-       .WithReference(identityApi);
+
+var gateway = builder
+    .AddProject<Projects.IsaArtTattoo_ApiGateWay>("isaarttattoo-apigateway")
+    .WithExternalHttpEndpoints() // <--- expone http://localhost:5013 o 7213
+    .WithReference(identityApi); // <---  conecta gateway → identity-api
+
+
+var frontend = builder.AddExecutable("isaarttattoo-web", "npm", frontendPath, "run", "dev")
+       .WithHttpEndpoint(targetPort: 5173, name: "http")
+       .WithReference(gateway);
 
 builder.Build().Run();

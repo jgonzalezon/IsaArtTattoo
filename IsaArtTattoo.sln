@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsaArtTattoo.IdentityApi", 
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "isaarttattoo-web", "isaarttattoo-web\isaarttattoo-web.esproj", "{64451A0E-A678-009B-C54F-FFB51DED231E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsaArtTattoo.ApiGateWay", "IsaArtTattoo.ApiGateWay\IsaArtTattoo.ApiGateWay.csproj", "{BD6F8E6F-6855-C1B4-03FF-3229C423A818}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +36,10 @@ Global
 		{64451A0E-A678-009B-C54F-FFB51DED231E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64451A0E-A678-009B-C54F-FFB51DED231E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{64451A0E-A678-009B-C54F-FFB51DED231E}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{BD6F8E6F-6855-C1B4-03FF-3229C423A818}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD6F8E6F-6855-C1B4-03FF-3229C423A818}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD6F8E6F-6855-C1B4-03FF-3229C423A818}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD6F8E6F-6855-C1B4-03FF-3229C423A818}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

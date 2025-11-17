@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\IsaArtTattoo.ApiGateWay\IsaArtTattoo.ApiGateWay.csproj" />
     <ProjectReference Include="..\IsaArtTattoo.IdentityApi\IsaArtTattoo.IdentityApi.csproj" />
   </ItemGroup>
 

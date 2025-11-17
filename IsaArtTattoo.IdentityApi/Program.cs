@@ -76,6 +76,8 @@ builder.Services.AddControllers();
 builder.Services.AddHostedService<SeedHostedService>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+builder.AddServiceDefaults();
+
 
 
 // -----------------------------------------
@@ -136,5 +138,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapDefaultEndpoints();
 
 app.Run();

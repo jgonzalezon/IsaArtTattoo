@@ -50,7 +50,7 @@ public class AuthController : ControllerBase
         var confirmUrl =
             $"{frontendBase}/confirm-email?email={Uri.EscapeDataString(dto.Email)}&token={encodedToken}";
 
-        await _emailSender.SendEmailAsync(dto.Email, "Confirma tu cuenta",
+         _emailSender.SendEmailAsync(dto.Email, "Confirma tu cuenta",
             $"""
             <p>Gracias por registrarte en <b>IsaArtTattoo</b>.</p>
             <p>Haz clic <a href="{confirmUrl}">aquí</a> para confirmar tu correo.</p>
