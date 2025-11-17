@@ -8,6 +8,9 @@ import {
 } from "react";
 import { login as loginApi } from "../api/auth";
 import type { LoginRequest, LoginResponse } from "../api/auth";
+import { Link } from "react-router-dom";
+import { userIsAdmin } from "./auth/RequireAdmin"; // ajusta la ruta si hace falta
+
 
 interface AuthState {
     token: string | null;

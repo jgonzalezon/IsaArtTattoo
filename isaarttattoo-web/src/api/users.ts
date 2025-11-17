@@ -24,13 +24,15 @@ export interface ChangeUserPasswordRequest {
     newPassword: string;
 }
 
-// Helper para añadir el token JWT
-function authOptions(extra?: RequestInit): RequestInit {
+// helper para meter el JWT
+function authOptions(extra: RequestInit = {}): RequestInit {
     const token = localStorage.getItem("token");
+
     return {
         ...extra,
         headers: {
-            ...(extra?.headers || {}),
+            "Content-Type": "application/json",          // ?? forzamos JSON
+            ...(extra.headers || {}),
             ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
     };

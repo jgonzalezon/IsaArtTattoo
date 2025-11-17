@@ -11,29 +11,30 @@ export async function apiFetch<T>(
 ): Promise<T> {
     const url = `${BASE_URL}${path}`;
 
+    // No forzamos Content-Type si el caller ya lo ha puesto
+    const headers: HeadersInit = {
+        ...(options.headers || {}),
+    };
+
     const res = await fetch(url, {
-        headers: {
-            "Content-Type": "application/json",
-            ...(options.headers || {}),
-        },
         ...options,
+        headers,
     });
 
-    // Errores 4xx / 5xx
+    // Errores HTTP
     if (!res.ok) {
         const text = await res.text();
         throw new Error(text || `Error HTTP ${res.status}`);
     }
 
-    // Sin contenido (204, etc.)
+    // Sin contenido
     if (res.status === 204) {
         return undefined as T;
     }
 
     const contentType = res.headers.get("content-type") ?? "";
 
-    // Si parece JSON, intentamos leer como JSON,
-    // pero si falla (porque realmente es HTML), devolvemos texto.
+    // JSON
     if (contentType.includes("application/json")) {
         try {
             const json = await res.json();
@@ -44,7 +45,7 @@ export async function apiFetch<T>(
         }
     }
 
-    // Cualquier otra cosa (text/plain, text/html, etc.) → texto
+    // Otro tipo → texto
     const text = await res.text();
     return text as unknown as T;
 }

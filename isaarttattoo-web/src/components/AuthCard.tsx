@@ -1,4 +1,7 @@
-﻿import { useState } from "react";
+﻿// src/components/AuthCard.tsx
+import { useState } from "react";
+import { Link } from "react-router-dom";          // 
+import { userIsAdmin } from "./auth/RequireAdmin"; // ruta correcta si AuthCard.tsx está en /components
 
 type Props = { apiBase: string };
 
@@ -173,6 +176,18 @@ export default function AuthCard({ apiBase }: Props) {
                             : "Crear cuenta"}
                 </button>
             </form>
+
+            {userIsAdmin() && (
+                <div className="mt-4 text-center">
+                    <Link
+                        to="/admin/users"
+                        className="inline-flex items-center gap-2 text-sm text-cyan-300 hover:text-cyan-200"
+                    >
+                        Ir al panel de administración
+                    </Link>
+                </div>
+            )}
+
 
             <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm text-slate-300">
                 {/* 🔹 Solo mostrar “Reenviar confirmación” tras registrarse */}

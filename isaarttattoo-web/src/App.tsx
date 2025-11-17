@@ -1,11 +1,6 @@
 ﻿// src/App.tsx
 import { useEffect, useState, ReactNode } from "react";
-import {
-    BrowserRouter,
-    Routes,
-    Route,
-    Navigate,
-} from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import AuthCard from "./components/AuthCard";
 import ConfirmEmailPage from "./pages/ConfirmEmail";
@@ -44,71 +39,66 @@ export default function App() {
     }, [apiBase]);
 
     return (
-        <BrowserRouter>
-            <div className="relative min-h-dvh overflow-hidden bg-slate-950 text-slate-100">
-                {/* gradient animado */}
-                <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_0%,rgba(56,189,248,.25),rgba(2,6,23,0))]"></div>
-                <div className="absolute -top-1/3 left-1/2 h-[80vmin] w-[80vmin] -translate-x-1/2 rounded-full bg-gradient-to-tr from-fuchsia-500/30 via-cyan-400/30 to-indigo-400/30 blur-3xl animate-pulse"></div>
+        <div className="relative min-h-dvh overflow-hidden bg-slate-950 text-slate-100">
+            {/* gradient animado */}
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_0%,rgba(56,189,248,.25),rgba(2,6,23,0))]"></div>
+            <div className="absolute -top-1/3 left-1/2 h-[80vmin] w-[80vmin] -translate-x-1/2 rounded-full bg-gradient-to-tr from-fuchsia-500/30 via-cyan-400/30 to-indigo-400/30 blur-3xl animate-pulse"></div>
 
-                <div className="relative z-10 mx-auto min-h-dvh max-w-7xl px-4">
-                    <Routes>
-                        {/* Login / página principal */}
-                        <Route
-                            path="/"
-                            element={
-                                <AuthLayout apiBase={apiBase}>
-                                    <AuthCard apiBase={apiBase} />
-                                </AuthLayout>
-                            }
-                        />
+            <div className="relative z-10 mx-auto min-h-dvh max-w-7xl px-4">
+                <Routes>
+                    {/* Login / página principal */}
+                    <Route
+                        path="/"
+                        element={
+                            <AuthLayout apiBase={apiBase}>
+                                <AuthCard apiBase={apiBase} />
+                            </AuthLayout>
+                        }
+                    />
 
-                        <Route
-                            path="/login"
-                            element={
-                                <AuthLayout apiBase={apiBase}>
-                                    <AuthCard apiBase={apiBase} />
-                                </AuthLayout>
-                            }
-                        />
+                    <Route
+                        path="/login"
+                        element={
+                            <AuthLayout apiBase={apiBase}>
+                                <AuthCard apiBase={apiBase} />
+                            </AuthLayout>
+                        }
+                    />
 
-                        {/* Confirmación de email */}
-                        <Route
-                            path="/confirm-email"
-                            element={
-                                <AuthLayout apiBase={apiBase}>
-                                    <ConfirmEmailPage />
-                                </AuthLayout>
-                            }
-                        />
+                    {/* Confirmación de email */}
+                    <Route
+                        path="/confirm-email"
+                        element={
+                            <AuthLayout apiBase={apiBase}>
+                                <ConfirmEmailPage />
+                            </AuthLayout>
+                        }
+                    />
 
-                        {/* Reset de contraseña */}
-                        <Route
-                            path="/reset-password"
-                            element={
-                                <AuthLayout apiBase={apiBase}>
-                                    <ResetPasswordPage />
-                                </AuthLayout>
-                            }
-                        />
+                    {/* Reset de contraseña */}
+                    <Route
+                        path="/reset-password"
+                        element={
+                            <AuthLayout apiBase={apiBase}>
+                                <ResetPasswordPage />
+                            </AuthLayout>
+                        }
+                    />
 
-                        {/* Panel de administración de usuarios (solo Admin) */}
-                        <Route
-                            path="/admin/users"
-                            element={
-                                <RequireAdmin>
-                                    <AdminUsersPage />
-                                </RequireAdmin>
-                            }
-                        />
+                    {/* Panel de administración de usuarios (solo Admin) */}
+                    <Route
+                        path="/admin/users"
+                        element={
+                            <RequireAdmin>
+                                <AdminUsersPage />
+                            </RequireAdmin>
+                        }
+                    />
 
-                        {/* Fallback: cualquier otra ruta vuelve al login */}
-                        <Route
-                            path="*"
-                            element={<Navigate to="/" replace />}
-                        />
-                    </Routes>
-                </div>
+                    {/* Fallback */}
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
             </div>
-        </BrowserRouter>
+        </div>
     );
 }

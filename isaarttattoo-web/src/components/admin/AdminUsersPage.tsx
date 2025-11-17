@@ -1,4 +1,4 @@
-// src/components/admin/AdminUsersPage.tsx
+ï»¿// src/components/admin/AdminUsersPage.tsx
 import { useEffect, useState } from "react";
 import {
     getUsers,
@@ -6,8 +6,8 @@ import {
     updateUserRoles,
     changeUserPassword,
     deleteUser,
-    UserSummary,
 } from "../../api/users";
+import type { UserSummary } from "../../api/users";
 
 const ALL_ROLES = ["Admin", "User"] as const;
 
@@ -29,7 +29,24 @@ export default function AdminUsersPage() {
         try {
             setLoading(true);
             const data = await getUsers();
-            setUsers(data);
+
+            // Orden:
+            // 1) Admin primero
+            // 2) User despuÃ©s
+            // 3) Dentro de cada grupo â†’ orden alfabÃ©tico por email
+            const sorted = data.sort((a, b) => {
+                const aIsAdmin = a.roles.includes("Admin");
+                const bIsAdmin = b.roles.includes("Admin");
+
+                // Admins primero
+                if (aIsAdmin && !bIsAdmin) return -1;
+                if (!aIsAdmin && bIsAdmin) return 1;
+
+                // Si ambos son admin o ambos user â†’ ordenar por email
+                return a.email.localeCompare(b.email);
+            });
+
+            setUsers(sorted);
             setError(null);
         } catch (err: any) {
             console.error(err);
@@ -64,15 +81,8 @@ export default function AdminUsersPage() {
     };
 
     const toggleRole = async (user: UserSummary, role: string) => {
-        const hasRole = user.roles.includes(role);
-        let newRoles = hasRole
-            ? user.roles.filter((r) => r !== role)
-            : [...user.roles, role];
-
-        // prevención: al menos un rol "User"
-        if (!newRoles.includes("User")) {
-            newRoles = [...newRoles, "User"];
-        }
+        // Siempre dejamos SOLO el rol que se ha pulsado
+        const newRoles = [role];
 
         try {
             await updateUserRoles({ userId: user.id, roles: newRoles });
@@ -82,6 +92,7 @@ export default function AdminUsersPage() {
             alert("Error al actualizar roles");
         }
     };
+
 
     const openPasswordDialog = (userId: string) => {
         setPasswordUserId(userId);
@@ -99,28 +110,28 @@ export default function AdminUsersPage() {
             });
             setPasswordUserId(null);
             setPasswordNew("");
-            alert("Contraseña actualizada");
+            alert("ContraseÃ±a actualizada");
         } catch (err: any) {
             console.error(err);
-            alert("Error al cambiar contraseña");
+            alert("Error al cambiar contraseÃ±a");
         }
     };
 
     const handleDeleteUser = async (user: UserSummary) => {
-        if (!confirm(`¿Seguro que quieres eliminar a ${user.email}?`)) return;
+        if (!confirm(`Â¿Seguro que quieres eliminar a ${user.email}?`)) return;
 
         try {
             await deleteUser(user.id);
             await loadUsers();
         } catch (err: any) {
             console.error(err);
-            alert("No se pudo eliminar el usuario (quizá es el admin principal).");
+            alert("No se pudo eliminar el usuario (quizÃ¡ es el admin principal).");
         }
     };
 
     return (
         <div className="max-w-5xl mx-auto py-8 px-4">
-            <h1 className="text-2xl font-bold mb-4">Administración de usuarios</h1>
+            <h1 className="text-2xl font-bold mb-4">AdministraciÃ³n de usuarios</h1>
 
             {error && (
                 <div className="mb-4 rounded bg-red-100 text-red-800 px-4 py-2 text-sm">
@@ -146,7 +157,7 @@ export default function AdminUsersPage() {
                         />
                     </div>
                     <div>
-                        <label className="block text-sm mb-1">Contraseña</label>
+                        <label className="block text-sm mb-1">ContraseÃ±a</label>
                         <input
                             type="password"
                             className="w-full px-3 py-2 rounded bg-slate-900 border border-slate-700 text-sm"
@@ -178,7 +189,7 @@ export default function AdminUsersPage() {
             <section className="border rounded-xl overflow-hidden bg-slate-900/40">
                 <div className="px-4 py-3 border-b border-slate-700 flex justify-between items-center">
                     <h2 className="text-lg font-semibold">Usuarios</h2>
-                    {loading && <span className="text-xs text-slate-400">Cargando…</span>}
+                    {loading && <span className="text-xs text-slate-400">Cargandoâ€¦</span>}
                 </div>
 
                 <div className="overflow-x-auto">
@@ -197,7 +208,7 @@ export default function AdminUsersPage() {
                                     <td className="px-4 py-2">{u.email}</td>
                                     <td className="px-4 py-2">
                                         {u.emailConfirmed ? (
-                                            <span className="text-emerald-400">Sí</span>
+                                            <span className="text-emerald-400">SÃ­</span>
                                         ) : (
                                             <span className="text-amber-400">No</span>
                                         )}
@@ -225,7 +236,7 @@ export default function AdminUsersPage() {
                                                 className="px-2 py-1 text-xs rounded bg-slate-700 hover:bg-slate-600"
                                                 onClick={() => openPasswordDialog(u.id)}
                                             >
-                                                Cambiar contraseña
+                                                Cambiar contraseÃ±a
                                             </button>
                                             <button
                                                 className="px-2 py-1 text-xs rounded bg-red-600 hover:bg-red-500"
@@ -253,16 +264,16 @@ export default function AdminUsersPage() {
                 </div>
             </section>
 
-            {/* Diálogo simple para cambiar contraseña */}
+            {/* DiÃ¡logo simple para cambiar contraseÃ±a */}
             {passwordUserId && (
                 <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
                     <div className="bg-slate-900 rounded-xl p-6 w-full max-w-md border border-slate-700">
                         <h3 className="text-lg font-semibold mb-3">
-                            Cambiar contraseña de usuario
+                            Cambiar contraseÃ±a de usuario
                         </h3>
                         <form onSubmit={handleChangePassword} className="space-y-4">
                             <div>
-                                <label className="block text-sm mb-1">Nueva contraseña</label>
+                                <label className="block text-sm mb-1">Nueva contraseÃ±a</label>
                                 <input
                                     type="password"
                                     className="w-full px-3 py-2 rounded bg-slate-950 border border-slate-700 text-sm"
