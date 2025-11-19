@@ -1,4 +1,4 @@
-@IsaArtTattoo.ApiGateWay_HostAddress = http://localhost:5013
+﻿@IsaArtTattoo.ApiGateWay_HostAddress = http://localhost:7213
 
 GET {{IsaArtTattoo.ApiGateWay_HostAddress}}/weatherforecast/
 Accept: application/json
