@@ -185,6 +185,8 @@ if (app.Environment.IsDevelopment())
 }
 
 
+
+
 app.UseHttpsRedirection();
 app.UseCors(allowWeb);
 app.UseAuthentication();
