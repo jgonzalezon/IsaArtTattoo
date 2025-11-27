@@ -5,11 +5,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Asp.Versioning;
 
 namespace IsaArtTattoo.IdentityApi.Controllers;
 
+
 [ApiController]
-[Route("api/[controller]")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/[controller]")]
 public class AuthController : ControllerBase
 {
     private readonly UserManager<ApplicationUser> _um;
@@ -50,7 +53,7 @@ public class AuthController : ControllerBase
         var confirmUrl =
             $"{frontendBase}/confirm-email?email={Uri.EscapeDataString(dto.Email)}&token={encodedToken}";
 
-         _emailSender.SendEmailAsync(dto.Email, "Confirma tu cuenta",
+         await _emailSender.SendEmailAsync(dto.Email, "Confirma tu cuenta",
             $"""
             <p>Gracias por registrarte en <b>IsaArtTattoo</b>.</p>
             <p>Haz clic <a href="{confirmUrl}">aquí</a> para confirmar tu correo.</p>

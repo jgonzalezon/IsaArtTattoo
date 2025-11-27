@@ -7,7 +7,10 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.OpenApi;
+using Scalar.AspNetCore;
 using System.Text;
+using Asp.Versioning;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,12 +65,27 @@ builder.Services.AddCors(opt =>
 {
     opt.AddPolicy(allowWeb, p =>
         p.AllowAnyOrigin()
-        
-        .AllowAnyHeader()
-        .AllowAnyMethod()
-        
+         .AllowAnyHeader()
+         .AllowAnyMethod()
     );
 });
+
+// -----------------------------------------
+// API VERSIONING
+// -----------------------------------------
+builder.Services
+    .AddApiVersioning(options =>
+    {
+        options.DefaultApiVersion = new ApiVersion(1, 0);
+        options.AssumeDefaultVersionWhenUnspecified = true;
+        options.ReportApiVersions = true;
+        options.ApiVersionReader = new UrlSegmentApiVersionReader();
+    })
+    .AddApiExplorer(options =>
+    {
+        options.GroupNameFormat = "'v'VVV";
+        options.SubstituteApiVersionInUrl = true;
+    });
 
 // -----------------------------------------
 // SERVICIOS
@@ -78,40 +96,49 @@ builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.AddServiceDefaults();
 
-
-
 // -----------------------------------------
-// SWAGGER
+// OPENAPI + JWT EN EL DOCUMENTO
 // -----------------------------------------
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddOpenApi("v1", options =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Identity API", Version = "v1" });
-
-    // Bearer Auth
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    options.AddDocumentTransformer((document, context, cancellationToken) =>
     {
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        Scheme = "bearer",
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Description = "Introduce: Bearer {token}"
-    });
-
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
+        document.Info = new OpenApiInfo
         {
-            new OpenApiSecurityScheme
+            Title = "IsaArtTattoo Identity API",
+            Version = "v1",
+            Description = "Identity API para IsaArtTattoo (JWT Bearer)"
+        };
+
+        document.Components ??= new OpenApiComponents();
+
+        document.Components.SecuritySchemes["Bearer"] = new OpenApiSecurityScheme
+        {
+            Name = "Authorization",
+            Type = SecuritySchemeType.Http,
+            Scheme = "bearer",
+            BearerFormat = "JWT",
+            In = ParameterLocation.Header,
+            Description = "Introduce: Bearer {token}"
+        };
+
+        document.SecurityRequirements ??= new List<OpenApiSecurityRequirement>();
+        document.SecurityRequirements.Add(new OpenApiSecurityRequirement
+        {
             {
-                Reference = new OpenApiReference
+                new OpenApiSecurityScheme
                 {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            new string[]{}
-        }
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                Array.Empty<string>()
+            }
+        });
+
+        return Task.CompletedTask;
     });
 });
 
@@ -129,11 +156,37 @@ using (var scope = app.Services.CreateScope())
 // -----------------------------------------
 // PIPELINE
 // -----------------------------------------
-app.UseSwagger();
-app.UseSwaggerUI();
+if (app.Environment.IsDevelopment())
+{
+    // 1. OpenAPI JSON estándar
+    app.MapOpenApi(); // /openapi/v1.json
+
+    // 2. COMPATIBILIDAD: redirigir /swagger/v1/swagger.json -> /openapi/v1.json
+    app.MapGet("/swagger/v1/swagger.json", context =>
+    {
+        context.Response.Redirect("/openapi/v1.json");
+        return Task.CompletedTask;
+    });
+
+    // 3. Scalar UI
+    app.MapScalarApiReference("/scalar", options =>
+    {
+        options
+            .WithTitle("IsaArtTattoo Identity API")
+            .AddDocument("v1", "IsaArtTattoo Identity API v1", "/openapi/v1.json", isDefault: true);
+    });
+
+    // 4. Swagger UI leyendo el mismo OpenAPI
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/openapi/v1.json", "IsaArtTattoo.IdentityApi v1");
+        options.RoutePrefix = "swagger";
+    });
+}
+
 
 app.UseHttpsRedirection();
-app.UseCors(allowWeb);   // ← CORS ACTIVADO
+app.UseCors(allowWeb);
 app.UseAuthentication();
 app.UseAuthorization();
 

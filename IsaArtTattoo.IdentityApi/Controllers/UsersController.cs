@@ -3,11 +3,13 @@ using IsaArtTattoo.IdentityApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Asp.Versioning;
 
 namespace IsaArtTattoo.IdentityApi.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/[controller]")]
 [Authorize(Roles = "Admin")]
 public class UsersController : ControllerBase
 {
