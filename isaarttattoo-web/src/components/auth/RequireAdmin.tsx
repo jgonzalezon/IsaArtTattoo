@@ -12,7 +12,7 @@ interface JwtPayload {
     role?: string | string[];
 }
 
-export function userIsAdmin(): boolean {   // 👈 export aquí
+export function userIsAdmin(): boolean {   //  export aquí
     const token = localStorage.getItem("token");
     if (!token) return false;
 

@@ -1,7 +1,13 @@
-﻿// src/components/AuthCard.tsx
-import { useState } from "react";
-import { Link } from "react-router-dom";          // 
-import { userIsAdmin } from "./auth/RequireAdmin"; // ruta correcta si AuthCard.tsx está en /components
+﻿import { useState } from "react";
+import { Link } from "react-router-dom";
+import { userIsAdmin } from "../auth/RequireAdmin";
+
+import {
+    login as apiLogin,
+    register as apiRegister,
+    resendConfirmation as apiResendConfirmation,
+} from "../api/auth";
+import { apiFetch } from "../api/client";
 
 type Props = { apiBase: string };
 
@@ -14,8 +20,6 @@ export default function AuthCard({ apiBase }: Props) {
     const [busy, setBusy] = useState(false);
     const [info, setInfo] = useState<string | null>(null);
 
-    const base = apiBase || ""; // si usas proxy de Vite, queda en ""
-
     const activeTab = mode === "awaiting-confirmation" ? "register" : mode;
 
     async function handleSubmit(e: React.FormEvent) {
@@ -25,40 +29,16 @@ export default function AuthCard({ apiBase }: Props) {
 
         try {
             if (mode === "login") {
-                const r = await fetch(`${base}/api/auth/login`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email, password }),
-                });
-                const data = await r.json();
-                if (!r.ok) {
-                    throw new Error(data?.title ?? data ?? "Error de login");
-                }
-                localStorage.setItem("token", data.token);
-                setInfo("✅ Login correcto. Token guardado en localStorage.");
+                const data = await apiLogin({ email, password });
+                localStorage.setItem("auth_token", data.token);
+                setInfo("Login correcto. Token guardado en localStorage.");
             } else {
-                // register o awaiting-confirmation → intentamos crear usuario
-                const r = await fetch(`${base}/api/auth/register`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email, password }),
-                });
-                const data = await r.json();
-                if (!r.ok) {
-                    const msg = Array.isArray(data?.errors)
-                        ? data.errors[0].description
-                        : data?.title ?? "Error de registro";
-                    throw new Error(msg);
-                }
-
-                // Registro OK → mostramos estado "esperando confirmación"
+                await apiRegister({ email, password });
                 setMode("awaiting-confirmation");
-                setInfo(
-                    "📧 Usuario creado. Revisa tu correo para confirmar la cuenta."
-                );
+                setInfo("Usuario creado. Revisa tu correo para confirmar la cuenta.");
             }
         } catch (err: any) {
-            setInfo(`❌ ${err.message || "Algo ha fallado"}`);
+            setInfo(err.message || "Ha ocurrido un error");
         } finally {
             setBusy(false);
         }
@@ -67,16 +47,21 @@ export default function AuthCard({ apiBase }: Props) {
     async function getMe() {
         setBusy(true);
         try {
-            const token = localStorage.getItem("token");
-            const r = await fetch(`${base}/api/auth/me`, {
-                headers: { Authorization: `Bearer ${token}` },
+            const token = localStorage.getItem("auth_token");
+            if (!token) {
+                setInfo("No hay token en localStorage.");
+                return;
+            }
+
+            const r = await apiFetch<any>("/api/v1/Auth/me", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             });
-            const data = await r.json();
-            setInfo(
-                r.ok
-                    ? `👤 Usuario: ${data?.name ?? "?"}`
-                    : `❌ ${data?.title ?? "No autorizado"}`
-            );
+
+            setInfo(`Usuario: ${r?.email ?? r?.name ?? "Desconocido"}`);
+        } catch (err: any) {
+            setInfo(err.message || "No autorizado");
         } finally {
             setBusy(false);
         }
@@ -86,23 +71,10 @@ export default function AuthCard({ apiBase }: Props) {
         setBusy(true);
         setInfo(null);
         try {
-            const r = await fetch(`${base}/api/auth/resend-confirmation`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                // 🔹 IMPORTANTE: enviar objeto { email }
-                body: JSON.stringify({ email }),
-            });
-
-            const text = await r.text();
-            if (r.ok) {
-                setInfo("📨 Correo de confirmación reenviado.");
-            } else {
-                setInfo(`❌ ${text || "No se ha podido reenviar el correo."}`);
-            }
+            await apiResendConfirmation(email);
+            setInfo("Correo de confirmación reenviado.");
         } catch (err: any) {
-            setInfo(
-                `❌ ${err?.message || "No se ha podido reenviar el correo."}`
-            );
+            setInfo(err.message || "No se pudo reenviar el correo.");
         } finally {
             setBusy(false);
         }
@@ -121,6 +93,7 @@ export default function AuthCard({ apiBase }: Props) {
                     >
                         Iniciar sesión
                     </button>
+
                     <button
                         onClick={() => setMode("register")}
                         className={`rounded-md px-3 py-1.5 text-sm transition ${activeTab === "register"
@@ -137,7 +110,19 @@ export default function AuthCard({ apiBase }: Props) {
                 </span>
             </div>
 
+            {userIsAdmin() && (
+                <div className="mb-4 text-center">
+                    <Link
+                        to="/admin/users"
+                        className="inline-flex items-center gap-2 text-sm text-cyan-300 hover:text-cyan-200"
+                    >
+                        Ir al panel de administración
+                    </Link>
+                </div>
+            )}
+
             <form onSubmit={handleSubmit} className="grid gap-4">
+
                 <label className="grid gap-1.5">
                     <span className="text-xs text-slate-300">Correo</span>
                     <input
@@ -146,8 +131,8 @@ export default function AuthCard({ apiBase }: Props) {
                         autoComplete="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        className="rounded-xl border border-white/10 bg-slate-900/40 px-3 py-2 text-sm text-white placeholder:text-slate-400 outline-none ring-1 ring-transparent focus:ring-cyan-400/40"
-                        placeholder="tu@email.com"
+                        className="rounded-xl border border-white/10 bg-slate-900/40 px-3 py-2 text-sm text-white"
+                        placeholder="correo@mail.com"
                     />
                 </label>
 
@@ -159,15 +144,15 @@ export default function AuthCard({ apiBase }: Props) {
                         autoComplete={mode === "login" ? "current-password" : "new-password"}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        className="rounded-xl border border-white/10 bg-slate-900/40 px-3 py-2 text-sm text-white placeholder:text-slate-400 outline-none ring-1 ring-transparent focus:ring-cyan-400/40"
-                        placeholder="••••••••"
+                        className="rounded-xl border border-white/10 bg-slate-900/40 px-3 py-2 text-sm text-white"
+                        placeholder="*******"
                     />
                 </label>
 
                 <button
                     type="submit"
                     disabled={busy}
-                    className="mt-2 inline-flex items-center justify-center rounded-xl bg-gradient-to-tr from-cyan-400 to-fuchsia-500 px-4 py-2.5 text-sm font-semibold text-slate-900 shadow-lg shadow-cyan-500/20 transition active:scale-[.98] disabled:opacity-60"
+                    className="mt-2 inline-flex items-center justify-center rounded-xl bg-gradient-to-tr from-cyan-400 to-fuchsia-500 px-4 py-2.5 text-sm font-semibold text-slate-900 shadow-lg transition disabled:opacity-60"
                 >
                     {busy
                         ? "Procesando..."
@@ -177,20 +162,8 @@ export default function AuthCard({ apiBase }: Props) {
                 </button>
             </form>
 
-            {userIsAdmin() && (
-                <div className="mt-4 text-center">
-                    <Link
-                        to="/admin/users"
-                        className="inline-flex items-center gap-2 text-sm text-cyan-300 hover:text-cyan-200"
-                    >
-                        Ir al panel de administración
-                    </Link>
-                </div>
-            )}
-
-
             <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm text-slate-300">
-                {/* 🔹 Solo mostrar “Reenviar confirmación” tras registrarse */}
+
                 {mode === "awaiting-confirmation" && (
                     <button
                         onClick={resendConfirm}
@@ -208,10 +181,11 @@ export default function AuthCard({ apiBase }: Props) {
                     >
                         Probar /me
                     </button>
+
                     <button
                         onClick={() => {
-                            localStorage.removeItem("token");
-                            setInfo("🔒 Token borrado.");
+                            localStorage.removeItem("auth_token");
+                            setInfo("Token borrado.");
                         }}
                         className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 hover:bg-white/10"
                     >
@@ -224,6 +198,12 @@ export default function AuthCard({ apiBase }: Props) {
                 <div className="mt-4 rounded-xl border border-white/10 bg-slate-900/40 p-3 text-sm text-slate-200">
                     {info}
                 </div>
+            )}
+
+            {apiBase && (
+                <p className="mt-3 text-center text-xs text-slate-400">
+                    API base: {apiBase}
+                </p>
             )}
         </div>
     );

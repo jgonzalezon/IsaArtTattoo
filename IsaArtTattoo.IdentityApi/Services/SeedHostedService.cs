@@ -33,7 +33,10 @@ public class SeedHostedService : IHostedService
             {
                 user = new ApplicationUser { UserName = email, Email = email, EmailConfirmed = true };
                 var res = await um.CreateAsync(user, pass);
-                if (res.Succeeded) await um.AddToRoleAsync(user, "Admin");
+                if (res.Succeeded)
+                {
+                    await um.AddToRolesAsync(user, new[] { "Admin", "User" });
+                }
             }
         }
     }

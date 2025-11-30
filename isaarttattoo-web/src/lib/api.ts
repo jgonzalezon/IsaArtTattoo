@@ -1,40 +1,54 @@
 ﻿// src/lib/api.ts
-const BASE_URL = import.meta.env.VITE_API_BASE_URL as string;
+const RAW_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "";
 
-if (!BASE_URL) {
+if (!RAW_BASE_URL) {
     console.warn("VITE_API_BASE_URL no está definido");
 }
+
+// Normalizamos: sin barra final
+const BASE_URL = RAW_BASE_URL.endsWith("/")
+    ? RAW_BASE_URL.slice(0, -1)
+    : RAW_BASE_URL;
 
 export async function apiFetch<T>(
     path: string,
     options: RequestInit = {}
 ): Promise<T> {
+    // Aseguramos que path empieza por "/"
+    if (!path.startsWith("/")) {
+        path = `/${path}`;
+    }
+
     const url = `${BASE_URL}${path}`;
 
-    // No forzamos Content-Type si el caller ya lo ha puesto
+    // Headers: respetamos los que vengan, pero si nadie ha puesto Content-Type lo fijamos a JSON
     const headers: HeadersInit = {
         ...(options.headers || {}),
     };
+
+    const hasContentType = Object.keys(headers)
+        .some(h => h.toLowerCase() === "content-type");
+
+    if (!hasContentType) {
+        (headers as any)["Content-Type"] = "application/json";
+    }
 
     const res = await fetch(url, {
         ...options,
         headers,
     });
 
-    // Errores HTTP
     if (!res.ok) {
         const text = await res.text();
         throw new Error(text || `Error HTTP ${res.status}`);
     }
 
-    // Sin contenido
     if (res.status === 204) {
         return undefined as T;
     }
 
     const contentType = res.headers.get("content-type") ?? "";
 
-    // JSON
     if (contentType.includes("application/json")) {
         try {
             const json = await res.json();
@@ -45,7 +59,6 @@ export async function apiFetch<T>(
         }
     }
 
-    // Otro tipo → texto
     const text = await res.text();
     return text as unknown as T;
 }

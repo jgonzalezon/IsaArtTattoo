@@ -1,12 +1,11 @@
-﻿// src/App.tsx
-import { useEffect, useState, ReactNode } from "react";
+﻿import { useEffect, useState, ReactNode } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import AuthCard from "./components/AuthCard";
 import ConfirmEmailPage from "./pages/ConfirmEmail";
 import ResetPasswordPage from "./pages/ResetPassword";
 import AdminUsersPage from "./components/admin/AdminUsersPage";
-import { RequireAdmin } from "./components/auth/RequireAdmin";
+import RequireAdmin from "./auth/RequireAdmin";
 
 type AuthLayoutProps = {
     apiBase: string;
@@ -19,7 +18,7 @@ function AuthLayout({ apiBase, children }: AuthLayoutProps) {
             <div className="w-full max-w-md">
                 {children}
                 <p className="mt-6 text-center text-sm text-slate-400">
-                    API base:{" "}
+                    API base:
                     <code className="text-slate-300">
                         {apiBase || "/api"}
                     </code>
@@ -40,13 +39,13 @@ export default function App() {
 
     return (
         <div className="relative min-h-dvh overflow-hidden bg-slate-950 text-slate-100">
-            {/* gradient animado */}
+
             <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_0%,rgba(56,189,248,.25),rgba(2,6,23,0))]"></div>
             <div className="absolute -top-1/3 left-1/2 h-[80vmin] w-[80vmin] -translate-x-1/2 rounded-full bg-gradient-to-tr from-fuchsia-500/30 via-cyan-400/30 to-indigo-400/30 blur-3xl animate-pulse"></div>
 
             <div className="relative z-10 mx-auto min-h-dvh max-w-7xl px-4">
+
                 <Routes>
-                    {/* Login / página principal */}
                     <Route
                         path="/"
                         element={
@@ -65,7 +64,6 @@ export default function App() {
                         }
                     />
 
-                    {/* Confirmación de email */}
                     <Route
                         path="/confirm-email"
                         element={
@@ -75,7 +73,6 @@ export default function App() {
                         }
                     />
 
-                    {/* Reset de contraseña */}
                     <Route
                         path="/reset-password"
                         element={
@@ -85,19 +82,16 @@ export default function App() {
                         }
                     />
 
-                    {/* Panel de administración de usuarios (solo Admin) */}
-                    <Route
-                        path="/admin/users"
-                        element={
-                            <RequireAdmin>
-                                <AdminUsersPage />
-                            </RequireAdmin>
-                        }
-                    />
+                    <Route element={<RequireAdmin />}>
+                        <Route
+                            path="/admin/users"
+                            element={<AdminUsersPage />}
+                        />
+                    </Route>
 
-                    {/* Fallback */}
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
+
             </div>
         </div>
     );

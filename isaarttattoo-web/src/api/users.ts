@@ -24,14 +24,14 @@ export interface ChangeUserPasswordRequest {
     newPassword: string;
 }
 
-// helper para meter el JWT
+// Helper para meter el JWT
 function authOptions(extra: RequestInit = {}): RequestInit {
-    const token = localStorage.getItem("token");
+    // IMPORTANTE: misma clave que en AuthCard
+    const token = localStorage.getItem("auth_token");
 
     return {
         ...extra,
         headers: {
-            "Content-Type": "application/json",          // ?? forzamos JSON
             ...(extra.headers || {}),
             ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
@@ -39,32 +39,32 @@ function authOptions(extra: RequestInit = {}): RequestInit {
 }
 
 export async function getUsers() {
-    return apiFetch<UserSummary[]>("/api/users", authOptions());
+    return apiFetch<UserSummary[]>("/api/v1/Users", authOptions());
 }
 
 export async function createUser(payload: CreateUserRequest) {
-    return apiFetch("/api/users", authOptions({
+    return apiFetch("/api/v1/Users", authOptions({
         method: "POST",
         body: JSON.stringify(payload),
     }));
 }
 
 export async function updateUserRoles(payload: UpdateUserRolesRequest) {
-    return apiFetch("/api/users/roles", authOptions({
+    return apiFetch("/api/v1/Users/roles", authOptions({
         method: "PUT",
         body: JSON.stringify(payload),
     }));
 }
 
 export async function changeUserPassword(payload: ChangeUserPasswordRequest) {
-    return apiFetch("/api/users/password", authOptions({
+    return apiFetch("/api/v1/Users/password", authOptions({
         method: "PUT",
         body: JSON.stringify(payload),
     }));
 }
 
 export async function deleteUser(id: string) {
-    return apiFetch(`/api/users/${id}`, authOptions({
+    return apiFetch(`/api/v1/Users/${id}`, authOptions({
         method: "DELETE",
     }));
 }

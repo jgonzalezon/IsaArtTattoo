@@ -9,9 +9,11 @@
 	</PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspire.Hosting"  />
-    <PackageReference Include="Aspire.Hosting.AppHost"  />
-    <PackageReference Include="Aspire.Hosting.PostgreSQL"  />
+	<PackageReference Include="Aspire.StackExchange.Redis" />
+	<PackageReference Include="Aspire.Hosting" />
+    <PackageReference Include="Aspire.Hosting.AppHost" />
+    <PackageReference Include="Aspire.Hosting.PostgreSQL" />
+    <PackageReference Include="Aspire.Hosting.Redis" />
 
   </ItemGroup>
 
