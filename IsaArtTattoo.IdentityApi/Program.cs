@@ -1,4 +1,6 @@
 ﻿using IsaArtTattoo.IdentityApi.Extensions;
+using MassTransit;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,23 @@ builder.Services.AddIdentityApplicationServices(); // Controllers, EmailSender, 
 
 // OpenAPI / Swagger / Scalar
 builder.Services.AddIdentityOpenApi();
+
+
+builder.Services.AddMassTransit(x =>
+{
+    // En IdentityApi solo publicamos, no registramos consumidores
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        var configuration = context.GetRequiredService<IConfiguration>();
+        var connectionString = configuration.GetConnectionString("rabbitmq");
+
+        if (!string.IsNullOrEmpty(connectionString))
+        {
+            cfg.Host(new Uri(connectionString));
+        }
+    });
+});
+
 
 var app = builder.Build();
 

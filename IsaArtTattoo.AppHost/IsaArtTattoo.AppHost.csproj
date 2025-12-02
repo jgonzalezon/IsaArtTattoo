@@ -9,17 +9,26 @@
 	</PropertyGroup>
 
   <ItemGroup>
+	<PackageReference Include="Aspire.Hosting.RabbitMQ" />
 	<PackageReference Include="Aspire.StackExchange.Redis" />
 	<PackageReference Include="Aspire.Hosting" />
     <PackageReference Include="Aspire.Hosting.AppHost" />
     <PackageReference Include="Aspire.Hosting.PostgreSQL" />
     <PackageReference Include="Aspire.Hosting.Redis" />
+    <PackageReference Include="BCat.Aspire.MailDev" />
 
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\isaarttattoo-web\isaarttattoo-web.esproj" />
     <ProjectReference Include="..\IsaArtTattoo.ApiGateWay\IsaArtTattoo.ApiGateWay.csproj" />
     <ProjectReference Include="..\IsaArtTattoo.IdentityApi\IsaArtTattoo.IdentityApi.csproj" />
+	 <ProjectReference Include="..\IsaArtTattoo.Shared\IsaArtTattoo.Shared.csproj" />
+	 <ProjectReference Include="..\IsaArtTattoo.ServiceDefaults\IsaArtTattoo.ServiceDefaults.csproj" />
+	  <ProjectReference Include="..\IsaArtTattoo.Notifications\IsaArtTattoo.Notifications.csproj" />
+	  
+
+
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,4 @@
-﻿using System.Text;
-using IsaArtTattoo.IdentityApi.Data;
+﻿using IsaArtTattoo.IdentityApi.Data;
 using IsaArtTattoo.IdentityApi.Models;
 using IsaArtTattoo.IdentityApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -7,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace IsaArtTattoo.IdentityApi.Extensions;
 
@@ -71,7 +71,6 @@ public static class IdentityAuthExtensions
     {
         services.AddControllers();
         services.AddHostedService<SeedHostedService>();
-        services.AddTransient<IEmailSender, EmailSender>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
     }
 }

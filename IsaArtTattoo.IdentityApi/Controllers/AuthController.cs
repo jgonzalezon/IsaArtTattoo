@@ -1,11 +1,14 @@
-﻿using IsaArtTattoo.IdentityApi.Dtos;
+﻿using Asp.Versioning;
+using IsaArtTattoo.IdentityApi.Dtos;
 using IsaArtTattoo.IdentityApi.Models;
 using IsaArtTattoo.IdentityApi.Services;
+using IsaArtTattoo.Shared.Events;
+using MassTransit;
+using MassTransit.Transports;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Asp.Versioning;
 
 namespace IsaArtTattoo.IdentityApi.Controllers;
 
@@ -20,19 +23,23 @@ public class AuthController : ControllerBase
     private readonly IConfiguration _cfg;
     private readonly IEmailSender _emailSender;
     private readonly IJwtTokenService _jwtTokenService;
+    private readonly IPublishEndpoint _publishEndpoint;
 
     public AuthController(
         UserManager<ApplicationUser> um,
         SignInManager<ApplicationUser> sm,
         IConfiguration cfg,
         IEmailSender emailSender,
-        IJwtTokenService jwtTokenService)
+        IJwtTokenService jwtTokenService,
+        IPublishEndpoint publishEndpoint)
     {
         _um = um;
         _sm = sm;
         _cfg = cfg;
         _emailSender = emailSender;
         _jwtTokenService = jwtTokenService;
+        _publishEndpoint = publishEndpoint;
+
     }
 
     //  Registro con envío de mail
@@ -43,9 +50,10 @@ public class AuthController : ControllerBase
         var result = await _um.CreateAsync(user, dto.Password);
 
         if (!result.Succeeded) return BadRequest(result.Errors);
-        // Asignar rol USER por defecto
+
         await _um.AddToRoleAsync(user, "User");
 
+        // Email de confirmación
         var token = await _um.GenerateEmailConfirmationTokenAsync(user);
         var encodedToken = Uri.EscapeDataString(token);
 
@@ -53,14 +61,18 @@ public class AuthController : ControllerBase
         var confirmUrl =
             $"{frontendBase}/confirm-email?email={Uri.EscapeDataString(dto.Email)}&token={encodedToken}";
 
-         await _emailSender.SendEmailAsync(dto.Email, "Confirma tu cuenta",
+        await _emailSender.SendEmailAsync(dto.Email, "Confirma tu cuenta",
             $"""
             <p>Gracias por registrarte en <b>IsaArtTattoo</b>.</p>
             <p>Haz clic <a href="{confirmUrl}">aquí</a> para confirmar tu correo.</p>
             """);
 
+        // Evento a RabbitMQ -> Notifications manda el welcome
+        await _publishEndpoint.Publish(new UserCreatedEvent(user.Id, user.Email!));
+
         return Ok(new { Message = "Usuario creado. Revisa tu email para confirmar la cuenta." });
     }
+
 
     // Confirmar email
     [HttpGet("confirm")]

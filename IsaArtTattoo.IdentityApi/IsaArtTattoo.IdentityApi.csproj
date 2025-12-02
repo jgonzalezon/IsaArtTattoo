@@ -8,6 +8,7 @@
   <ItemGroup>
     <PackageReference Include="Asp.Versioning.Mvc" />
     <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" />
+    <PackageReference Include="MassTransit.RabbitMQ" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
@@ -26,6 +27,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\IsaArtTattoo.ServiceDefaults\IsaArtTattoo.ServiceDefaults.csproj" />
+	<ProjectReference Include="..\IsaArtTattoo.Shared\IsaArtTattoo.Shared.csproj" />
+
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.0.11222.15 d18.0
+VisualStudioVersion = 18.0.11222.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsaArtTattoo.AppHost", "IsaArtTattoo.AppHost\IsaArtTattoo.AppHost.csproj", "{43A2C0B3-4B65-4580-8D5F-62D9EDDAEB13}"
 EndProject
@@ -18,6 +18,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementos de la solución",
 		Directory.Build.props = Directory.Build.props
 		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsaArtTattoo.Shared", "IsaArtTattoo.Shared\IsaArtTattoo.Shared.csproj", "{9B9A6C35-82C7-4A5D-A4AB-3A3CEEA89ACD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsaArtTattoo.Notifications", "IsaArtTattoo.Notifications\IsaArtTattoo.Notifications.csproj", "{83E17C22-D87E-4EBC-89AD-830DDC58186A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +51,14 @@ Global
 		{BD6F8E6F-6855-C1B4-03FF-3229C423A818}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD6F8E6F-6855-C1B4-03FF-3229C423A818}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD6F8E6F-6855-C1B4-03FF-3229C423A818}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B9A6C35-82C7-4A5D-A4AB-3A3CEEA89ACD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B9A6C35-82C7-4A5D-A4AB-3A3CEEA89ACD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B9A6C35-82C7-4A5D-A4AB-3A3CEEA89ACD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B9A6C35-82C7-4A5D-A4AB-3A3CEEA89ACD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83E17C22-D87E-4EBC-89AD-830DDC58186A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83E17C22-D87E-4EBC-89AD-830DDC58186A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83E17C22-D87E-4EBC-89AD-830DDC58186A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83E17C22-D87E-4EBC-89AD-830DDC58186A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
