@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementos de la solución",
 	ProjectSection(SolutionItems) = preProject
 		Directory.Build.props = Directory.Build.props
 		Directory.Packages.props = Directory.Packages.props
+		..\..\OrderFlowClase\k6-load-test.js = ..\..\OrderFlowClase\k6-load-test.js
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsaArtTattoo.Shared", "IsaArtTattoo.Shared\IsaArtTattoo.Shared.csproj", "{9B9A6C35-82C7-4A5D-A4AB-3A3CEEA89ACD}"

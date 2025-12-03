@@ -3,10 +3,9 @@ using IsaArtTattoo.IdentityApi.Models;
 using IsaArtTattoo.IdentityApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using System.Text;      
 
 namespace IsaArtTattoo.IdentityApi.Extensions;
 
@@ -65,7 +64,7 @@ public static class IdentityAuthExtensions
     }
 
     /// <summary>
-    /// Registra servicios de aplicación (controllers, hosted services, email, jwt token).
+    /// Registra servicios de aplicación (controllers, hosted services, jwt token).
     /// </summary>
     public static void AddIdentityApplicationServices(this IServiceCollection services)
     {

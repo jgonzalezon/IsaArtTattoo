@@ -25,7 +25,7 @@ public class RolesController : ControllerBase
     }
 
     // GET: api/v1/roles
-    [HttpGet]
+    [HttpGet("Listar roles")]
     public IActionResult GetAll()
     {
         var roles = _roleManager.Roles
@@ -36,7 +36,7 @@ public class RolesController : ControllerBase
     }
 
     // POST: api/v1/roles
-    [HttpPost]
+    [HttpPost("Crear Rol")]
     public async Task<IActionResult> Create(CreateRoleDto dto)
     {
         if (string.IsNullOrWhiteSpace(dto.Name))
@@ -57,7 +57,7 @@ public class RolesController : ControllerBase
     }
 
     // DELETE: api/v1/roles/{name}
-    [HttpDelete("{name}")]
+    [HttpDelete("Borrar Rol {name}")]
     public async Task<IActionResult> Delete(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
@@ -77,7 +77,7 @@ public class RolesController : ControllerBase
     }
 
     // POST: api/v1/roles/assign
-    [HttpPost("assign")]
+    [HttpPost("Asignar Rol")]
     public async Task<IActionResult> AssignToUser(AssignRoleToUserDto dto)
     {
         var user = await _userManager.FindByIdAsync(dto.UserId);

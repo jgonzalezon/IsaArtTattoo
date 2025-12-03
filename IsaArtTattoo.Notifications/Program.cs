@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 
 var builder = Host.CreateApplicationBuilder(args);
 
-builder.AddServiceDefaults();  // opcional, pero si la usas, referencia a ServiceDefaults
+builder.AddServiceDefaults();
 
 // Servicios propios
 builder.Services.AddSingleton<IEmailService, EmailService>();
@@ -15,6 +15,8 @@ builder.Services.AddSingleton<IEmailService, EmailService>();
 builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<UserRegisteredConsumer>();
+    x.AddConsumer<SendEmailConfirmationConsumer>();
+    x.AddConsumer<SendPasswordResetConsumer>();
 
     x.UsingRabbitMq((context, cfg) =>
     {

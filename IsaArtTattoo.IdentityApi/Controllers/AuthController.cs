@@ -1,17 +1,14 @@
-﻿using Asp.Versioning;
+﻿        using Asp.Versioning;
 using IsaArtTattoo.IdentityApi.Dtos;
 using IsaArtTattoo.IdentityApi.Models;
 using IsaArtTattoo.IdentityApi.Services;
 using IsaArtTattoo.Shared.Events;
 using MassTransit;
-using MassTransit.Transports;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IsaArtTattoo.IdentityApi.Controllers;
-
 
 [ApiController]
 [ApiVersion("1.0")]
@@ -21,7 +18,6 @@ public class AuthController : ControllerBase
     private readonly UserManager<ApplicationUser> _um;
     private readonly SignInManager<ApplicationUser> _sm;
     private readonly IConfiguration _cfg;
-    private readonly IEmailSender _emailSender;
     private readonly IJwtTokenService _jwtTokenService;
     private readonly IPublishEndpoint _publishEndpoint;
 
@@ -29,20 +25,17 @@ public class AuthController : ControllerBase
         UserManager<ApplicationUser> um,
         SignInManager<ApplicationUser> sm,
         IConfiguration cfg,
-        IEmailSender emailSender,
         IJwtTokenService jwtTokenService,
         IPublishEndpoint publishEndpoint)
     {
         _um = um;
         _sm = sm;
         _cfg = cfg;
-        _emailSender = emailSender;
         _jwtTokenService = jwtTokenService;
         _publishEndpoint = publishEndpoint;
-
     }
 
-    //  Registro con envío de mail
+    // Registro con envío de mail a través de evento
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterDto dto)
     {
@@ -53,7 +46,7 @@ public class AuthController : ControllerBase
 
         await _um.AddToRoleAsync(user, "User");
 
-        // Email de confirmación
+        // Generar token de confirmación
         var token = await _um.GenerateEmailConfirmationTokenAsync(user);
         var encodedToken = Uri.EscapeDataString(token);
 
@@ -61,18 +54,17 @@ public class AuthController : ControllerBase
         var confirmUrl =
             $"{frontendBase}/confirm-email?email={Uri.EscapeDataString(dto.Email)}&token={encodedToken}";
 
-        await _emailSender.SendEmailAsync(dto.Email, "Confirma tu cuenta",
-            $"""
-            <p>Gracias por registrarte en <b>IsaArtTattoo</b>.</p>
-            <p>Haz clic <a href="{confirmUrl}">aquí</a> para confirmar tu correo.</p>
-            """);
+        // Publicar evento para que Notifications envíe el email de confirmación
+        await _publishEndpoint.Publish(new SendEmailConfirmationEvent(
+            dto.Email,
+            confirmUrl
+        ));
 
-        // Evento a RabbitMQ -> Notifications manda el welcome
+        // Evento para el welcome mail
         await _publishEndpoint.Publish(new UserCreatedEvent(user.Id, user.Email!));
 
         return Ok(new { Message = "Usuario creado. Revisa tu email para confirmar la cuenta." });
     }
-
 
     // Confirmar email
     [HttpGet("confirm")]
@@ -118,8 +110,11 @@ public class AuthController : ControllerBase
         var confirmUrl =
             $"{frontendBase}/confirm-email?email={Uri.EscapeDataString(dto.Email)}&token={encodedToken}";
 
-        await _emailSender.SendEmailAsync(dto.Email, "Confirma tu cuenta",
-            $"""<p>Haz clic <a href="{confirmUrl}">aquí</a> para confirmar tu correo.</p>""");
+        // Publicar evento para que Notifications envíe el email
+        await _publishEndpoint.Publish(new SendEmailConfirmationEvent(
+            dto.Email,
+            confirmUrl
+        ));
 
         return Ok("Correo de confirmación reenviado.");
     }
@@ -138,8 +133,11 @@ public class AuthController : ControllerBase
         var resetUrl =
             $"{frontendBase}/reset-password?email={Uri.EscapeDataString(dto.Email)}&token={encodedToken}";
 
-        await _emailSender.SendEmailAsync(dto.Email, "Restablece tu contraseña",
-            $"""<p>Para restablecer tu contraseña haz clic <a href="{resetUrl}">aquí</a>.</p>""");
+        // Publicar evento para que Notifications envíe el email
+        await _publishEndpoint.Publish(new SendPasswordResetEvent(
+            dto.Email,
+            resetUrl
+        ));
 
         return Ok("Se ha enviado un correo con las instrucciones para restablecer la contraseña.");
     }
@@ -157,7 +155,6 @@ public class AuthController : ControllerBase
         if (!result.Succeeded) return BadRequest(result.Errors);
 
         return Ok("Contraseña restablecida correctamente.");
-
     }
 
     [Authorize]
