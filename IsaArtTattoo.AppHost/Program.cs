@@ -1,4 +1,4 @@
-﻿using Aspire.Hosting;
+using Aspire.Hosting;
 using Aspire.Hosting.Postgres;
 using Aspire.Hosting.Redis;
 using Aspire.Hosting.RabbitMQ;
@@ -15,12 +15,15 @@ var pgUser = builder.AddParameter("pg-user", "postgres");
 var pgPass = builder.AddParameter("pg-password", "postgres");
 
 var postgres = builder.AddPostgres("pg")
+    .WithPgAdmin()
     .WithImageTag("16")
     .WithUserName(pgUser)
     .WithPassword(pgPass)
     .WithDataVolume("pgdata");
 
+
 var identityDb = postgres.AddDatabase("identitydb");
+var catalogDb = postgres.AddDatabase("catalogdb");
 
 
 // ========================================================
@@ -44,6 +47,13 @@ var identityApi = builder
     .WaitFor(rabbit)          // espera a RabbitMQ
     .WithReference(rabbit)    // le pasa connection string
     .WithReference(identityDb);
+
+
+
+var catalogApi = builder
+    .AddProject<Projects.IsaArtTattoo_CatalogApi>("catalog-api")
+    .WithReference(catalogDb)
+    .WithExternalHttpEndpoints();
 
 
 // ========================================================
@@ -104,7 +114,6 @@ var frontend = builder
     .WithHttpEndpoint(targetPort: 5173, name: "http")
     .WithEnvironment("VITE_API_BASE_URL", gatewayHttpUrl)
     .WithReference(gateway);
-
 
 // ========================================================
 // RUN

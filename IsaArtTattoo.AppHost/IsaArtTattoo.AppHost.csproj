@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\isaarttattoo-web\isaarttattoo-web.esproj" />
     <ProjectReference Include="..\IsaArtTattoo.ApiGateWay\IsaArtTattoo.ApiGateWay.csproj" />
+    <ProjectReference Include="..\IsaArtTattoo.CatalogApi\IsaArtTattoo.CatalogApi.csproj" />
     <ProjectReference Include="..\IsaArtTattoo.IdentityApi\IsaArtTattoo.IdentityApi.csproj" />
 	 <ProjectReference Include="..\IsaArtTattoo.Shared\IsaArtTattoo.Shared.csproj" />
 	 <ProjectReference Include="..\IsaArtTattoo.ServiceDefaults\IsaArtTattoo.ServiceDefaults.csproj" />

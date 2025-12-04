@@ -1,0 +1,6 @@
+@IsaArtTattoo.CatalogApi_HostAddress = http://localhost:5159
+
+GET {{IsaArtTattoo.CatalogApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
