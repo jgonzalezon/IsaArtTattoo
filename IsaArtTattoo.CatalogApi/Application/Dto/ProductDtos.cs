@@ -1,5 +1,37 @@
 ﻿namespace IsaArtTattoo.CatalogApi.Application.Dto;
 
+// ---------- CATEGORÍAS ----------
+
+public record CategoryDto(
+    int Id,
+    string Name,
+    string? Description,
+    int DisplayOrder,
+    int ProductsCount
+);
+
+public record CategoryDetailDto(
+    int Id,
+    string Name,
+    string? Description,
+    int DisplayOrder,
+    IReadOnlyList<ProductListItemDto> Products
+);
+
+public record CreateCategoryDto(
+    string Name,
+    string? Description,
+    int DisplayOrder
+);
+
+public record UpdateCategoryDto(
+    string? Name,
+    string? Description,
+    int? DisplayOrder
+);
+
+// ---------- PRODUCTOS (zona pública) ----------
+
 public record ProductListItemDto(
     int Id,
     string Name,
@@ -27,7 +59,7 @@ public record ProductDetailDto(
     IReadOnlyList<ProductImageDto> Images
 );
 
-// Admin
+// ---------- PRODUCTOS (admin) ----------
 
 public record CreateProductDto(
     string Name,
@@ -36,6 +68,18 @@ public record CreateProductDto(
     int? CategoryId,
     int InitialStock,
     bool IsActive
+);
+
+/// <summary>
+/// DTO de actualización parcial: cualquier campo null NO se modifica.
+/// </summary>
+public record UpdateProductDto(
+    string? Name,
+    string? ShortDescription,
+    decimal? Price,
+    int? CategoryId,
+    int? Stock,
+    bool? IsActive
 );
 
 public record AdjustStockDto(
@@ -48,3 +92,9 @@ public record AddProductImageDto(
     string? AltText,
     int DisplayOrder
 );
+public record UpdateProductImageDto(
+    int? DisplayOrder,
+    string? AltText,
+    bool? IsPrimary
+);
+
