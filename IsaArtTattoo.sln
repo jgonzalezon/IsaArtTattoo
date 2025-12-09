@@ -28,6 +28,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsaArtTattoo.CatalogApi", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsaArtTatto.OrdersApi", "IsaArtTatto.OrdersApi\IsaArtTatto.OrdersApi.csproj", "{F228F5AA-9FC3-9C93-5906-45F672A30AAD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsaArtTattoo.Api.Identity.Test", "IsaArtTattoo.Api.Identity.Test\IsaArtTattoo.Api.Identity.Test.csproj", "{0F4A1285-BC09-44B9-8199-BF9F606C1860}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsaArtTattoo.Api.Orders.Test", "IsaArtTattoo.Api.Orders.Test\IsaArtTattoo.Api.Orders.Test.csproj", "{B7DDC661-1E29-4A23-AEFD-B0D54571483E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +76,14 @@ Global
 		{F228F5AA-9FC3-9C93-5906-45F672A30AAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F228F5AA-9FC3-9C93-5906-45F672A30AAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F228F5AA-9FC3-9C93-5906-45F672A30AAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F4A1285-BC09-44B9-8199-BF9F606C1860}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F4A1285-BC09-44B9-8199-BF9F606C1860}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F4A1285-BC09-44B9-8199-BF9F606C1860}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F4A1285-BC09-44B9-8199-BF9F606C1860}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7DDC661-1E29-4A23-AEFD-B0D54571483E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7DDC661-1E29-4A23-AEFD-B0D54571483E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7DDC661-1E29-4A23-AEFD-B0D54571483E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7DDC661-1E29-4A23-AEFD-B0D54571483E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

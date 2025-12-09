@@ -128,6 +128,8 @@ var frontend = builder
 var ordersApi = builder.AddProject<Projects.IsaArtTatto_OrdersApi>("orders-api")
     .WithReference(ordersDb)
     .WaitFor(ordersDb)
+    .WaitFor(catalogApi)
+    .WithReference(catalogApi)
     .WithExternalHttpEndpoints();
 
 // ========================================================

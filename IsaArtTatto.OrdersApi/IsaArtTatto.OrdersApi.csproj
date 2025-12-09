@@ -39,4 +39,9 @@
 		<ProjectReference Include="..\IsaArtTattoo.Shared\IsaArtTattoo.Shared.csproj" />
 	</ItemGroup>
 
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>$(NoWarn);1591</NoWarn>
+	</PropertyGroup>
+
 </Project>

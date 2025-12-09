@@ -1,9 +1,8 @@
-﻿using IsaArtTattoo.IdentityApi.Dtos;
-using IsaArtTattoo.IdentityApi.Models;
+﻿using Asp.Versioning;
+using IsaArtTattoo.IdentityApi.Dtos;
+using IsaArtTattoo.IdentityApi.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Asp.Versioning;
 
 namespace IsaArtTattoo.IdentityApi.Controllers;
 
@@ -13,141 +12,107 @@ namespace IsaArtTattoo.IdentityApi.Controllers;
 [Authorize(Roles = "Admin")]
 public class UsersController : ControllerBase
 {
-	private readonly UserManager<ApplicationUser> _userManager;
-	private readonly IConfiguration _cfg;
+    private readonly IUsersService _usersService;
 
-	public UsersController(UserManager<ApplicationUser> userManager, IConfiguration cfg)
-	{
-		_userManager = userManager;
-		_cfg = cfg;
-	}
+    public UsersController(IUsersService usersService)
+    {
+        _usersService = usersService;
+    }
 
-	private string? MainAdminEmail =>
-		_cfg["AdminUser:Email"];
+    // GET api/users
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var users = await _usersService.GetAllAsync();
+        return Ok(users);
+    }
 
-	// GET api/users
-	[HttpGet]
-	public async Task<IActionResult> GetAll()
-	{
-		var users = _userManager.Users.ToList();
+    // GET api/users/{id}
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(string id)
+    {
+        var result = await _usersService.GetByIdAsync(id);
+        if (!result.Succeeded || result.User is null) return NotFound();
 
-		var list = new List<UserSummaryDto>();
-		foreach (var u in users)
-		{
-			var roles = await _userManager.GetRolesAsync(u);
-			list.Add(new UserSummaryDto(
-				u.Id,
-				u.Email ?? "",
-				u.EmailConfirmed,
-				roles
-			));
-		}
+        return Ok(result.User);
+    }
 
-		return Ok(list);
-	}
+    // POST api/users
+    [HttpPost]
+    public async Task<IActionResult> Create(CreateUserDto dto)
+    {
+        var result = await _usersService.CreateAsync(dto);
 
-	// GET api/users/{id}
-	[HttpGet("{id}")]
-	public async Task<IActionResult> GetById(string id)
-	{
-		var user = await _userManager.FindByIdAsync(id);
-		if (user is null) return NotFound();
+        if (!result.Succeeded)
+        {
+            if (result.Errors is not null)
+                return BadRequest(result.Errors);
 
-		var roles = await _userManager.GetRolesAsync(user);
+            return BadRequest(result.Error);
+        }
 
-		var dto = new UserSummaryDto(
-			user.Id,
-			user.Email ?? "",
-			user.EmailConfirmed,
-			roles
-		);
+        return CreatedAtAction(nameof(GetById),
+            new { id = result.Id },
+            new { result.Id, result.Email });
+    }
 
-		return Ok(dto);
-	}
+    // PUT api/users/roles
+    [HttpPut("roles")]
+    public async Task<IActionResult> UpdateRoles(UpdateUserRolesDto dto)
+    {
+        var result = await _usersService.UpdateRolesAsync(dto);
 
-	// POST api/users
-	[HttpPost]
-	public async Task<IActionResult> Create(CreateUserDto dto)
-	{
-		var user = new ApplicationUser
-		{
-			UserName = dto.Email,
-			Email = dto.Email,
-			EmailConfirmed = true // o false si quieres que confirmen
-		};
+        if (!result.Succeeded)
+        {
+            if (result.Errors is not null)
+                return BadRequest(result.Errors);
 
-		var result = await _userManager.CreateAsync(user, dto.Password);
-		if (!result.Succeeded) return BadRequest(result.Errors);
+            if (result.Error == "Usuario no encontrado.")
+                return NotFound(result.Error);
 
-		if (dto.Roles is { Count: > 0 })
-		{
-			var rolesResult = await _userManager.AddToRolesAsync(user, dto.Roles);
-			if (!rolesResult.Succeeded) return BadRequest(rolesResult.Errors);
-		}
+            return BadRequest(result.Error);
+        }
 
-		return CreatedAtAction(nameof(GetById), new { id = user.Id }, new { user.Id, user.Email });
-	}
+        return Ok("Roles actualizados correctamente.");
+    }
 
-	// PUT api/users/roles
-	[HttpPut("roles")]
-	public async Task<IActionResult> UpdateRoles(UpdateUserRolesDto dto)
-	{
-		var user = await _userManager.FindByIdAsync(dto.UserId);
-		if (user is null) return NotFound();
+    // PUT api/users/password
+    [HttpPut("password")]
+    public async Task<IActionResult> ChangePassword(ChangeUserPasswordDto dto)
+    {
+        var result = await _usersService.ChangePasswordAsync(dto);
 
-		// No permitir quitar el rol Admin al admin principal, si quieres esa regla
-		if (!string.IsNullOrEmpty(MainAdminEmail) &&
-			string.Equals(user.Email, MainAdminEmail, StringComparison.OrdinalIgnoreCase) &&
-			!dto.Roles.Contains("Admin"))
-		{
-			return BadRequest("No se puede quitar el rol Admin del usuario administrador principal.");
-		}
+        if (!result.Succeeded)
+        {
+            if (result.Errors is not null)
+                return BadRequest(result.Errors);
 
-		var currentRoles = await _userManager.GetRolesAsync(user);
-		var removeResult = await _userManager.RemoveFromRolesAsync(user, currentRoles);
-		if (!removeResult.Succeeded) return BadRequest(removeResult.Errors);
+            if (result.Error == "Usuario no encontrado.")
+                return NotFound(result.Error);
 
-		if (dto.Roles is { Count: > 0 })
-		{
-			var addResult = await _userManager.AddToRolesAsync(user, dto.Roles);
-			if (!addResult.Succeeded) return BadRequest(addResult.Errors);
-		}
+            return BadRequest(result.Error);
+        }
 
-		return Ok("Roles actualizados correctamente.");
-	}
+        return Ok("Contraseña actualizada correctamente.");
+    }
 
-	// PUT api/users/password
-	[HttpPut("password")]
-	public async Task<IActionResult> ChangePassword(ChangeUserPasswordDto dto)
-	{
-		var user = await _userManager.FindByIdAsync(dto.UserId);
-		if (user is null) return NotFound();
+    // DELETE api/users/{id}
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(string id)
+    {
+        var result = await _usersService.DeleteAsync(id);
 
-		// reset directo (útil solo para admin)
-		var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-		var result = await _userManager.ResetPasswordAsync(user, token, dto.NewPassword);
-		if (!result.Succeeded) return BadRequest(result.Errors);
+        if (!result.Succeeded)
+        {
+            if (result.Errors is not null)
+                return BadRequest(result.Errors);
 
-		return Ok("Contraseña actualizada correctamente.");
-	}
+            if (result.Error == "Usuario no encontrado.")
+                return NotFound(result.Error);
 
-	// DELETE api/users/{id}
-	[HttpDelete("{id}")]
-	public async Task<IActionResult> Delete(string id)
-	{
-		var user = await _userManager.FindByIdAsync(id);
-		if (user is null) return NotFound();
+            return BadRequest(result.Error);
+        }
 
-		// ❌ No permitir borrar al admin principal
-		if (!string.IsNullOrEmpty(MainAdminEmail) &&
-			string.Equals(user.Email, MainAdminEmail, StringComparison.OrdinalIgnoreCase))
-		{
-			return BadRequest("No se puede eliminar el usuario administrador principal.");
-		}
-
-		var result = await _userManager.DeleteAsync(user);
-		if (!result.Succeeded) return BadRequest(result.Errors);
-
-		return Ok("Usuario eliminado correctamente.");
-	}
+        return Ok("Usuario eliminado correctamente.");
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using IsaArtTattoo.IdentityApi.Extensions;
+using IsaArtTattoo.IdentityApi.Services;
 using MassTransit;
 
 
@@ -13,6 +14,11 @@ builder.AddIdentityCoreAndJwt();            // Identity + JWT + Authorization po
 builder.AddIdentityCors();                  // CORS para el front
 builder.Services.AddIdentityApiVersioning();// ApiVersioning + Explorer
 builder.Services.AddIdentityApplicationServices(); // Controllers, EmailSender, JwtTokenService
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IRolesService, RolesService>();
+builder.Services.AddScoped<IUsersService, UsersService>();
+
+
 
 // OpenAPI / Swagger / Scalar
 builder.Services.AddIdentityOpenApi();

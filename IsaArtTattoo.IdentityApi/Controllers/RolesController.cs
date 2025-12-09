@@ -1,8 +1,7 @@
 ﻿using Asp.Versioning;
 using IsaArtTattoo.IdentityApi.Dtos;
-using IsaArtTattoo.IdentityApi.Models;
+using IsaArtTattoo.IdentityApi.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IsaArtTattoo.IdentityApi.Controllers;
@@ -13,25 +12,18 @@ namespace IsaArtTattoo.IdentityApi.Controllers;
 [Authorize(Roles = "Admin")]
 public class RolesController : ControllerBase
 {
-    private readonly RoleManager<IdentityRole> _roleManager;
-    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IRolesService _rolesService;
 
-    public RolesController(
-        RoleManager<IdentityRole> roleManager,
-        UserManager<ApplicationUser> userManager)
+    public RolesController(IRolesService rolesService)
     {
-        _roleManager = roleManager;
-        _userManager = userManager;
+        _rolesService = rolesService;
     }
 
     // GET: api/v1/roles
     [HttpGet("Listar roles")]
     public IActionResult GetAll()
     {
-        var roles = _roleManager.Roles
-            .Select(r => new RoleDto(r.Id, r.Name ?? string.Empty))
-            .ToList();
-
+        var roles = _rolesService.GetAll();
         return Ok(roles);
     }
 
@@ -39,39 +31,36 @@ public class RolesController : ControllerBase
     [HttpPost("Crear Rol")]
     public async Task<IActionResult> Create(CreateRoleDto dto)
     {
-        if (string.IsNullOrWhiteSpace(dto.Name))
-            return BadRequest("El nombre del rol es obligatorio.");
-
-        var exists = await _roleManager.RoleExistsAsync(dto.Name);
-        if (exists)
-            return BadRequest($"Ya existe un rol con el nombre '{dto.Name}'.");
-
-        var role = new IdentityRole(dto.Name);
-        var result = await _roleManager.CreateAsync(role);
+        var result = await _rolesService.CreateAsync(dto);
 
         if (!result.Succeeded)
-            return BadRequest(result.Errors);
+        {
+            if (result.Errors is not null)
+                return BadRequest(result.Errors);
 
-        var createdDto = new RoleDto(role.Id, role.Name ?? string.Empty);
-        return CreatedAtAction(nameof(GetAll), new { id = role.Id }, createdDto);
+            return BadRequest(result.Error);
+        }
+
+        return CreatedAtAction(nameof(GetAll), new { id = result.Role!.Id }, result.Role);
     }
 
     // DELETE: api/v1/roles/{name}
     [HttpDelete("Borrar Rol {name}")]
     public async Task<IActionResult> Delete(string name)
     {
-        if (string.IsNullOrWhiteSpace(name))
-            return BadRequest("El nombre del rol es obligatorio.");
+        var result = await _rolesService.DeleteAsync(name);
 
-        var role = await _roleManager.FindByNameAsync(name);
-        if (role is null)
-            return NotFound($"No se encontró el rol '{name}'.");
-
-        // Opcional: podrías evitar borrar ciertos roles protegidos (por ejemplo "Admin")
-
-        var result = await _roleManager.DeleteAsync(role);
         if (!result.Succeeded)
-            return BadRequest(result.Errors);
+        {
+            if (result.Errors is not null)
+                return BadRequest(result.Errors);
+
+            // Error de tipo "no encontrado"
+            if (result.Error is not null && result.Error.StartsWith("No se encontró"))
+                return NotFound(result.Error);
+
+            return BadRequest(result.Error);
+        }
 
         return Ok($"Rol '{name}' eliminado correctamente.");
     }
@@ -80,21 +69,21 @@ public class RolesController : ControllerBase
     [HttpPost("Asignar Rol")]
     public async Task<IActionResult> AssignToUser(AssignRoleToUserDto dto)
     {
-        var user = await _userManager.FindByIdAsync(dto.UserId);
-        if (user is null)
-            return NotFound("Usuario no encontrado.");
+        var result = await _rolesService.AssignToUserAsync(dto);
 
-        var roleExists = await _roleManager.RoleExistsAsync(dto.RoleName);
-        if (!roleExists)
-            return NotFound($"No existe el rol '{dto.RoleName}'.");
-
-        var alreadyInRole = await _userManager.IsInRoleAsync(user, dto.RoleName);
-        if (alreadyInRole)
-            return BadRequest($"El usuario ya tiene el rol '{dto.RoleName}'.");
-
-        var result = await _userManager.AddToRoleAsync(user, dto.RoleName);
         if (!result.Succeeded)
-            return BadRequest(result.Errors);
+        {
+            if (result.Errors is not null)
+                return BadRequest(result.Errors);
+
+            if (result.Error is not null && result.Error.StartsWith("No existe el rol"))
+                return NotFound(result.Error);
+
+            if (result.Error is not null && result.Error.StartsWith("Usuario no encontrado"))
+                return NotFound(result.Error);
+
+            return BadRequest(result.Error);
+        }
 
         return Ok($"Rol '{dto.RoleName}' asignado correctamente al usuario.");
     }

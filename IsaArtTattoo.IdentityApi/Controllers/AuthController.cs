@@ -1,11 +1,7 @@
-﻿        using Asp.Versioning;
+﻿using Asp.Versioning;
 using IsaArtTattoo.IdentityApi.Dtos;
-using IsaArtTattoo.IdentityApi.Models;
 using IsaArtTattoo.IdentityApi.Services;
-using IsaArtTattoo.Shared.Events;
-using MassTransit;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IsaArtTattoo.IdentityApi.Controllers;
@@ -15,53 +11,21 @@ namespace IsaArtTattoo.IdentityApi.Controllers;
 [Route("api/v{version:apiVersion}/[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly UserManager<ApplicationUser> _um;
-    private readonly SignInManager<ApplicationUser> _sm;
-    private readonly IConfiguration _cfg;
-    private readonly IJwtTokenService _jwtTokenService;
-    private readonly IPublishEndpoint _publishEndpoint;
+    private readonly IAuthService _authService;
 
-    public AuthController(
-        UserManager<ApplicationUser> um,
-        SignInManager<ApplicationUser> sm,
-        IConfiguration cfg,
-        IJwtTokenService jwtTokenService,
-        IPublishEndpoint publishEndpoint)
+    public AuthController(IAuthService authService)
     {
-        _um = um;
-        _sm = sm;
-        _cfg = cfg;
-        _jwtTokenService = jwtTokenService;
-        _publishEndpoint = publishEndpoint;
+        _authService = authService;
     }
 
     // Registro con envío de mail a través de evento
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterDto dto)
     {
-        var user = new ApplicationUser { UserName = dto.Email, Email = dto.Email };
-        var result = await _um.CreateAsync(user, dto.Password);
+        var result = await _authService.RegisterAsync(dto);
 
-        if (!result.Succeeded) return BadRequest(result.Errors);
-
-        await _um.AddToRoleAsync(user, "User");
-
-        // Generar token de confirmación
-        var token = await _um.GenerateEmailConfirmationTokenAsync(user);
-        var encodedToken = Uri.EscapeDataString(token);
-
-        var frontendBase = _cfg["Frontend:BaseUrl"] ?? "http://localhost:5173";
-        var confirmUrl =
-            $"{frontendBase}/confirm-email?email={Uri.EscapeDataString(dto.Email)}&token={encodedToken}";
-
-        // Publicar evento para que Notifications envíe el email de confirmación
-        await _publishEndpoint.Publish(new SendEmailConfirmationEvent(
-            dto.Email,
-            confirmUrl
-        ));
-
-        // Evento para el welcome mail
-        await _publishEndpoint.Publish(new UserCreatedEvent(user.Id, user.Email!));
+        if (!result.Succeeded)
+            return BadRequest(result.Errors);
 
         return Ok(new { Message = "Usuario creado. Revisa tu email para confirmar la cuenta." });
     }
@@ -70,13 +34,10 @@ public class AuthController : ControllerBase
     [HttpGet("confirm")]
     public async Task<IActionResult> Confirm(string email, string token)
     {
-        var user = await _um.FindByEmailAsync(email);
-        if (user == null) return BadRequest("Usuario no encontrado.");
+        var result = await _authService.ConfirmEmailAsync(email, token);
 
-        var decodedToken = Uri.UnescapeDataString(token);
-
-        var result = await _um.ConfirmEmailAsync(user, decodedToken);
-        if (!result.Succeeded) return BadRequest("Token inválido o expirado.");
+        if (!result.Succeeded)
+            return BadRequest(result.Error);
 
         return Ok("Correo confirmado correctamente.");
     }
@@ -85,36 +46,21 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginDto dto)
     {
-        var user = await _um.FindByEmailAsync(dto.Email);
-        if (user is null) return Unauthorized("Usuario no encontrado.");
-        if (!user.EmailConfirmed)
-            return Unauthorized("Debe confirmar su cuenta antes de iniciar sesión.");
+        var result = await _authService.LoginAsync(dto);
 
-        var check = await _sm.CheckPasswordSignInAsync(user, dto.Password, false);
-        if (!check.Succeeded) return Unauthorized("Credenciales incorrectas.");
+        if (!result.Succeeded)
+            return Unauthorized(result.Error);
 
-        var token = await _jwtTokenService.CreateTokenAsync(user);
-        return Ok(new { token });
+        return Ok(new { token = result.Token });
     }
 
     [HttpPost("resend-confirmation")]
     public async Task<IActionResult> ResendConfirmation([FromBody] ResendConfirmDto dto)
     {
-        var user = await _um.FindByEmailAsync(dto.Email);
-        if (user == null) return NotFound();
+        var result = await _authService.ResendConfirmationAsync(dto.Email);
 
-        var token = await _um.GenerateEmailConfirmationTokenAsync(user);
-        var encodedToken = Uri.EscapeDataString(token);
-
-        var frontendBase = _cfg["Frontend:BaseUrl"] ?? "http://localhost:5173";
-        var confirmUrl =
-            $"{frontendBase}/confirm-email?email={Uri.EscapeDataString(dto.Email)}&token={encodedToken}";
-
-        // Publicar evento para que Notifications envíe el email
-        await _publishEndpoint.Publish(new SendEmailConfirmationEvent(
-            dto.Email,
-            confirmUrl
-        ));
+        if (!result.Succeeded)
+            return NotFound(result.Error);
 
         return Ok("Correo de confirmación reenviado.");
     }
@@ -123,21 +69,10 @@ public class AuthController : ControllerBase
     [HttpPost("forgot-password")]
     public async Task<IActionResult> ForgotPassword(ResetDto dto)
     {
-        var user = await _um.FindByEmailAsync(dto.Email);
-        if (user == null) return NotFound();
+        var result = await _authService.ForgotPasswordAsync(dto.Email);
 
-        var token = await _um.GeneratePasswordResetTokenAsync(user);
-        var encodedToken = Uri.EscapeDataString(token);
-
-        var frontendBase = _cfg["Frontend:BaseUrl"] ?? "http://localhost:5173";
-        var resetUrl =
-            $"{frontendBase}/reset-password?email={Uri.EscapeDataString(dto.Email)}&token={encodedToken}";
-
-        // Publicar evento para que Notifications envíe el email
-        await _publishEndpoint.Publish(new SendPasswordResetEvent(
-            dto.Email,
-            resetUrl
-        ));
+        if (!result.Succeeded)
+            return NotFound(result.Error);
 
         return Ok("Se ha enviado un correo con las instrucciones para restablecer la contraseña.");
     }
@@ -146,13 +81,10 @@ public class AuthController : ControllerBase
     [HttpPost("reset-password")]
     public async Task<IActionResult> ResetPassword(NewPasswordDto dto)
     {
-        var user = await _um.FindByEmailAsync(dto.Email);
-        if (user == null) return NotFound();
+        var result = await _authService.ResetPasswordAsync(dto);
 
-        var decodedToken = Uri.UnescapeDataString(dto.Token);
-
-        var result = await _um.ResetPasswordAsync(user, decodedToken, dto.NewPassword);
-        if (!result.Succeeded) return BadRequest(result.Errors);
+        if (!result.Succeeded)
+            return BadRequest(result.Errors);
 
         return Ok("Contraseña restablecida correctamente.");
     }

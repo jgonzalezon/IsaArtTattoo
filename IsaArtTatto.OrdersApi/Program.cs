@@ -1,4 +1,8 @@
+using IsaArtTattoo.OrdersApi.Application.Services;
 using IsaArtTattoo.OrdersApi.Extensions;
+using System.Reflection;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +20,8 @@ builder.Services.AddOrdersOpenApi();
 
 // Servicios de aplicación (Orders + HttpClient a Catalog)
 builder.Services.AddOrdersApplicationServices();
+builder.Services.AddScoped<IUserOrdersService, UserOrdersService>();
+
 
 var app = builder.Build();
 
