@@ -1,0 +1,6 @@
+@IsaArtTattoo.Orders_HostAddress = http://localhost:5237
+
+GET {{IsaArtTattoo.Orders_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

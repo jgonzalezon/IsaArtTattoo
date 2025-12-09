@@ -24,6 +24,8 @@ var postgres = builder.AddPostgres("pg")
 
 var identityDb = postgres.AddDatabase("identitydb");
 var catalogDb = postgres.AddDatabase("catalogdb");
+var ordersDb = postgres.AddDatabase("ordersdb");
+
 
 
 // ========================================================
@@ -52,6 +54,7 @@ var identityApi = builder
 
 var catalogApi = builder
     .AddProject<Projects.IsaArtTattoo_CatalogApi>("catalog-api")
+    .WaitFor(catalogDb)
     .WithReference(catalogDb)
     .WithExternalHttpEndpoints();
 
@@ -114,6 +117,18 @@ var frontend = builder
     .WithHttpEndpoint(targetPort: 5173, name: "http")
     .WithEnvironment("VITE_API_BASE_URL", gatewayHttpUrl)
     .WithReference(gateway);
+
+
+
+
+// ========================================================
+// RUN
+// ========================================================
+
+var ordersApi = builder.AddProject<Projects.IsaArtTatto_OrdersApi>("orders-api")
+    .WithReference(ordersDb)
+    .WaitFor(ordersDb)
+    .WithExternalHttpEndpoints();
 
 // ========================================================
 // RUN

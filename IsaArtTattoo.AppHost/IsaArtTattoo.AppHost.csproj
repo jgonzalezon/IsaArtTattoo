@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\IsaArtTatto.OrdersApi\IsaArtTatto.OrdersApi.csproj" />
     <ProjectReference Include="..\isaarttattoo-web\isaarttattoo-web.esproj" />
     <ProjectReference Include="..\IsaArtTattoo.ApiGateWay\IsaArtTattoo.ApiGateWay.csproj" />
     <ProjectReference Include="..\IsaArtTattoo.CatalogApi\IsaArtTattoo.CatalogApi.csproj" />
