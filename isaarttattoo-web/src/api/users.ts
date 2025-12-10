@@ -29,6 +29,10 @@ export interface RoleResponse {
     name: string;
 }
 
+export interface CreateRoleRequest {
+    name: string;
+}
+
 // Helper para meter el JWT
 function authOptions(extra: RequestInit = {}): RequestInit {
     // IMPORTANTE: misma clave que en AuthCard
@@ -76,4 +80,11 @@ export async function deleteUser(id: string) {
 
 export async function fetchRoles() {
     return apiFetch<RoleResponse[]>("/api/v1/Roles/Listar roles", authOptions());
+}
+
+export async function createRole(payload: CreateRoleRequest) {
+    return apiFetch("/api/v1/Roles/Crear Rol", authOptions({
+        method: "POST",
+        body: JSON.stringify(payload),
+    }));
 }

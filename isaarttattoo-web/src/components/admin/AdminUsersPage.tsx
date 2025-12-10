@@ -6,8 +6,10 @@ import {
     changeUserPassword,
     deleteUser,
     fetchRoles,
+    createRole,
 } from "../../api/users";
 import type { UserSummary, RoleResponse } from "../../api/users";
+import { Link } from "react-router-dom";
 
 export default function AdminUsersPage() {
     const [users, setUsers] = useState<UserSummary[]>([]);
@@ -19,6 +21,7 @@ export default function AdminUsersPage() {
     const [newEmail, setNewEmail] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [newRoles, setNewRoles] = useState<string[]>([]);
+    const [newRoleName, setNewRoleName] = useState("");
 
     const [passwordUserId, setPasswordUserId] = useState<string | null>(null);
     const [passwordNew, setPasswordNew] = useState("");
@@ -35,10 +38,10 @@ export default function AdminUsersPage() {
                 setRoles(rolesResponse);
             } catch (rolesErr) {
                 console.error(rolesErr);
-                // Si no cargan los roles, usamos los presentes en los usuarios para no romper la UI.
-                const fallbackRoles = Array.from(
-                    new Set(sortedUsers.flatMap((u) => u.roles ?? [])),
-                ).map((r) => ({ id: r, name: r }));
+                const fallbackRoles = Array.from(new Set(sortedUsers.flatMap((u) => u.roles ?? []))).map((r) => ({
+                    id: r,
+                    name: r,
+                }));
                 setRoles(fallbackRoles);
                 setFeedback("No se pudieron cargar los roles desde la API, usando valores actuales.");
             }
@@ -76,6 +79,25 @@ export default function AdminUsersPage() {
         } catch (err) {
             console.error(err);
             setError("Error al crear usuario");
+        }
+    };
+
+    const handleCreateRole = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!newRoleName.trim()) {
+            setError("Introduce un nombre para el rol.");
+            return;
+        }
+        setError(null);
+        setFeedback(null);
+        try {
+            await createRole({ name: newRoleName.trim() });
+            setNewRoleName("");
+            setFeedback("Rol creado correctamente.");
+            await loadData();
+        } catch (err) {
+            console.error(err);
+            setError("No se pudo crear el rol");
         }
     };
 
@@ -118,11 +140,19 @@ export default function AdminUsersPage() {
 
     return (
         <div className="space-y-6">
-            <header className="space-y-2">
-                <h1 className="text-2xl font-semibold text-white">Usuarios y roles</h1>
-                <p className="text-sm text-slate-300">
-                    Crea cuentas nuevas, asigna roles y gestiona accesos de forma segura.
-                </p>
+            <header className="flex flex-wrap items-center justify-between gap-4">
+                <div className="space-y-2">
+                    <h1 className="text-2xl font-semibold text-white">Usuarios y roles</h1>
+                    <p className="text-sm text-slate-300">
+                        Crea cuentas nuevas, asigna roles y gestiona accesos de forma segura.
+                    </p>
+                </div>
+                <Link
+                    to="/admin"
+                    className="rounded-lg border border-cyan-300/40 bg-cyan-400/10 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:border-cyan-300/80 hover:bg-cyan-400/20"
+                >
+                    ← Volver al panel
+                </Link>
             </header>
 
             {error && (
@@ -136,60 +166,96 @@ export default function AdminUsersPage() {
                 </div>
             )}
 
-            <section className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                <h2 className="text-lg font-semibold text-white">Crear nuevo usuario</h2>
-                <p className="text-sm text-slate-300">Asignar roles disponibles desde el directorio.</p>
-                <form onSubmit={handleCreateUser} className="mt-4 grid gap-3 md:grid-cols-4">
-                    <label className="grid gap-2 text-sm text-slate-200 md:col-span-2">
-                        <span>Correo electrónico</span>
-                        <input
-                            type="email"
-                            className="w-full rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
-                            value={newEmail}
-                            onChange={(e) => setNewEmail(e.target.value)}
-                            required
-                            placeholder="usuario@correo.com"
-                        />
-                    </label>
-                    <label className="grid gap-2 text-sm text-slate-200">
-                        <span>Contraseña</span>
-                        <input
-                            type="password"
-                            className="w-full rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            required
-                            placeholder="••••••••"
-                        />
-                    </label>
-                    <label className="grid gap-2 text-sm text-slate-200">
-                        <span>Roles</span>
-                        <select
-                            multiple
-                            value={newRoles}
-                            onChange={(e) =>
-                                setNewRoles(
-                                    Array.from(e.target.selectedOptions).map((o) => o.value)
-                                )
-                            }
-                            className="h-full min-h-[44px] rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-sm text-white focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
-                        >
-                            {roleOptions.map((role) => (
-                                <option key={role} value={role} className="bg-slate-900">
-                                    {role}
-                                </option>
-                            ))}
-                        </select>
-                    </label>
-                    <div className="flex items-end">
+            <section className="grid gap-4 md:grid-cols-5">
+                <div className="md:col-span-2 rounded-2xl border border-white/10 bg-white/5 p-4">
+                    <h2 className="text-lg font-semibold text-white">Crear nuevo rol</h2>
+                    <p className="text-sm text-slate-300">Agrega roles personalizados antes de asignarlos.</p>
+                    <form onSubmit={handleCreateRole} className="mt-4 space-y-3">
+                        <label className="grid gap-2 text-sm text-slate-200">
+                            <span>Nombre del rol</span>
+                            <input
+                                type="text"
+                                className="w-full rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
+                                value={newRoleName}
+                                onChange={(e) => setNewRoleName(e.target.value)}
+                                placeholder="Ej. Editor"
+                            />
+                        </label>
                         <button
                             type="submit"
-                            className="w-full rounded-lg bg-gradient-to-r from-cyan-400 to-fuchsia-500 px-4 py-2 text-sm font-semibold text-slate-900"
+                            className="w-full rounded-lg bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-900 shadow-lg shadow-cyan-500/20 hover:bg-cyan-400"
                         >
-                            Crear usuario
+                            Crear rol
                         </button>
-                    </div>
-                </form>
+                    </form>
+                </div>
+
+                <div className="md:col-span-3 rounded-2xl border border-white/10 bg-white/5 p-4">
+                    <h2 className="text-lg font-semibold text-white">Crear nuevo usuario</h2>
+                    <p className="text-sm text-slate-300">Asignar roles disponibles desde el directorio.</p>
+                    <form onSubmit={handleCreateUser} className="mt-4 grid gap-3 md:grid-cols-6">
+                        <label className="grid gap-2 text-sm text-slate-200 md:col-span-3">
+                            <span>Correo electrónico</span>
+                            <input
+                                type="email"
+                                className="w-full rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
+                                value={newEmail}
+                                onChange={(e) => setNewEmail(e.target.value)}
+                                required
+                                placeholder="usuario@correo.com"
+                            />
+                        </label>
+                        <label className="grid gap-2 text-sm text-slate-200 md:col-span-3">
+                            <span>Contraseña</span>
+                            <input
+                                type="password"
+                                className="w-full rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                required
+                                placeholder="••••••••"
+                            />
+                        </label>
+                        <fieldset className="md:col-span-4">
+                            <legend className="text-sm font-medium text-slate-200">Roles</legend>
+                            <div className="mt-2 flex flex-wrap gap-3">
+                                {roleOptions.length === 0 && (
+                                    <p className="text-xs text-slate-400">No hay roles disponibles.</p>
+                                )}
+                                {roleOptions.map((role) => {
+                                    const checked = newRoles.includes(role);
+                                    return (
+                                        <label
+                                            key={role}
+                                            className="flex items-center gap-2 rounded-lg border border-white/10 bg-slate-900/60 px-3 py-2 text-sm text-slate-100 hover:border-cyan-400/40"
+                                        >
+                                            <input
+                                                type="checkbox"
+                                                className="h-4 w-4 rounded border-white/30 bg-slate-900 text-cyan-400 focus:ring-cyan-400"
+                                                checked={checked}
+                                                onChange={(e) => {
+                                                    const nextRoles = e.target.checked
+                                                        ? [...newRoles, role]
+                                                        : newRoles.filter((r) => r !== role);
+                                                    setNewRoles(nextRoles);
+                                                }}
+                                            />
+                                            <span>{role}</span>
+                                        </label>
+                                    );
+                                })}
+                            </div>
+                        </fieldset>
+                        <div className="flex items-end md:col-span-2">
+                            <button
+                                type="submit"
+                                className="w-full rounded-lg bg-gradient-to-r from-cyan-400 to-fuchsia-500 px-4 py-2 text-sm font-semibold text-slate-900"
+                            >
+                                Crear usuario
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </section>
 
             <section className="overflow-hidden rounded-2xl border border-white/10 bg-white/5">
@@ -211,53 +277,66 @@ export default function AdminUsersPage() {
                             </tr>
                         </thead>
                         <tbody>
-                            {users.map((u) => (
-                                <tr key={u.id} className="border-t border-white/5">
-                                    <td className="px-4 py-2">{u.email}</td>
-                                    <td className="px-4 py-2">
-                                        {u.emailConfirmed ? (
-                                            <span className="text-emerald-400">Sí</span>
-                                        ) : (
-                                            <span className="text-amber-400">No</span>
-                                        )}
-                                    </td>
-                                    <td className="px-4 py-2">
-                                        <select
-                                            multiple
-                                            value={u.roles}
-                                            onChange={(e) =>
-                                                handleRolesChange(
-                                                    u.id,
-                                                    Array.from(e.target.selectedOptions).map((o) => o.value)
-                                                )
-                                            }
-                                            className="min-w-[200px] rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-sm text-white focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
-                                        >
-                                            {roleOptions.map((role) => (
-                                                <option key={role} value={role} className="bg-slate-900">
-                                                    {role}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </td>
-                                    <td className="px-4 py-2">
-                                        <div className="flex flex-wrap gap-2">
-                                            <button
-                                                className="rounded-lg bg-slate-800 px-3 py-1 text-xs hover:bg-slate-700"
-                                                onClick={() => setPasswordUserId(u.id)}
-                                            >
-                                                Cambiar contraseña
-                                            </button>
-                                            <button
-                                                className="rounded-lg bg-red-600 px-3 py-1 text-xs hover:bg-red-500"
-                                                onClick={() => handleDeleteUser(u)}
-                                            >
-                                                Eliminar
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
+                            {users.map((u) => {
+                                const availableRoles = Array.from(new Set([...(u.roles ?? []), ...roleOptions]));
+                                return (
+                                    <tr key={u.id} className="border-t border-white/5">
+                                        <td className="px-4 py-2">{u.email}</td>
+                                        <td className="px-4 py-2">
+                                            {u.emailConfirmed ? (
+                                                <span className="text-emerald-400">Sí</span>
+                                            ) : (
+                                                <span className="text-amber-400">No</span>
+                                            )}
+                                        </td>
+                                        <td className="px-4 py-2">
+                                            <div className="flex flex-wrap gap-2">
+                                                {availableRoles.length === 0 && (
+                                                    <span className="text-xs text-slate-400">Sin roles</span>
+                                                )}
+                                                {availableRoles.map((role) => {
+                                                    const checked = u.roles?.includes(role) ?? false;
+                                                    return (
+                                                        <label
+                                                            key={role}
+                                                            className="flex items-center gap-2 rounded-lg border border-white/10 bg-slate-900/60 px-3 py-2 text-xs text-slate-100 hover:border-cyan-400/40"
+                                                        >
+                                                            <input
+                                                                type="checkbox"
+                                                                className="h-4 w-4 rounded border-white/30 bg-slate-900 text-cyan-400 focus:ring-cyan-400"
+                                                                checked={checked}
+                                                                onChange={(e) => {
+                                                                    const nextRoles = e.target.checked
+                                                                        ? Array.from(new Set([...(u.roles ?? []), role]))
+                                                                        : (u.roles ?? []).filter((r) => r !== role);
+                                                                    handleRolesChange(u.id, nextRoles);
+                                                                }}
+                                                            />
+                                                            <span>{role}</span>
+                                                        </label>
+                                                    );
+                                                })}
+                                            </div>
+                                        </td>
+                                        <td className="px-4 py-2">
+                                            <div className="flex flex-wrap gap-2">
+                                                <button
+                                                    className="rounded-lg bg-slate-800 px-3 py-1 text-xs hover:bg-slate-700"
+                                                    onClick={() => setPasswordUserId(u.id)}
+                                                >
+                                                    Cambiar contraseña
+                                                </button>
+                                                <button
+                                                    className="rounded-lg bg-red-600 px-3 py-1 text-xs hover:bg-red-500"
+                                                    onClick={() => handleDeleteUser(u)}
+                                                >
+                                                    Eliminar
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
 
                             {!loading && users.length === 0 && (
                                 <tr>
