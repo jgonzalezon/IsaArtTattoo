@@ -39,7 +39,7 @@ export function getCategories() {
 }
 
 export function createCategory(payload: Partial<AdminCategory>) {
-    return apiFetch<AdminCategory>("/api/catalog/categories", {
+    return apiFetch<AdminCategory>("/api/admin/catalog/categories", {
         method: "POST",
         body: JSON.stringify(payload),
         ...authHeaders(),
@@ -47,7 +47,7 @@ export function createCategory(payload: Partial<AdminCategory>) {
 }
 
 export function updateCategory(id: number, payload: Partial<AdminCategory>) {
-    return apiFetch<AdminCategory>(`/api/catalog/categories/${id}`, {
+    return apiFetch<AdminCategory>(`/api/admin/catalog/categories/${id}`, {
         method: "PUT",
         body: JSON.stringify(payload),
         ...authHeaders(),
@@ -55,7 +55,7 @@ export function updateCategory(id: number, payload: Partial<AdminCategory>) {
 }
 
 export function deleteCategory(id: number) {
-    return apiFetch<void>(`/api/catalog/categories/${id}`, {
+    return apiFetch<void>(`/api/admin/catalog/categories/${id}`, {
         method: "DELETE",
         ...authHeaders(),
     });
@@ -66,7 +66,7 @@ export function getProducts() {
 }
 
 export function createProduct(payload: Partial<AdminProduct> & { categoryId?: number }) {
-    return apiFetch<AdminProduct>("/api/catalog/products", {
+    return apiFetch<AdminProduct>("/api/admin/catalog/products", {
         method: "POST",
         body: JSON.stringify({
             ...payload,
@@ -77,7 +77,7 @@ export function createProduct(payload: Partial<AdminProduct> & { categoryId?: nu
 }
 
 export function updateProduct(id: number, payload: Partial<AdminProduct> & { categoryId?: number }) {
-    return apiFetch<AdminProduct>(`/api/catalog/products/${id}`, {
+    return apiFetch<AdminProduct>(`/api/admin/catalog/products/${id}`, {
         method: "PUT",
         body: JSON.stringify(payload),
         ...authHeaders(),
@@ -85,7 +85,7 @@ export function updateProduct(id: number, payload: Partial<AdminProduct> & { cat
 }
 
 export function deleteProduct(id: number) {
-    return apiFetch<void>(`/api/catalog/products/${id}`, {
+    return apiFetch<void>(`/api/admin/catalog/products/${id}`, {
         method: "DELETE",
         ...authHeaders(),
     });
