@@ -1,14 +1,51 @@
 import { apiFetch } from "../lib/api";
 
+export interface Category {
+    id: number;
+    name: string;
+    description?: string | null;
+    displayOrder: number;
+    productsCount: number;
+}
+
+export interface ProductImage {
+    id: number;
+    url: string;
+    altText?: string | null;
+    displayOrder: number;
+}
+
 export interface Product {
     id: string;
     name: string;
-    description?: string;
+    description?: string | null;
     price: number;
-    imageUrl?: string;
+    imageUrl?: string | null;
     stock?: number;
     tags?: string[];
+    categoryName?: string | null;
+    images?: ProductImage[];
 }
+
+type ApiProductListItem = {
+    id: number;
+    name: string;
+    shortDescription?: string | null;
+    price: number;
+    mainImageUrl?: string | null;
+    categoryName?: string | null;
+};
+
+type ApiProductDetail = {
+    id: number;
+    name: string;
+    shortDescription?: string | null;
+    price: number;
+    stock: number;
+    isActive: boolean;
+    categoryName?: string | null;
+    images?: ProductImage[];
+};
 
 export interface CartItemPayload {
     productId: string;
@@ -52,12 +89,46 @@ const authHeaders = (token: string | null): Record<string, string> =>
           }
         : {};
 
+export function fetchCategories() {
+    return apiFetch<Category[]>("/api/catalog/categories");
+}
+
+function mapListItem(apiProduct: ApiProductListItem): Product {
+    return {
+        id: apiProduct.id.toString(),
+        name: apiProduct.name,
+        description: apiProduct.shortDescription ?? undefined,
+        price: Number(apiProduct.price),
+        imageUrl: apiProduct.mainImageUrl ?? undefined,
+        categoryName: apiProduct.categoryName ?? undefined,
+        tags: apiProduct.categoryName ? [apiProduct.categoryName] : undefined,
+    };
+}
+
+function mapProductDetail(apiProduct: ApiProductDetail): Product {
+    return {
+        id: apiProduct.id.toString(),
+        name: apiProduct.name,
+        description: apiProduct.shortDescription ?? undefined,
+        price: Number(apiProduct.price),
+        stock: apiProduct.stock,
+        imageUrl: apiProduct.images?.[0]?.url ?? undefined,
+        categoryName: apiProduct.categoryName ?? undefined,
+        images: apiProduct.images,
+        tags: apiProduct.categoryName ? [apiProduct.categoryName] : undefined,
+    };
+}
+
 export function fetchProducts() {
-    return apiFetch<Product[]>("/api/v1/catalog/products");
+    return apiFetch<ApiProductListItem[]>("/api/catalog/products").then(
+        (items) => items.map(mapListItem)
+    );
 }
 
 export function fetchProductById(id: string) {
-    return apiFetch<Product>(`/api/v1/catalog/products/${id}`);
+    return apiFetch<ApiProductDetail>(`/api/catalog/products/${id}`).then(
+        (product) => mapProductDetail(product)
+    );
 }
 
 export function fetchCart(token: string | null) {
