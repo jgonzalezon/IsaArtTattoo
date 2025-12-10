@@ -26,10 +26,20 @@ export async function apiFetch<T>(
         ...(options.headers || {}),
     };
 
-    const hasContentType = Object.keys(headers)
-        .some(h => h.toLowerCase() === "content-type");
+    const hasAuthorization = Object.keys(headers)
+        .some((h) => h.toLowerCase() === "authorization");
 
-    if (!hasContentType) {
+    const token = localStorage.getItem("auth_token");
+    if (!hasAuthorization && token) {
+        (headers as any).Authorization = `Bearer ${token}`;
+    }
+
+    const hasContentType = Object.keys(headers)
+        .some((h) => h.toLowerCase() === "content-type");
+
+    const isFormData = options.body instanceof FormData;
+
+    if (!hasContentType && !isFormData) {
         (headers as any)["Content-Type"] = "application/json";
     }
 

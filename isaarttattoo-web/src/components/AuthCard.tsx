@@ -5,9 +5,9 @@ import { register as apiRegister, resendConfirmation as apiResendConfirmation } 
 import type { LoginRequest } from "../api/auth";
 
 type Mode = "login" | "register" | "awaiting-confirmation";
-type Props = { apiBase: string; initialMode?: Mode };
+type Props = { initialMode?: Mode };
 
-export default function AuthCard({ apiBase, initialMode }: Props) {
+export default function AuthCard({ initialMode }: Props) {
     const [mode, setMode] = useState<Mode>(initialMode ?? "login");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -72,7 +72,7 @@ export default function AuthCard({ apiBase, initialMode }: Props) {
 
     return (
         <div className="overflow-hidden rounded-3xl border border-white/10 bg-slate-950/70 shadow-2xl backdrop-blur-xl">
-            <div className="grid gap-8 p-8 sm:grid-cols-[1.1fr_1fr]">
+            <div className="flex flex-col gap-8 p-8">
                 <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-cyan-500/20 via-fuchsia-500/15 to-indigo-500/10 p-6 text-white">
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.08),transparent_35%)]"></div>
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_0%,rgba(255,255,255,0.05),transparent_35%)]"></div>
@@ -141,27 +141,29 @@ export default function AuthCard({ apiBase, initialMode }: Props) {
 
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <label className="grid gap-2 text-sm text-slate-200">
-                            <span>Correo electrónico</span>
+                            <span className="font-medium">Correo electrónico</span>
                             <input
                                 type="email"
                                 required
                                 autoComplete="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="rounded-xl border border-white/10 bg-slate-900/70 px-4 py-3 text-white placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none"
+                                className="rounded-xl border border-white/10 bg-slate-900/70 px-4 py-3 text-white placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/60"
                                 placeholder="nombre@correo.com"
                             />
                         </label>
 
                         <label className="grid gap-2 text-sm text-slate-200">
                             <div className="flex items-center justify-between">
-                                <span>Contraseña</span>
-                                <Link
-                                    to="/reset-password"
-                                    className="text-xs text-cyan-200 underline-offset-4 hover:text-cyan-100 hover:underline"
-                                >
-                                    ¿Has olvidado tu contraseña?
-                                </Link>
+                                <span className="font-medium">Contraseña</span>
+                                {activeTab === "login" && (
+                                    <Link
+                                        to="/reset-password"
+                                        className="text-xs text-cyan-200 underline-offset-4 hover:text-cyan-100 hover:underline"
+                                    >
+                                        ¿Has olvidado tu contraseña?
+                                    </Link>
+                                )}
                             </div>
                             <input
                                 type="password"
@@ -169,7 +171,7 @@ export default function AuthCard({ apiBase, initialMode }: Props) {
                                 autoComplete={activeTab === "login" ? "current-password" : "new-password"}
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="rounded-xl border border-white/10 bg-slate-900/70 px-4 py-3 text-white placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none"
+                                className="rounded-xl border border-white/10 bg-slate-900/70 px-4 py-3 text-white placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/60"
                                 placeholder="••••••••"
                             />
                         </label>
@@ -204,7 +206,7 @@ export default function AuthCard({ apiBase, initialMode }: Props) {
                         </div>
                     )}
 
-                    {(message || errorMessage || apiBase) && (
+                    {(message || errorMessage) && (
                         <div className="space-y-2 text-sm">
                             {message && (
                                 <div className="rounded-xl border border-cyan-400/30 bg-cyan-500/10 px-4 py-3 text-cyan-100">
@@ -215,11 +217,6 @@ export default function AuthCard({ apiBase, initialMode }: Props) {
                                 <div className="rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-red-100">
                                     {errorMessage}
                                 </div>
-                            )}
-                            {apiBase && (
-                                <p className="text-center text-slate-400">
-                                    API base: <code className="text-slate-200">{apiBase}</code>
-                                </p>
                             )}
                         </div>
                     )}

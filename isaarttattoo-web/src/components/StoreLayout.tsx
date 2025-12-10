@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
-import { useAuth } from "../auth/AuthContext";
 import { useCart } from "../context/CartContext";
 import type { Category } from "../api/shop";
 import { fetchCategories } from "../api/shop";
+import HeaderAuthControls from "./auth/HeaderAuthControls";
 
 interface Props {
     title: string;
@@ -13,7 +13,6 @@ interface Props {
 }
 
 export default function StoreLayout({ title, description, children }: Props) {
-    const { isAuthenticated, logout } = useAuth();
     const { items } = useCart();
     const navigate = useNavigate();
     const [categories, setCategories] = useState<Category[]>([]);
@@ -67,58 +66,7 @@ export default function StoreLayout({ title, description, children }: Props) {
                             <p className="text-sm text-slate-300">{description}</p>
                         )}
                     </div>
-                    <nav className="flex flex-wrap items-center gap-3 text-sm text-slate-100">
-                        <Link
-                            to="/"
-                            className="rounded-lg border border-white/10 px-3 py-1.5 hover:bg-white/10"
-                        >
-                            Inicio
-                        </Link>
-                        <Link
-                            to="/products"
-                            className="rounded-lg border border-white/10 px-3 py-1.5 hover:bg-white/10"
-                        >
-                            Catálogo
-                        </Link>
-                        <Link
-                            to="/cart"
-                            className="rounded-lg border border-white/10 px-3 py-1.5 hover:bg-white/10"
-                        >
-                            Carrito ({totalItems})
-                        </Link>
-                        <Link
-                            to="/orders"
-                            className="rounded-lg border border-white/10 px-3 py-1.5 hover:bg-white/10"
-                        >
-                            Órdenes
-                        </Link>
-                        {isAuthenticated ? (
-                            <button
-                                onClick={() => {
-                                    logout();
-                                    navigate("/");
-                                }}
-                                className="rounded-lg bg-gradient-to-r from-cyan-400 to-fuchsia-500 px-3 py-1.5 text-slate-900"
-                            >
-                                Cerrar sesión
-                            </button>
-                        ) : (
-                            <>
-                                <Link
-                                    to="/login"
-                                    className="rounded-lg border border-white/10 px-3 py-1.5 hover:bg-white/10"
-                                >
-                                    Iniciar sesión
-                                </Link>
-                                <Link
-                                    to="/register"
-                                    className="rounded-lg bg-gradient-to-r from-cyan-400 to-fuchsia-500 px-3 py-1.5 text-slate-900"
-                                >
-                                    Registrarse
-                                </Link>
-                            </>
-                        )}
-                    </nav>
+                    <HeaderAuthControls cartCount={totalItems} />
                 </div>
                 <div className="w-full">
                     <div className="hidden flex-wrap items-center gap-2 text-sm text-slate-100 md:flex">

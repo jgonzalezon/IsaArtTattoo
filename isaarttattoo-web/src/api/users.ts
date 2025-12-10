@@ -24,6 +24,19 @@ export interface ChangeUserPasswordRequest {
     newPassword: string;
 }
 
+export interface RoleResponse {
+    id: string;
+    name: string;
+}
+
+export interface CreateRoleRequest {
+    name: string;
+}
+
+export interface DeleteRoleRequest {
+    name: string;
+}
+
 // Helper para meter el JWT
 function authOptions(extra: RequestInit = {}): RequestInit {
     // IMPORTANTE: misma clave que en AuthCard
@@ -65,6 +78,24 @@ export async function changeUserPassword(payload: ChangeUserPasswordRequest) {
 
 export async function deleteUser(id: string) {
     return apiFetch(`/api/v1/Users/${id}`, authOptions({
+        method: "DELETE",
+    }));
+}
+
+export async function fetchRoles() {
+    return apiFetch<RoleResponse[]>("/api/v1/Roles/Listar roles", authOptions());
+}
+
+export async function createRole(payload: CreateRoleRequest) {
+    return apiFetch("/api/v1/Roles/Crear Rol", authOptions({
+        method: "POST",
+        body: JSON.stringify(payload),
+    }));
+}
+
+export async function deleteRole(name: string) {
+    const encodedName = encodeURIComponent(name);
+    return apiFetch(`/api/v1/Roles/Borrar Rol ${encodedName}` as const, authOptions({
         method: "DELETE",
     }));
 }
