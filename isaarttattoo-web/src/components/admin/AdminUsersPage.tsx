@@ -26,13 +26,23 @@ export default function AdminUsersPage() {
     const loadData = async () => {
         try {
             setLoading(true);
-            const [usersResponse, rolesResponse] = await Promise.all([
-                getUsers(),
-                fetchRoles(),
-            ]);
+            const usersResponse = await getUsers();
             const sortedUsers = usersResponse.sort((a, b) => a.email.localeCompare(b.email));
             setUsers(sortedUsers);
-            setRoles(rolesResponse);
+
+            try {
+                const rolesResponse = await fetchRoles();
+                setRoles(rolesResponse);
+            } catch (rolesErr) {
+                console.error(rolesErr);
+                // Si no cargan los roles, usamos los presentes en los usuarios para no romper la UI.
+                const fallbackRoles = Array.from(
+                    new Set(sortedUsers.flatMap((u) => u.roles ?? [])),
+                ).map((r) => ({ id: r, name: r }));
+                setRoles(fallbackRoles);
+                setFeedback("No se pudieron cargar los roles desde la API, usando valores actuales.");
+            }
+
             setError(null);
         } catch (err) {
             console.error(err);

@@ -75,5 +75,5 @@ export async function deleteUser(id: string) {
 }
 
 export async function fetchRoles() {
-    return apiFetch<RoleResponse[]>("/api/v1/Roles/Listar%20roles", authOptions());
+    return apiFetch<RoleResponse[]>("/api/v1/Roles/Listar roles", authOptions());
 }
