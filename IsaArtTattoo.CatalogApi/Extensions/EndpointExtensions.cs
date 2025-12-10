@@ -152,6 +152,17 @@ public static class EndpointExtensions
 
         // ------ Productos ------
 
+        // GET /api/admin/catalog/products
+        adminGroup.MapGet("/products", async (
+            ICatalogService service,
+            CancellationToken ct) =>
+        {
+            var products = await service.GetAdminProductsAsync(ct);
+            return Results.Ok(products);
+        })
+        .WithSummary("Obtiene todos los productos con datos de administración")
+        .WithDescription("Devuelve listado completo incluyendo stock, estado y categoría.");
+
         // DELETE /api/admin/catalog/products/{productId}/images/{imageId}
         adminGroup.MapDelete("/products/{productId:int}/images/{imageId:int}", async (
             int productId,
