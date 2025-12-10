@@ -7,6 +7,7 @@ import {
     deleteUser,
     fetchRoles,
     createRole,
+    deleteRole,
 } from "../../api/users";
 import type { UserSummary, RoleResponse } from "../../api/users";
 import { Link } from "react-router-dom";
@@ -22,6 +23,7 @@ export default function AdminUsersPage() {
     const [newPassword, setNewPassword] = useState("");
     const [newRoles, setNewRoles] = useState<string[]>([]);
     const [newRoleName, setNewRoleName] = useState("");
+    const [roleToDelete, setRoleToDelete] = useState("");
 
     const [passwordUserId, setPasswordUserId] = useState<string | null>(null);
     const [passwordNew, setPasswordNew] = useState("");
@@ -58,6 +60,12 @@ export default function AdminUsersPage() {
     useEffect(() => {
         loadData();
     }, []);
+
+    useEffect(() => {
+        if (roles.length > 0 && !roleToDelete) {
+            setRoleToDelete(roles[0].name);
+        }
+    }, [roles, roleToDelete]);
 
     const roleOptions = useMemo(() => roles.map((r) => r.name), [roles]);
 
@@ -98,6 +106,26 @@ export default function AdminUsersPage() {
         } catch (err) {
             console.error(err);
             setError("No se pudo crear el rol");
+        }
+    };
+
+    const handleDeleteRole = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!roleToDelete) {
+            setError("Selecciona un rol para borrar.");
+            return;
+        }
+        if (!confirm(`¿Seguro que quieres borrar el rol "${roleToDelete}"?`)) return;
+        setError(null);
+        setFeedback(null);
+        try {
+            await deleteRole(roleToDelete);
+            setFeedback("Rol eliminado correctamente.");
+            setRoleToDelete("");
+            await loadData();
+        } catch (err) {
+            console.error(err);
+            setError("No se pudo borrar el rol");
         }
     };
 
@@ -167,10 +195,12 @@ export default function AdminUsersPage() {
             )}
 
             <section className="grid gap-4 md:grid-cols-5">
-                <div className="md:col-span-2 rounded-2xl border border-white/10 bg-white/5 p-4">
-                    <h2 className="text-lg font-semibold text-white">Crear nuevo rol</h2>
-                    <p className="text-sm text-slate-300">Agrega roles personalizados antes de asignarlos.</p>
-                    <form onSubmit={handleCreateRole} className="mt-4 space-y-3">
+                <div className="md:col-span-2 space-y-4 rounded-2xl border border-white/10 bg-white/5 p-4">
+                    <div className="space-y-1">
+                        <h2 className="text-lg font-semibold text-white">Crear nuevo rol</h2>
+                        <p className="text-sm text-slate-300">Agrega roles personalizados antes de asignarlos.</p>
+                    </div>
+                    <form onSubmit={handleCreateRole} className="space-y-3">
                         <label className="grid gap-2 text-sm text-slate-200">
                             <span>Nombre del rol</span>
                             <input
@@ -188,6 +218,45 @@ export default function AdminUsersPage() {
                             Crear rol
                         </button>
                     </form>
+
+                    <div className="h-px bg-white/5" />
+
+                    <div className="space-y-2">
+                        <div className="flex items-center justify-between gap-3">
+                            <div>
+                                <h3 className="text-base font-semibold text-white">Borrar rol</h3>
+                                <p className="text-xs text-slate-300">Selecciona un rol existente para eliminarlo.</p>
+                            </div>
+                            <span className="rounded-full bg-white/10 px-3 py-1 text-[11px] text-slate-200">
+                                {roles.length} roles
+                            </span>
+                        </div>
+                        <form onSubmit={handleDeleteRole} className="space-y-3">
+                            <label className="grid gap-2 text-sm text-slate-200">
+                                <span>Rol a borrar</span>
+                                <select
+                                    className="w-full rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-sm text-white focus:border-red-400 focus:outline-none focus:ring-2 focus:ring-red-500/40"
+                                    value={roleToDelete}
+                                    onChange={(e) => setRoleToDelete(e.target.value)}
+                                >
+                                    <option value="" disabled>
+                                        Selecciona un rol
+                                    </option>
+                                    {roles.map((role) => (
+                                        <option key={role.id} value={role.name}>
+                                            {role.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </label>
+                            <button
+                                type="submit"
+                                className="w-full rounded-lg border border-red-400/40 bg-red-500/10 px-4 py-2 text-sm font-semibold text-red-100 transition hover:border-red-300 hover:bg-red-500/20"
+                            >
+                                Borrar rol
+                            </button>
+                        </form>
+                    </div>
                 </div>
 
                 <div className="md:col-span-3 rounded-2xl border border-white/10 bg-white/5 p-4">
