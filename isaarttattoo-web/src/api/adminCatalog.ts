@@ -24,25 +24,14 @@ export interface ProductImage {
     displayOrder: number;
 }
 
-const authHeaders = (contentType: string | null = "application/json"): RequestInit => {
-    const token = localStorage.getItem("auth_token");
-    return {
-        headers: {
-            ...(contentType ? { "Content-Type": contentType } : {}),
-            ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-    };
-};
-
 export function getCategories() {
-    return apiFetch<AdminCategory[]>("/api/catalog/categories", authHeaders());
+    return apiFetch<AdminCategory[]>("/api/catalog/categories");
 }
 
 export function createCategory(payload: Partial<AdminCategory>) {
     return apiFetch<AdminCategory>("/api/admin/catalog/categories", {
         method: "POST",
         body: JSON.stringify(payload),
-        ...authHeaders(),
     });
 }
 
@@ -50,19 +39,17 @@ export function updateCategory(id: number, payload: Partial<AdminCategory>) {
     return apiFetch<AdminCategory>(`/api/admin/catalog/categories/${id}`, {
         method: "PUT",
         body: JSON.stringify(payload),
-        ...authHeaders(),
     });
 }
 
 export function deleteCategory(id: number) {
     return apiFetch<void>(`/api/admin/catalog/categories/${id}`, {
         method: "DELETE",
-        ...authHeaders(),
     });
 }
 
 export function getProducts() {
-    return apiFetch<AdminProduct[]>("/api/catalog/products", authHeaders());
+    return apiFetch<AdminProduct[]>("/api/catalog/products");
 }
 
 export function createProduct(payload: Partial<AdminProduct> & { categoryId?: number }) {
@@ -72,7 +59,6 @@ export function createProduct(payload: Partial<AdminProduct> & { categoryId?: nu
             ...payload,
             initialStock: payload.stock ?? 0,
         }),
-        ...authHeaders(),
     });
 }
 
@@ -80,14 +66,12 @@ export function updateProduct(id: number, payload: Partial<AdminProduct> & { cat
     return apiFetch<AdminProduct>(`/api/admin/catalog/products/${id}`, {
         method: "PUT",
         body: JSON.stringify(payload),
-        ...authHeaders(),
     });
 }
 
 export function deleteProduct(id: number) {
     return apiFetch<void>(`/api/admin/catalog/products/${id}`, {
         method: "DELETE",
-        ...authHeaders(),
     });
 }
 
@@ -116,7 +100,6 @@ export function createProductWithImage(payload: {
     return apiFetch<AdminProduct>("/api/admin/catalog/products-with-image", {
         method: "POST",
         body: form,
-        ...authHeaders(null),
     });
 }
 
@@ -132,6 +115,5 @@ export function uploadProductImage(
     return apiFetch<ProductImage>(`/api/admin/catalog/products/${productId}/images/upload`, {
         method: "POST",
         body: form,
-        ...authHeaders(null),
     });
 }

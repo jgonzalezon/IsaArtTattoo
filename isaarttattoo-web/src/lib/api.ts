@@ -26,6 +26,14 @@ export async function apiFetch<T>(
         ...(options.headers || {}),
     };
 
+    const hasAuthorization = Object.keys(headers)
+        .some((h) => h.toLowerCase() === "authorization");
+
+    const token = localStorage.getItem("auth_token");
+    if (!hasAuthorization && token) {
+        (headers as any).Authorization = `Bearer ${token}`;
+    }
+
     const hasContentType = Object.keys(headers)
         .some((h) => h.toLowerCase() === "content-type");
 
