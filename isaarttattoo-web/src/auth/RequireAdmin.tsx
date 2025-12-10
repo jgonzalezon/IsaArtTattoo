@@ -39,11 +39,11 @@ export function userIsAdmin(): boolean {
 export default function RequireAdmin() {
     const token = localStorage.getItem("auth_token");
     if (!token) {
-        return <Navigate to="/" replace />;
+        return <Navigate to="/login" replace />;
     }
 
     if (!userIsAdmin()) {
-        return <Navigate to="/" replace />;
+        return <Navigate to="/login" replace />;
     }
 
     return <Outlet />;

@@ -8,6 +8,7 @@ import ResetPasswordPage from "./pages/ResetPassword";
 import AdminUsersPage from "./components/admin/AdminUsersPage";
 import RequireAdmin from "./auth/RequireAdmin";
 import CatalogPage from "./pages/CatalogPage";
+import HomePage from "./pages/HomePage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
@@ -57,14 +58,7 @@ export default function App() {
                     <div className="relative z-10 mx-auto min-h-dvh max-w-7xl px-4">
 
                         <Routes>
-                            <Route
-                                path="/"
-                                element={
-                                    <AuthLayout apiBase={apiBase}>
-                                        <AuthCard apiBase={apiBase} />
-                                    </AuthLayout>
-                                }
-                            />
+                            <Route path="/" element={<HomePage />} />
 
                             <Route
                                 path="/login"
