@@ -15,6 +15,8 @@ public interface ICatalogService
         bool onlyActive = true,
         CancellationToken ct = default);
 
+    Task<IReadOnlyList<AdminProductListItemDto>> GetAdminProductsAsync(CancellationToken ct = default);
+
     // Público: obtener imágenes de un producto
     Task<IReadOnlyList<ProductImageDto>?> GetProductImagesAsync(int productId, CancellationToken ct = default);
 
