@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { userIsAdmin } from "../auth/RequireAdmin";
 import { useAuth } from "../auth/AuthContext";
 
@@ -17,6 +17,7 @@ export default function AuthCard({ apiBase }: Props) {
     const [busy, setBusy] = useState(false);
     const [info, setInfo] = useState<string | null>(null);
     const { login, logout, token } = useAuth();
+    const navigate = useNavigate();
 
     const activeTab = mode === "awaiting-confirmation" ? "register" : mode;
 
@@ -29,10 +30,12 @@ export default function AuthCard({ apiBase }: Props) {
             if (mode === "login") {
                 await login({ email, password });
                 setInfo("Login correcto. Token guardado en localStorage.");
+                navigate("/");
             } else {
                 await apiRegister({ email, password });
                 setMode("awaiting-confirmation");
                 setInfo("Usuario creado. Revisa tu correo para confirmar la cuenta.");
+                navigate("/");
             }
         } catch (err: any) {
             setInfo(err.message || "Ha ocurrido un error");

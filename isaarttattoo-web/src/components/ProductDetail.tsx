@@ -53,12 +53,14 @@ export default function ProductDetail() {
         navigate("/cart");
     };
 
+    const heroImage = product.imageUrl || product.images?.[0]?.url;
+
     return (
         <div className="grid gap-8 md:grid-cols-[1.2fr,1fr]">
             <div className="space-y-4">
-                {product.imageUrl ? (
+                {heroImage ? (
                     <img
-                        src={product.imageUrl}
+                        src={heroImage}
                         alt={product.name}
                         className="w-full rounded-2xl object-cover"
                     />
@@ -67,9 +69,21 @@ export default function ProductDetail() {
                         Sin imagen disponible
                     </div>
                 )}
-                {product.tags && (
+                {(product.images?.length ?? 0) > 1 && (
+                    <div className="flex flex-wrap gap-3">
+                        {product.images?.map((image) => (
+                            <img
+                                key={image.id}
+                                src={image.url}
+                                alt={image.altText ?? product.name}
+                                className="h-20 w-24 rounded-lg object-cover ring-1 ring-white/10"
+                            />
+                        ))}
+                    </div>
+                )}
+                {(product.tags?.length ?? 0) > 0 && (
                     <div className="flex flex-wrap gap-2 text-xs text-cyan-200">
-                        {product.tags.map((tag) => (
+                        {product.tags?.map((tag) => (
                             <span
                                 key={tag}
                                 className="rounded-full bg-cyan-500/10 px-2 py-1 text-cyan-200"
@@ -83,13 +97,23 @@ export default function ProductDetail() {
             <div className="space-y-4 rounded-2xl border border-white/10 bg-slate-900/40 p-6 shadow-lg">
                 <p className="text-sm uppercase tracking-wide text-cyan-300">Detalles</p>
                 <h2 className="text-3xl font-semibold text-white">{product.name}</h2>
-                <p className="text-slate-200">{product.description || "Pieza única personalizada."}</p>
+                {product.categoryName && (
+                    <span className="inline-flex items-center gap-2 rounded-full bg-fuchsia-500/15 px-3 py-1 text-xs font-semibold text-fuchsia-200">
+                        {product.categoryName}
+                    </span>
+                )}
+                <p className="text-slate-200">
+                    {product.description || "Pieza única personalizada."}
+                </p>
                 <p className="text-3xl font-bold text-cyan-300">
                     {product.price.toLocaleString("es-ES", {
                         style: "currency",
                         currency: "EUR",
                     })}
                 </p>
+                {typeof product.stock === "number" && (
+                    <p className="text-sm text-emerald-200">Stock: {product.stock}</p>
+                )}
                 <div className="flex gap-3">
                     <button
                         onClick={handleAddToCart}

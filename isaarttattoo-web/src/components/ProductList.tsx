@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import type { Product } from "../api/shop";
-import { fetchProducts } from "../api/shop";
+import type { Category, Product } from "../api/shop";
+import { fetchCategories, fetchProducts } from "../api/shop";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../auth/AuthContext";
 
 export default function ProductList() {
     const [products, setProducts] = useState<Product[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
     const [activeTag, setActiveTag] = useState<string>("Todos");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -17,8 +18,12 @@ export default function ProductList() {
     useEffect(() => {
         const load = async () => {
             try {
-                const res = await fetchProducts();
-                setProducts(res);
+                const [productList, catalogCategories] = await Promise.all([
+                    fetchProducts(),
+                    fetchCategories(),
+                ]);
+                setProducts(productList);
+                setCategories(catalogCategories);
             } catch (err: any) {
                 setError(err.message || "No se pudo cargar el catálogo");
             } finally {
@@ -58,8 +63,14 @@ export default function ProductList() {
         );
     };
 
-    const tags = Array.from(new Set(products.flatMap((p) => p.tags ?? [])));
-    const filters = ["Todos", ...tags];
+    const derivedTags = Array.from(
+        new Set(products.flatMap((p) => p.tags ?? []))
+    );
+    const categoryFilters = categories.map((c) => c.name);
+    const filters = [
+        "Todos",
+        ...(categoryFilters.length > 0 ? categoryFilters : derivedTags),
+    ];
 
     const filteredProducts = filterByTag(products, activeTag);
 
@@ -95,7 +106,7 @@ export default function ProductList() {
     ];
 
     const renderProductCard = (product: Product) => {
-        const categoryLabel = product.tags?.[0];
+        const categoryLabel = product.categoryName || product.tags?.[0];
         const stockLabel =
             product.stock === 0
                 ? "Agotado"
