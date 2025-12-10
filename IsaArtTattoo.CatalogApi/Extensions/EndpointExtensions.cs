@@ -93,7 +93,8 @@ public static class EndpointExtensions
 
         var adminGroup = app.MapGroup("/api/admin/catalog")
             .WithTags("Catalog.Admin")
-            .RequireAuthorization("admin");
+            .RequireAuthorization("admin")
+            .DisableAntiforgery();
 
         // ------ Categorías ------
 
@@ -250,8 +251,6 @@ public static class EndpointExtensions
                 ? Results.NotFound("Producto no encontrado.")
                 : Results.Ok(img);
         })
-        .DisableAntiforgery()
-
         .WithSummary("Sube una imagen desde archivo y la asocia al producto")
         .WithDescription("Recibe un archivo (multipart/form-data), lo sube a Supabase Storage y guarda la URL pública en la tabla product_images. Solo administradores.");
         // POST /api/admin/catalog/products-with-image
@@ -310,7 +309,6 @@ public static class EndpointExtensions
 
             return Results.Created($"/api/catalog/products/{product.Id}", fullProduct);
         })
-        .DisableAntiforgery()
         .WithSummary("Crea un producto con imagen")
         .WithDescription("Crea un nuevo producto y sube en la misma petición una imagen (multipart/form-data). Solo administradores.");
     }
