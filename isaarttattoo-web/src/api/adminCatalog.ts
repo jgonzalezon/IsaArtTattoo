@@ -25,35 +25,35 @@ export interface ProductImage {
 }
 
 export function getCategories() {
-    return apiFetch<AdminCategory[]>("/api/v1/catalog/categories");
+    return apiFetch<AdminCategory[]>("/api/catalog/categories");
 }
 
 export function createCategory(payload: Partial<AdminCategory>) {
-    return apiFetch<AdminCategory>("/api/v1/admin/catalog/categories", {
+    return apiFetch<AdminCategory>("/api/admin/catalog/categories", {
         method: "POST",
         body: JSON.stringify(payload),
     });
 }
 
 export function updateCategory(id: number, payload: Partial<AdminCategory>) {
-    return apiFetch<AdminCategory>(`/api/v1/admin/catalog/categories/${id}`, {
+    return apiFetch<AdminCategory>(`/api/admin/catalog/categories/${id}`, {
         method: "PUT",
         body: JSON.stringify(payload),
     });
 }
 
 export function deleteCategory(id: number) {
-    return apiFetch<void>(`/api/v1/admin/catalog/categories/${id}`, {
+    return apiFetch<void>(`/api/admin/catalog/categories/${id}`, {
         method: "DELETE",
     });
 }
 
 export function getProducts() {
-    return apiFetch<AdminProduct[]>("/api/v1/catalog/products");
+    return apiFetch<AdminProduct[]>("/api/catalog/products");
 }
 
 export function createProduct(payload: Partial<AdminProduct> & { categoryId?: number }) {
-    return apiFetch<AdminProduct>("/api/v1/admin/catalog/products", {
+    return apiFetch<AdminProduct>("/api/admin/catalog/products", {
         method: "POST",
         body: JSON.stringify({
             ...payload,
@@ -63,14 +63,14 @@ export function createProduct(payload: Partial<AdminProduct> & { categoryId?: nu
 }
 
 export function updateProduct(id: number, payload: Partial<AdminProduct> & { categoryId?: number }) {
-    return apiFetch<AdminProduct>(`/api/v1/admin/catalog/products/${id}`, {
+    return apiFetch<AdminProduct>(`/api/admin/catalog/products/${id}`, {
         method: "PUT",
         body: JSON.stringify(payload),
     });
 }
 
 export function deleteProduct(id: number) {
-    return apiFetch<void>(`/api/v1/admin/catalog/products/${id}`, {
+    return apiFetch<void>(`/api/admin/catalog/products/${id}`, {
         method: "DELETE",
     });
 }
@@ -97,7 +97,7 @@ export function createProductWithImage(payload: {
     if (payload.altText) form.append("altText", payload.altText);
     if (payload.displayOrder !== undefined) form.append("displayOrder", payload.displayOrder.toString());
 
-    return apiFetch<AdminProduct>("/api/v1/admin/catalog/products-with-image", {
+    return apiFetch<AdminProduct>("/api/admin/catalog/products-with-image", {
         method: "POST",
         body: form,
     });
@@ -112,7 +112,7 @@ export function uploadProductImage(
     if (payload.altText) form.append("altText", payload.altText);
     if (payload.displayOrder !== undefined) form.append("displayOrder", payload.displayOrder.toString());
 
-    return apiFetch<ProductImage>(`/api/v1/admin/catalog/products/${productId}/images/upload`, {
+    return apiFetch<ProductImage>(`/api/admin/catalog/products/${productId}/images/upload`, {
         method: "POST",
         body: form,
     });
