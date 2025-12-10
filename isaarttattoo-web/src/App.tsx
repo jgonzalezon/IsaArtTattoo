@@ -16,6 +16,9 @@ import OrdersPage from "./pages/OrdersPage";
 import { AuthProvider } from "./auth/AuthContext";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import { CartProvider } from "./context/CartContext";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminOrdersPage from "./pages/AdminOrdersPage";
+import AdminCatalogPage from "./pages/AdminCatalogPage";
 
 type AuthLayoutProps = {
     apiBase: string;
@@ -65,6 +68,15 @@ export default function App() {
                                 element={
                                     <AuthLayout apiBase={apiBase}>
                                         <AuthCard apiBase={apiBase} />
+                                    </AuthLayout>
+                                }
+                            />
+
+                            <Route
+                                path="/register"
+                                element={
+                                    <AuthLayout apiBase={apiBase}>
+                                        <AuthCard apiBase={apiBase} initialMode="register" />
                                     </AuthLayout>
                                 }
                             />
@@ -121,10 +133,10 @@ export default function App() {
                             />
 
                             <Route element={<RequireAdmin />}>
-                                <Route
-                                    path="/admin/users"
-                                    element={<AdminUsersPage />}
-                                />
+                                <Route path="/admin" element={<AdminDashboard />} />
+                                <Route path="/admin/orders" element={<AdminOrdersPage />} />
+                                <Route path="/admin/catalog" element={<AdminCatalogPage />} />
+                                <Route path="/admin/identity" element={<AdminUsersPage />} />
                             </Route>
 
                             <Route path="*" element={<Navigate to="/" replace />} />

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../auth/AuthContext";
 
 import StoreLayout from "../components/StoreLayout";
 import type { Product } from "../api/shop";
@@ -9,6 +10,7 @@ export default function HomePage() {
     const [featured, setFeatured] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const { isAuthenticated, isAdmin } = useAuth();
 
     useEffect(() => {
         const loadFeatured = async () => {
@@ -24,6 +26,8 @@ export default function HomePage() {
 
         loadFeatured();
     }, []);
+
+    const showAdminPanel = isAuthenticated && isAdmin;
 
     const stats = useMemo(
         () => [
@@ -69,6 +73,14 @@ export default function HomePage() {
                             >
                                 Iniciar sesión
                             </Link>
+                            {showAdminPanel && (
+                                <Link
+                                    to="/admin"
+                                    className="inline-flex items-center gap-2 rounded-xl border border-cyan-400/60 bg-cyan-400/10 px-5 py-3 text-base font-semibold text-cyan-100 transition hover:border-cyan-300 hover:text-white"
+                                >
+                                    Panel de administración
+                                </Link>
+                            )}
                         </div>
 
                         <div className="grid grid-cols-3 gap-4 rounded-2xl border border-white/10 bg-slate-900/40 p-4 text-center">
