@@ -27,9 +27,11 @@ export async function apiFetch<T>(
     };
 
     const hasContentType = Object.keys(headers)
-        .some(h => h.toLowerCase() === "content-type");
+        .some((h) => h.toLowerCase() === "content-type");
 
-    if (!hasContentType) {
+    const isFormData = options.body instanceof FormData;
+
+    if (!hasContentType && !isFormData) {
         (headers as any)["Content-Type"] = "application/json";
     }
 

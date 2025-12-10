@@ -17,11 +17,18 @@ export interface AdminProduct {
     categoryName?: string | null;
 }
 
-const authHeaders = (): RequestInit => {
+export interface ProductImage {
+    id: number;
+    url: string;
+    altText?: string | null;
+    displayOrder: number;
+}
+
+const authHeaders = (contentType: string | null = "application/json"): RequestInit => {
     const token = localStorage.getItem("auth_token");
     return {
         headers: {
-            "Content-Type": "application/json",
+            ...(contentType ? { "Content-Type": contentType } : {}),
             ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
     };
@@ -78,5 +85,50 @@ export function deleteProduct(id: number) {
     return apiFetch<void>(`/api/catalog/products/${id}`, {
         method: "DELETE",
         ...authHeaders(),
+    });
+}
+
+export function createProductWithImage(payload: {
+    name: string;
+    shortDescription?: string;
+    price: number;
+    categoryId?: number;
+    stock: number;
+    isActive: boolean;
+    file: File;
+    altText?: string;
+    displayOrder?: number;
+}) {
+    const form = new FormData();
+    form.append("name", payload.name);
+    form.append("shortDescription", payload.shortDescription ?? "");
+    form.append("price", payload.price.toString());
+    if (payload.categoryId) form.append("categoryId", payload.categoryId.toString());
+    form.append("initialStock", payload.stock.toString());
+    form.append("isActive", payload.isActive ? "true" : "false");
+    form.append("file", payload.file);
+    if (payload.altText) form.append("altText", payload.altText);
+    if (payload.displayOrder !== undefined) form.append("displayOrder", payload.displayOrder.toString());
+
+    return apiFetch<AdminProduct>("/api/admin/catalog/products-with-image", {
+        method: "POST",
+        body: form,
+        ...authHeaders(null),
+    });
+}
+
+export function uploadProductImage(
+    productId: number,
+    payload: { file: File; altText?: string; displayOrder?: number },
+) {
+    const form = new FormData();
+    form.append("file", payload.file);
+    if (payload.altText) form.append("altText", payload.altText);
+    if (payload.displayOrder !== undefined) form.append("displayOrder", payload.displayOrder.toString());
+
+    return apiFetch<ProductImage>(`/api/admin/catalog/products/${productId}/images/upload`, {
+        method: "POST",
+        body: form,
+        ...authHeaders(null),
     });
 }

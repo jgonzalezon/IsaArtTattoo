@@ -7,8 +7,10 @@ import {
     deleteCategory,
     getProducts,
     createProduct,
+    createProductWithImage,
     updateProduct,
     deleteProduct,
+    uploadProductImage,
 } from "../api/adminCatalog";
 import type { AdminCategory, AdminProduct } from "../api/adminCatalog";
 
@@ -28,7 +30,13 @@ export default function AdminCatalogPage() {
         stock: 0,
         isActive: true,
         categoryId: 0,
+        imageFile: null as File | null,
+        imageAlt: "",
+        imageDisplayOrder: 0,
     });
+    const [uploadState, setUploadState] = useState<
+        Record<number, { file: File | null; altText: string; displayOrder: number }>
+    >({});
 
     const loadData = async () => {
         try {
@@ -82,8 +90,32 @@ export default function AdminCatalogPage() {
             return;
         }
         try {
-            await createProduct(productForm);
-            setProductForm({ name: "", shortDescription: "", price: 0, stock: 0, isActive: true, categoryId: 0 });
+            if (productForm.imageFile) {
+                await createProductWithImage({
+                    name: productForm.name,
+                    shortDescription: productForm.shortDescription,
+                    price: productForm.price,
+                    categoryId: productForm.categoryId,
+                    stock: productForm.stock,
+                    isActive: productForm.isActive,
+                    file: productForm.imageFile,
+                    altText: productForm.imageAlt,
+                    displayOrder: productForm.imageDisplayOrder,
+                });
+            } else {
+                await createProduct(productForm);
+            }
+            setProductForm({
+                name: "",
+                shortDescription: "",
+                price: 0,
+                stock: 0,
+                isActive: true,
+                categoryId: 0,
+                imageFile: null,
+                imageAlt: "",
+                imageDisplayOrder: 0,
+            });
             setFeedback("Producto creado");
             await loadData();
         } catch (err) {
@@ -100,6 +132,30 @@ export default function AdminCatalogPage() {
         } catch (err) {
             console.error(err);
             setError("No se pudo actualizar el producto");
+        }
+    };
+
+    const handleUploadImage = async (productId: number) => {
+        const current = uploadState[productId];
+        if (!current?.file) {
+            setError("Selecciona una imagen para subir");
+            return;
+        }
+        try {
+            await uploadProductImage(productId, {
+                file: current.file,
+                altText: current.altText,
+                displayOrder: current.displayOrder,
+            });
+            setFeedback("Imagen subida correctamente");
+            setUploadState((prev) => ({
+                ...prev,
+                [productId]: { file: null, altText: "", displayOrder: 0 },
+            }));
+            await loadData();
+        } catch (err) {
+            console.error(err);
+            setError("No se pudo subir la imagen");
         }
     };
 
@@ -331,6 +387,41 @@ export default function AdminCatalogPage() {
                                 />
                                 Activo
                             </label>
+                            <label className="grid gap-2 text-sm text-slate-200 md:col-span-2">
+                                <span>Imagen (opcional)</span>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    className="rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-white"
+                                    onChange={(e) =>
+                                        setProductForm((p) => ({
+                                            ...p,
+                                            imageFile: e.target.files?.[0] ?? null,
+                                        }))
+                                    }
+                                />
+                                <div className="grid gap-2 md:grid-cols-2">
+                                    <input
+                                        type="text"
+                                        placeholder="Texto alternativo"
+                                        className="rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-white"
+                                        value={productForm.imageAlt}
+                                        onChange={(e) => setProductForm((p) => ({ ...p, imageAlt: e.target.value }))}
+                                    />
+                                    <input
+                                        type="number"
+                                        className="rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-white"
+                                        value={productForm.imageDisplayOrder}
+                                        onChange={(e) =>
+                                            setProductForm((p) => ({
+                                                ...p,
+                                                imageDisplayOrder: Number(e.target.value),
+                                            }))
+                                        }
+                                        placeholder="Orden"
+                                    />
+                                </div>
+                            </label>
                             <div className="md:col-span-6 flex justify-end">
                                 <button
                                     type="submit"
@@ -368,6 +459,7 @@ export default function AdminCatalogPage() {
                                         <th className="px-4 py-2 text-left">Precio</th>
                                         <th className="px-4 py-2 text-left">Stock</th>
                                         <th className="px-4 py-2 text-left">Activo</th>
+                                        <th className="px-4 py-2 text-left">Imagen</th>
                                         <th className="px-4 py-2 text-left">Acciones</th>
                                     </tr>
                                 </thead>
@@ -447,6 +539,64 @@ export default function AdminCatalogPage() {
                                                         )
                                                     }
                                                 />
+                                            </td>
+                                            <td className="px-4 py-2">
+                                                <div className="flex flex-col gap-2">
+                                                    <input
+                                                        type="file"
+                                                        accept="image/*"
+                                                        className="text-xs text-slate-200"
+                                                        onChange={(e) =>
+                                                            setUploadState((prev) => ({
+                                                                ...prev,
+                                                                [prod.id]: {
+                                                                    file: e.target.files?.[0] ?? null,
+                                                                    altText: prev[prod.id]?.altText ?? "",
+                                                                    displayOrder: prev[prod.id]?.displayOrder ?? 0,
+                                                                },
+                                                            }))
+                                                        }
+                                                    />
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Alt"
+                                                        className="rounded-lg border border-white/10 bg-slate-950 px-2 py-1 text-xs text-white"
+                                                        value={uploadState[prod.id]?.altText ?? ""}
+                                                        onChange={(e) =>
+                                                            setUploadState((prev) => ({
+                                                                ...prev,
+                                                                [prod.id]: {
+                                                                    file: prev[prod.id]?.file ?? null,
+                                                                    altText: e.target.value,
+                                                                    displayOrder: prev[prod.id]?.displayOrder ?? 0,
+                                                                },
+                                                            }))
+                                                        }
+                                                    />
+                                                    <div className="flex items-center gap-2">
+                                                        <input
+                                                            type="number"
+                                                            className="w-20 rounded-lg border border-white/10 bg-slate-950 px-2 py-1 text-xs text-white"
+                                                            value={uploadState[prod.id]?.displayOrder ?? 0}
+                                                            onChange={(e) =>
+                                                                setUploadState((prev) => ({
+                                                                    ...prev,
+                                                                    [prod.id]: {
+                                                                        file: prev[prod.id]?.file ?? null,
+                                                                        altText: prev[prod.id]?.altText ?? "",
+                                                                        displayOrder: Number(e.target.value),
+                                                                    },
+                                                                }))
+                                                            }
+                                                        />
+                                                        <button
+                                                            className="rounded-lg bg-cyan-500 px-3 py-1 text-xs font-semibold text-slate-900 hover:bg-cyan-400"
+                                                            onClick={() => handleUploadImage(prod.id)}
+                                                        >
+                                                            Subir
+                                                        </button>
+                                                    </div>
+                                                </div>
                                             </td>
                                             <td className="px-4 py-2">
                                                 <div className="flex gap-2">
