@@ -1,7 +1,10 @@
 import type { ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "../auth/AuthContext";
 import { useCart } from "../context/CartContext";
+import type { Category } from "../api/shop";
+import { fetchCategories } from "../api/shop";
 
 interface Props {
     title: string;
@@ -13,14 +16,40 @@ export default function StoreLayout({ title, description, children }: Props) {
     const { isAuthenticated, logout } = useAuth();
     const { items } = useCart();
     const navigate = useNavigate();
+    const [categories, setCategories] = useState<Category[]>([]);
+    const [categoriesLoading, setCategoriesLoading] = useState(true);
+    const [categoriesError, setCategoriesError] = useState(false);
 
     const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-    const categories = [
-        { label: "Tatuajes", value: "tatuajes" },
-        { label: "Camisetas", value: "camisetas" },
-        { label: "Tazas", value: "tazas" },
-        { label: "Merch", value: "merch" },
-    ];
+
+    useEffect(() => {
+        const loadCategories = async () => {
+            try {
+                const response = await fetchCategories();
+                setCategories(response);
+            } catch (error) {
+                console.error("No se pudieron cargar las categorías", error);
+                setCategoriesError(true);
+            } finally {
+                setCategoriesLoading(false);
+            }
+        };
+
+        loadCategories();
+    }, []);
+
+    const sortedCategories = useMemo(
+        () =>
+            [...categories].sort((a, b) => {
+                const orderA = a.displayOrder ?? Number.MAX_SAFE_INTEGER;
+                const orderB = b.displayOrder ?? Number.MAX_SAFE_INTEGER;
+                if (orderA === orderB) {
+                    return a.name.localeCompare(b.name);
+                }
+                return orderA - orderB;
+            }),
+        [categories]
+    );
 
     const handleCategorySelect = (value: string) => {
         if (!value) return;
@@ -67,33 +96,53 @@ export default function StoreLayout({ title, description, children }: Props) {
                             <button
                                 onClick={() => {
                                     logout();
-                                    navigate("/login");
+                                    navigate("/");
                                 }}
                                 className="rounded-lg bg-gradient-to-r from-cyan-400 to-fuchsia-500 px-3 py-1.5 text-slate-900"
                             >
                                 Cerrar sesión
                             </button>
                         ) : (
-                            <Link
-                                to="/login"
-                                className="rounded-lg bg-gradient-to-r from-cyan-400 to-fuchsia-500 px-3 py-1.5 text-slate-900"
-                            >
-                                Iniciar sesión
-                            </Link>
+                            <>
+                                <Link
+                                    to="/login"
+                                    className="rounded-lg border border-white/10 px-3 py-1.5 hover:bg-white/10"
+                                >
+                                    Iniciar sesión
+                                </Link>
+                                <Link
+                                    to="/register"
+                                    className="rounded-lg bg-gradient-to-r from-cyan-400 to-fuchsia-500 px-3 py-1.5 text-slate-900"
+                                >
+                                    Registrarse
+                                </Link>
+                            </>
                         )}
                     </nav>
                 </div>
                 <div className="w-full">
                     <div className="hidden flex-wrap items-center gap-2 text-sm text-slate-100 md:flex">
-                        {categories.map((category) => (
-                            <Link
-                                key={category.value}
-                                to={`/products?category=${category.value}`}
-                                className="rounded-full border border-white/10 px-3 py-1 hover:bg-white/10"
-                            >
-                                {category.label}
-                            </Link>
-                        ))}
+                        {categoriesLoading && (
+                            <span className="text-sm text-slate-300">Cargando categorías...</span>
+                        )}
+                        {!categoriesLoading && categoriesError && (
+                            <span className="text-sm text-slate-300">
+                                No se han podido cargar las categorías
+                            </span>
+                        )}
+                        {!categoriesLoading && !categoriesError && sortedCategories.length === 0 && (
+                            <span className="text-sm text-slate-300">No hay categorías disponibles</span>
+                        )}
+                        {!categoriesLoading && !categoriesError &&
+                            sortedCategories.map((category) => (
+                                <Link
+                                    key={category.id}
+                                    to={`/products?category=${category.name}`}
+                                    className="rounded-full border border-white/10 px-3 py-1 hover:bg-white/10"
+                                >
+                                    {category.name}
+                                </Link>
+                            ))}
                     </div>
                     <div className="md:hidden">
                         <label className="mb-2 block text-xs font-medium uppercase tracking-wide text-cyan-300">
@@ -107,11 +156,26 @@ export default function StoreLayout({ title, description, children }: Props) {
                             <option value="" disabled>
                                 Selecciona una categoría
                             </option>
-                            {categories.map((category) => (
-                                <option key={category.value} value={category.value} className="bg-slate-900">
-                                    {category.label}
+                            {categoriesLoading && (
+                                <option value="" disabled className="bg-slate-900">
+                                    Cargando categorías...
                                 </option>
-                            ))}
+                            )}
+                            {!categoriesLoading && categoriesError && (
+                                <option value="" disabled className="bg-slate-900">
+                                    No se han podido cargar las categorías
+                                </option>
+                            )}
+                            {!categoriesLoading && !categoriesError &&
+                                sortedCategories.map((category) => (
+                                    <option
+                                        key={category.id}
+                                        value={category.name}
+                                        className="bg-slate-900"
+                                    >
+                                        {category.name}
+                                    </option>
+                                ))}
                         </select>
                     </div>
                 </div>

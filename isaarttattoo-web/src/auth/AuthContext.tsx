@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { createContext, useContext, useState, useEffect } from "react";
 import { login as loginApi } from "../api/auth";
 import type { LoginRequest, LoginResponse } from "../api/auth";
+import { userIsAdmin } from "./RequireAdmin";
 
 
 interface AuthState {
@@ -11,6 +12,7 @@ interface AuthState {
 
 interface AuthContextValue extends AuthState {
     isAuthenticated: boolean;
+    isAdmin: boolean;
     login: (data: LoginRequest) => Promise<void>;
     logout: () => void;
 }
@@ -19,12 +21,17 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [token, setToken] = useState<string | null>(null);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     // opcional: hidratar desde localStorage
     useEffect(() => {
         const stored = localStorage.getItem("auth_token");
         if (stored) setToken(stored);
     }, []);
+
+    useEffect(() => {
+        setIsAdmin(userIsAdmin(token));
+    }, [token]);
 
     const login = async (data: LoginRequest) => {
         const res: LoginResponse = await loginApi(data);
@@ -42,6 +49,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             value={{
                 token,
                 isAuthenticated: !!token,
+                isAdmin,
                 login,
                 logout,
             }}

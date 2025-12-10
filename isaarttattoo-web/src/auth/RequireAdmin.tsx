@@ -1,7 +1,7 @@
 // src/auth/RequireAdmin.tsx
 import { Navigate, Outlet } from "react-router-dom";
 
-function parseJwt(token: string | null): any | null {
+export function parseJwt(token: string | null): any | null {
     if (!token) return null;
 
     try {
@@ -17,8 +17,11 @@ function parseJwt(token: string | null): any | null {
     }
 }
 
-export function userIsAdmin(): boolean {
-    const token = localStorage.getItem("auth_token");
+export function userIsAdmin(tokenFromArgs?: string | null): boolean {
+    const token =
+        tokenFromArgs !== undefined
+            ? tokenFromArgs
+            : localStorage.getItem("auth_token");
     const claims = parseJwt(token);
     if (!claims) return false;
 
@@ -38,12 +41,9 @@ export function userIsAdmin(): boolean {
 
 export default function RequireAdmin() {
     const token = localStorage.getItem("auth_token");
-    if (!token) {
-        return <Navigate to="/login" replace />;
-    }
 
-    if (!userIsAdmin()) {
-        return <Navigate to="/login" replace />;
+    if (!token || !userIsAdmin(token)) {
+        return <Navigate to="/" replace />;
     }
 
     return <Outlet />;
