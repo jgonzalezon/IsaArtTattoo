@@ -120,6 +120,43 @@ public class CatalogService : ICatalogService
         }).ToList();
     }
 
+    public async Task<IReadOnlyList<AdminProductListItemDto>> GetAdminProductsAsync(
+        int? categoryId = null,
+        string? search = null,
+        CancellationToken ct = default)
+    {
+        var query = _db.Products
+            .Include(p => p.Category)
+            .AsQueryable();
+
+        if (categoryId.HasValue)
+            query = query.Where(p => p.CategoryId == categoryId);
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            var term = search.Trim();
+            query = query.Where(p =>
+                p.Name.Contains(term) ||
+                (p.ShortDescription != null && p.ShortDescription.Contains(term)));
+        }
+
+        query = query.OrderBy(p => p.Name);
+
+        var products = await query.ToListAsync(ct);
+
+        return products
+            .Select(p => new AdminProductListItemDto(
+                p.Id,
+                p.Name,
+                p.ShortDescription,
+                p.Price,
+                p.Stock,
+                p.IsActive,
+                p.CategoryId,
+                p.Category?.Name))
+            .ToList();
+    }
+
     public async Task<ProductDetailDto?> GetProductByIdAsync(int id, CancellationToken ct = default)
     {
         var p = await _db.Products

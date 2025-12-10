@@ -112,6 +112,19 @@ public static class EndpointExtensions
         .WithSummary("Actualiza una imagen de producto")
         .WithDescription("Permite cambiar el orden, el altText y marcar una imagen como principal.");
 
+        // GET /api/admin/catalog/products
+        adminGroup.MapGet("/products", async (
+            int? categoryId,
+            string? search,
+            ICatalogService service,
+            CancellationToken ct) =>
+        {
+            var products = await service.GetAdminProductsAsync(categoryId, search, ct);
+            return Results.Ok(products);
+        })
+        .WithSummary("Lista de productos para administración")
+        .WithDescription("Incluye stock, estado y categoría sin filtrar solo por activos.");
+
         // POST /api/admin/catalog/categories
         adminGroup.MapPost("/categories", async (
             CreateCategoryDto dto,
