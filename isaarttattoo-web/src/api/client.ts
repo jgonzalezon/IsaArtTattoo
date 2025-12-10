@@ -4,14 +4,22 @@
 const RAW_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "";
 
 if (!RAW_BASE_URL) {
-    console.warn("VITE_API_BASE_URL no está definido");
+    console.warn("VITE_API_BASE_URL no estÃ¡ definido");
 }
 
-// Ej: "https://localhost:7213/" -> "https://localhost:7213"
-const API_BASE_URL = RAW_BASE_URL.replace(/\/+$/, "");
+// Normalizamos la URL base: quitamos barra final y descartamos paths accidentales
+// (p.ej. si alguien configura http://localhost:7213/identity tomamos el origin)
+const API_BASE_URL = (() => {
+    try {
+        const parsed = new URL(RAW_BASE_URL);
+        return parsed.origin;
+    } catch {
+        return RAW_BASE_URL.replace(/\/+$/, "");
+    }
+})();
 
 // ---------------------------------------------
-// Helper: normaliza rutas, añade /api/v1 si toca
+// Helper: normaliza rutas, aÃ±ade /api/v1 si toca
 // ---------------------------------------------
 function resolveApiUrl(path: string): string {
     // Aseguramos que empieza por "/"
@@ -24,7 +32,7 @@ function resolveApiUrl(path: string): string {
         return `${API_BASE_URL}${path}`;
     }
 
-    // Si es /api/... le inyectamos la versión
+    // Si es /api/... le inyectamos la versiÃ³n
     if (path.startsWith("/api/")) {
         return `${API_BASE_URL}/api/v1${path.substring(4)}`;
     }
@@ -39,7 +47,7 @@ export async function apiFetch<T>(
 ): Promise<T> {
     const url = resolveApiUrl(path);
 
-    console.log("apiFetch ?", url, options);
+    console.log("apiFetch â†’", url, options);
 
     const res = await fetch(url, {
         headers: {

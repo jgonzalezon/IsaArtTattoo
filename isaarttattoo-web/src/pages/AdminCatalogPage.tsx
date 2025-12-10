@@ -18,7 +18,7 @@ export default function AdminCatalogPage() {
     const [activeTab, setActiveTab] = useState<"categories" | "products">("categories");
     const [categories, setCategories] = useState<AdminCategory[]>([]);
     const [products, setProducts] = useState<AdminProduct[]>([]);
-    const [filterCategory, setFilterCategory] = useState<string>("");
+    const [filterCategory, setFilterCategory] = useState<number | "">("");
     const [error, setError] = useState<string | null>(null);
     const [feedback, setFeedback] = useState<string | null>(null);
 
@@ -90,20 +90,25 @@ export default function AdminCatalogPage() {
             return;
         }
         try {
+            const { imageFile, imageAlt, imageDisplayOrder, ...productData } = productForm;
+            const normalizedCategoryId = productData.categoryId || undefined;
             if (productForm.imageFile) {
                 await createProductWithImage({
                     name: productForm.name,
                     shortDescription: productForm.shortDescription,
                     price: productForm.price,
-                    categoryId: productForm.categoryId,
+                    categoryId: normalizedCategoryId,
                     stock: productForm.stock,
                     isActive: productForm.isActive,
                     file: productForm.imageFile,
-                    altText: productForm.imageAlt,
-                    displayOrder: productForm.imageDisplayOrder,
+                    altText: imageAlt,
+                    displayOrder: imageDisplayOrder,
                 });
             } else {
-                await createProduct(productForm);
+                await createProduct({
+                    ...productData,
+                    categoryId: normalizedCategoryId,
+                });
             }
             setProductForm({
                 name: "",
@@ -126,7 +131,8 @@ export default function AdminCatalogPage() {
 
     const handleUpdateProduct = async (product: AdminProduct) => {
         try {
-            await updateProduct(product.id, product);
+            const { categoryName, ...payload } = product;
+            await updateProduct(product.id, payload);
             setFeedback("Producto actualizado");
             await loadData();
         } catch (err) {
@@ -162,7 +168,7 @@ export default function AdminCatalogPage() {
     const filteredProducts = useMemo(
         () =>
             products.filter((p) =>
-                filterCategory ? p.categoryName === filterCategory : true,
+                filterCategory === "" ? true : p.categoryId === filterCategory,
             ),
         [products, filterCategory],
     );
@@ -438,11 +444,13 @@ export default function AdminCatalogPage() {
                                 <select
                                     className="ml-2 rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-sm text-white"
                                     value={filterCategory}
-                                    onChange={(e) => setFilterCategory(e.target.value)}
+                                    onChange={(e) =>
+                                        setFilterCategory(e.target.value === "" ? "" : Number(e.target.value))
+                                    }
                                 >
                                     <option value="">Todas</option>
                                     {sortedCategories.map((cat) => (
-                                        <option key={cat.id} value={cat.name ?? ""} className="bg-slate-900">
+                                        <option key={cat.id} value={cat.id} className="bg-slate-900">
                                             {cat.name}
                                         </option>
                                     ))}
@@ -480,13 +488,14 @@ export default function AdminCatalogPage() {
                                             <td className="px-4 py-2">
                                                 <select
                                                     className="rounded-lg border border-white/10 bg-slate-950 px-2 py-1 text-white"
-                                                    value={sortedCategories.find((c) => c.name === prod.categoryName)?.id ?? 0}
+                                                    value={prod.categoryId ?? 0}
                                                     onChange={(e) =>
                                                         setProducts((prev) =>
                                                             prev.map((p) =>
                                                                 p.id === prod.id
                                                                     ? {
                                                                           ...p,
+                                                                          categoryId: Number(e.target.value) || null,
                                                                           categoryName:
                                                                               sortedCategories.find((c) => c.id === Number(e.target.value))?.name ??
                                                                               "",

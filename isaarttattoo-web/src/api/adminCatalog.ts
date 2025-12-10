@@ -14,6 +14,7 @@ export interface AdminProduct {
     price: number;
     stock: number;
     isActive: boolean;
+    categoryId: number | null;
     categoryName?: string | null;
 }
 
@@ -49,10 +50,10 @@ export function deleteCategory(id: number) {
 }
 
 export function getProducts() {
-    return apiFetch<AdminProduct[]>("/api/catalog/products");
+    return apiFetch<AdminProduct[]>("/api/admin/catalog/products");
 }
 
-export function createProduct(payload: Partial<AdminProduct> & { categoryId?: number }) {
+export function createProduct(payload: Partial<AdminProduct> & { categoryId?: number | null }) {
     return apiFetch<AdminProduct>("/api/admin/catalog/products", {
         method: "POST",
         body: JSON.stringify({
@@ -62,7 +63,7 @@ export function createProduct(payload: Partial<AdminProduct> & { categoryId?: nu
     });
 }
 
-export function updateProduct(id: number, payload: Partial<AdminProduct> & { categoryId?: number }) {
+export function updateProduct(id: number, payload: Partial<AdminProduct> & { categoryId?: number | null }) {
     return apiFetch<AdminProduct>(`/api/admin/catalog/products/${id}`, {
         method: "PUT",
         body: JSON.stringify(payload),

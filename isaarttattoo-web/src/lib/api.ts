@@ -1,14 +1,21 @@
-﻿// src/lib/api.ts
+// src/lib/api.ts
 const RAW_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "";
 
 if (!RAW_BASE_URL) {
     console.warn("VITE_API_BASE_URL no está definido");
 }
 
-// Normalizamos: sin barra final
-const BASE_URL = RAW_BASE_URL.endsWith("/")
-    ? RAW_BASE_URL.slice(0, -1)
-    : RAW_BASE_URL;
+// Normalizamos: sin barra final y eliminando paths accidentales
+const BASE_URL = (() => {
+    try {
+        const parsed = new URL(RAW_BASE_URL);
+        return parsed.origin;
+    } catch {
+        return RAW_BASE_URL.endsWith("/")
+            ? RAW_BASE_URL.slice(0, -1)
+            : RAW_BASE_URL;
+    }
+})();
 
 export async function apiFetch<T>(
     path: string,
