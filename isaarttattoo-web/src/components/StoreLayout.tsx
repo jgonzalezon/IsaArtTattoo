@@ -1,0 +1,73 @@
+import type { ReactNode } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../auth/AuthContext";
+import { useCart } from "../context/CartContext";
+
+interface Props {
+    title: string;
+    description?: string;
+    children: ReactNode;
+}
+
+export default function StoreLayout({ title, description, children }: Props) {
+    const { isAuthenticated, logout } = useAuth();
+    const { items } = useCart();
+    const navigate = useNavigate();
+
+    const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+
+    return (
+        <div className="py-10">
+            <header className="mb-10 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 p-4 shadow-xl">
+                <div>
+                    <p className="text-xs uppercase tracking-wide text-cyan-300">IsaArtTattoo</p>
+                    <h1 className="text-2xl font-semibold text-white">{title}</h1>
+                    {description && (
+                        <p className="text-sm text-slate-300">{description}</p>
+                    )}
+                </div>
+                <nav className="flex flex-wrap items-center gap-3 text-sm text-slate-100">
+                    <Link
+                        to="/products"
+                        className="rounded-lg border border-white/10 px-3 py-1.5 hover:bg-white/10"
+                    >
+                        Catálogo
+                    </Link>
+                    <Link
+                        to="/cart"
+                        className="rounded-lg border border-white/10 px-3 py-1.5 hover:bg-white/10"
+                    >
+                        Carrito ({totalItems})
+                    </Link>
+                    <Link
+                        to="/orders"
+                        className="rounded-lg border border-white/10 px-3 py-1.5 hover:bg-white/10"
+                    >
+                        Órdenes
+                    </Link>
+                    {isAuthenticated ? (
+                        <button
+                            onClick={() => {
+                                logout();
+                                navigate("/login");
+                            }}
+                            className="rounded-lg bg-gradient-to-r from-cyan-400 to-fuchsia-500 px-3 py-1.5 text-slate-900"
+                        >
+                            Cerrar sesión
+                        </button>
+                    ) : (
+                        <Link
+                            to="/login"
+                            className="rounded-lg bg-gradient-to-r from-cyan-400 to-fuchsia-500 px-3 py-1.5 text-slate-900"
+                        >
+                            Iniciar sesión
+                        </Link>
+                    )}
+                </nav>
+            </header>
+            <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl">
+                {children}
+            </div>
+        </div>
+    );
+}

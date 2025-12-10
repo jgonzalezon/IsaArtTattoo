@@ -1,15 +1,19 @@
+import type { FormEvent } from "react";
 import { useState } from "react";
-import api from "../lib/api";
+import { apiFetch } from "../lib/api";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [msg, setMsg] = useState<string | null>(null);
 
-  const submit = async (e: React.FormEvent) => {
+  const submit = async (e: FormEvent) => {
     e.preventDefault();
     setMsg(null);
     try {
-      await api.post("/api/auth/forgot-password", { email });
+      await apiFetch("/api/auth/forgot-password", {
+        method: "POST",
+        body: JSON.stringify({ email }),
+      });
       setMsg("Te hemos enviado instrucciones por email.");
     } catch {
       setMsg("Error al solicitar el reset.");
@@ -18,7 +22,7 @@ export default function ForgotPassword() {
 
   return (
     <form onSubmit={submit}>
-      <h2>Olvidé mi contraseña</h2>
+      <h2>OlvidÃ© mi contraseÃ±a</h2>
       <input value={email} onChange={e=>setEmail(e.target.value)} placeholder="Email" />
       <button>Enviar</button>
       {msg && <p>{msg}</p>}

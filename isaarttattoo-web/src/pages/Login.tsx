@@ -1,9 +1,7 @@
-// src/pages/Login.tsx
-import { FormEvent, useState } from "react";
+import type { FormEvent } from "react";
+import { useState } from "react";
 import { useAuth } from "../auth/AuthContext";
 import { useNavigate } from "react-router-dom";
-import AuthCard from "../components/AuthCard";
-
 
 export default function LoginPage() {
     const { login } = useAuth();
@@ -21,37 +19,34 @@ export default function LoginPage() {
 
         try {
             await login({ email, password });
-            navigate("/me"); // o la ruta que quieras tras login
+            navigate("/products");
         } catch (err: any) {
-            setError(err.message ?? "Error al iniciar sesión");
+            setError(err.message ?? "Error al iniciar sesiÃ³n");
         } finally {
             setLoading(false);
         }
     };
 
     return (
+        <form onSubmit={handleSubmit} style={{ maxWidth: 360, margin: "40px auto" }}>
+            <h2>Login</h2>
 
-        <AuthCard title="IsaArtTattoo">
-            <form onSubmit={handleSubmit} style={{ maxWidth: 360, margin: "40px auto" }}>
-                <h2>Login</h2>
+            <input
+                placeholder="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+            />
 
-                <input
-                    placeholder="email"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                />
+            <input
+                placeholder="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+            />
 
-                <input
-                    placeholder="password"
-                    type="password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                />
+            <button disabled={loading}>{loading ? "Entrando..." : "Entrar"}</button>
 
-                <button disabled={loading}>{loading ? "Entrando..." : "Entrar"}</button>
-
-                {error && <p style={{ color: "crimson" }}>{error}</p>}
-                </form>
-        </AuthCard>
+            {error && <p style={{ color: "crimson" }}>{error}</p>}
+        </form>
     );
 }

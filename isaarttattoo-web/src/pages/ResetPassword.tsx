@@ -1,8 +1,8 @@
 // src/pages/ResetPassword.tsx
-import { FormEvent, useEffect, useState } from "react";
+import type { FormEvent } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { resetPassword } from "../api/auth";
-import  AuthCard  from "../components/AuthCard";
 
 export default function ResetPasswordPage() {
     const [searchParams] = useSearchParams();
@@ -25,7 +25,7 @@ export default function ResetPasswordPage() {
         setToken(tokenParam);
 
         if (!emailParam || !tokenParam) {
-            setError("Faltan parámetros en el enlace de restablecimiento.");
+            setError("Faltan parÃ¡metros en el enlace de restablecimiento.");
         }
     }, [searchParams]);
 
@@ -35,12 +35,12 @@ export default function ResetPasswordPage() {
         setMessage(null);
 
         if (!email || !token) {
-            setError("Enlace no válido.");
+            setError("Enlace no vÃ¡lido.");
             return;
         }
 
         if (!newPassword || newPassword !== confirmPassword) {
-            setError("Las contraseñas no coinciden.");
+            setError("Las contraseÃ±as no coinciden.");
             return;
         }
 
@@ -52,21 +52,20 @@ export default function ResetPasswordPage() {
                 newPassword,
             });
 
-            const text = typeof res === "string" ? res : res.message ?? "Contraseña restablecida correctamente.";
+            const text = typeof res === "string" ? res : res.message ?? "ContraseÃ±a restablecida correctamente.";
             setMessage(text);
 
-            // Tras unos segundos, ir al login
             setTimeout(() => navigate("/login"), 2000);
         } catch (err: any) {
-            setError(err.message ?? "No se ha podido restablecer la contraseña.");
+            setError(err.message ?? "No se ha podido restablecer la contraseÃ±a.");
         } finally {
             setLoading(false);
         }
     };
 
-    const content = (
+    return (
         <div style={{ maxWidth: 420, margin: "3rem auto" }}>
-            <h1>Restablecer contraseña</h1>
+            <h1>Restablecer contraseÃ±a</h1>
 
             {error && (
                 <p style={{ color: "crimson", marginTop: "0.75rem" }}>{error}</p>
@@ -80,24 +79,24 @@ export default function ResetPasswordPage() {
                 <form onSubmit={handleSubmit} style={{ marginTop: "1.5rem" }}>
                     <div style={{ marginBottom: "1rem" }}>
                         <label style={{ display: "block", marginBottom: "0.25rem" }}>
-                            Nueva contraseña
+                            Nueva contraseÃ±a
                         </label>
                         <input
                             type="password"
                             value={newPassword}
-                            onChange={e => setNewPassword(e.target.value)}
+                            onChange={(e) => setNewPassword(e.target.value)}
                             style={{ width: "100%" }}
                         />
                     </div>
 
                     <div style={{ marginBottom: "1rem" }}>
                         <label style={{ display: "block", marginBottom: "0.25rem" }}>
-                            Repite la contraseña
+                            Repite la contraseÃ±a
                         </label>
                         <input
                             type="password"
                             value={confirmPassword}
-                            onChange={e => setConfirmPassword(e.target.value)}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                             style={{ width: "100%" }}
                         />
                     </div>
@@ -107,14 +106,10 @@ export default function ResetPasswordPage() {
                         disabled={loading || !email || !token}
                         style={{ width: "100%", padding: "0.5rem" }}
                     >
-                        {loading ? "Guardando..." : "Guardar nueva contraseña"}
+                        {loading ? "Guardando..." : "Guardar nueva contraseÃ±a"}
                     </button>
                 </form>
             )}
         </div>
     );
-
-    // Si tienes AuthCard:
-    return <AuthCard title="Restablecer contraseña">{content}</AuthCard>;
-    return content;
 }

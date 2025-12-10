@@ -1,12 +1,9 @@
-﻿import { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { userIsAdmin } from "../auth/RequireAdmin";
+import { useAuth } from "../auth/AuthContext";
 
-import {
-    login as apiLogin,
-    register as apiRegister,
-    resendConfirmation as apiResendConfirmation,
-} from "../api/auth";
+import { register as apiRegister, resendConfirmation as apiResendConfirmation } from "../api/auth";
 import { apiFetch } from "../api/client";
 
 type Props = { apiBase: string };
@@ -19,6 +16,7 @@ export default function AuthCard({ apiBase }: Props) {
     const [password, setPassword] = useState("");
     const [busy, setBusy] = useState(false);
     const [info, setInfo] = useState<string | null>(null);
+    const { login, logout, token } = useAuth();
 
     const activeTab = mode === "awaiting-confirmation" ? "register" : mode;
 
@@ -29,8 +27,7 @@ export default function AuthCard({ apiBase }: Props) {
 
         try {
             if (mode === "login") {
-                const data = await apiLogin({ email, password });
-                localStorage.setItem("auth_token", data.token);
+                await login({ email, password });
                 setInfo("Login correcto. Token guardado en localStorage.");
             } else {
                 await apiRegister({ email, password });
@@ -47,7 +44,6 @@ export default function AuthCard({ apiBase }: Props) {
     async function getMe() {
         setBusy(true);
         try {
-            const token = localStorage.getItem("auth_token");
             if (!token) {
                 setInfo("No hay token en localStorage.");
                 return;
@@ -184,7 +180,7 @@ export default function AuthCard({ apiBase }: Props) {
 
                     <button
                         onClick={() => {
-                            localStorage.removeItem("auth_token");
+                            logout();
                             setInfo("Token borrado.");
                         }}
                         className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 hover:bg-white/10"

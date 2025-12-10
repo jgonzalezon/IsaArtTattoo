@@ -1,15 +1,8 @@
 // src/auth/AuthContext.tsx
-import {
-    createContext,
-    useContext,
-    useState,
-    useEffect,
-    ReactNode,
-} from "react";
+import type { ReactNode } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { login as loginApi } from "../api/auth";
 import type { LoginRequest, LoginResponse } from "../api/auth";
-import { Link } from "react-router-dom";
-import { userIsAdmin } from "./auth/RequireAdmin"; // ajusta la ruta si hace falta
 
 
 interface AuthState {
