@@ -88,6 +88,17 @@ var mailServer = builder
     .WithHttpEndpoint(port: 1080, targetPort: 1080, name: "web")
     .WithEndpoint(port: 1025, targetPort: 1025, name: "smtp");
 
+// ========================================================
+// RUN
+// ========================================================
+
+var ordersApi = builder.AddProject<Projects.IsaArtTatto_OrdersApi>("orders-api")
+    .WithReference(ordersDb)
+    .WaitFor(ordersDb)
+    .WaitFor(catalogApi)
+    .WithReference(catalogApi)
+    .WithExternalHttpEndpoints();
+
 
 // ========================================================
 // API GATEWAY
@@ -97,6 +108,8 @@ var gateway = builder
     .AddProject<Projects.IsaArtTattoo_ApiGateWay>("isaarttattoo-apigateway")
     .WithReference(redis)
     .WithReference(identityApi)
+    .WithReference(catalogApi)
+    .WithReference(ordersApi)
     .WithExternalHttpEndpoints(); // expone HTTP y HTTPS
 
 
@@ -117,20 +130,6 @@ var frontend = builder
     .WithHttpEndpoint(targetPort: 5173, name: "http")
     .WithEnvironment("VITE_API_BASE_URL", gatewayHttpUrl)
     .WithReference(gateway);
-
-
-
-
-// ========================================================
-// RUN
-// ========================================================
-
-var ordersApi = builder.AddProject<Projects.IsaArtTatto_OrdersApi>("orders-api")
-    .WithReference(ordersDb)
-    .WaitFor(ordersDb)
-    .WaitFor(catalogApi)
-    .WithReference(catalogApi)
-    .WithExternalHttpEndpoints();
 
 // ========================================================
 // RUN

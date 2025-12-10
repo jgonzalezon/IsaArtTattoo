@@ -9,6 +9,6 @@ public static class ApplicationExtensions
     {
         services.AddScoped<IOrdersService, OrdersService>();
 
-        services.AddHttpClient<IStockService, CatalogStockService>();
+        services.AddHttpClient<IStockService, CatalogStockService>("catalog-api");
     }
 }

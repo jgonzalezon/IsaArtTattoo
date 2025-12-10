@@ -6,28 +6,25 @@ namespace IsaArtTattoo.OrdersApi.Infrastructure.Services;
 public class CatalogStockService : IStockService
 {
     private readonly HttpClient _http;
-    private readonly string _adminBearerToken;
 
     public CatalogStockService(HttpClient http, IConfiguration cfg)
     {
-        _http = http;
+        _http = http ?? throw new ArgumentNullException(nameof(http));
 
-        var baseUrl = cfg["Catalog:BaseUrl"];
-        _adminBearerToken = cfg["Catalog:AdminBearerToken"] ?? "";
+        // Token opcional para llamadas de admin al Catalog (si lo usas)
+        var adminBearerToken = cfg["Catalog:AdminBearerToken"];
 
-        if (string.IsNullOrWhiteSpace(baseUrl))
-            throw new InvalidOperationException("Catalog:BaseUrl no está configurado.");
-
-        _http.BaseAddress = new Uri(baseUrl);
-
-        if (!string.IsNullOrWhiteSpace(_adminBearerToken))
+        if (!string.IsNullOrWhiteSpace(adminBearerToken))
         {
             _http.DefaultRequestHeaders.Authorization =
                 new System.Net.Http.Headers.AuthenticationHeaderValue(
                     "Bearer",
-                    _adminBearerToken
+                    adminBearerToken
                 );
         }
+
+        // ❌ Ya NO miramos Catalog:BaseUrl ni seteamos BaseAddress aquí.
+        // BaseAddress la rellena Aspire usando service discovery ("catalog-api").
     }
 
     public async Task<bool> ReserveStockAsync(
@@ -44,7 +41,7 @@ public class CatalogStockService : IStockService
             };
 
             var resp = await _http.PostAsJsonAsync(
-                $"/api/admin/catalog/products/{productId}/stock",
+                "/api/admin/catalog/products/" + productId + "/stock",
                 payload,
                 ct);
 
@@ -70,7 +67,7 @@ public class CatalogStockService : IStockService
             };
 
             var resp = await _http.PostAsJsonAsync(
-                $"/api/admin/catalog/products/{productId}/stock",
+                "/api/admin/catalog/products/" + productId + "/stock",
                 payload,
                 ct);
 
