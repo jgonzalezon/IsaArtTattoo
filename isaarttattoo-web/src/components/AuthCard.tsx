@@ -72,7 +72,7 @@ export default function AuthCard({ initialMode }: Props) {
 
     return (
         <div className="overflow-hidden rounded-3xl border border-white/10 bg-slate-950/70 shadow-2xl backdrop-blur-xl">
-            <div className="grid gap-8 p-8 sm:grid-cols-[1.1fr_1fr]">
+            <div className="flex flex-col gap-8 p-8">
                 <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-cyan-500/20 via-fuchsia-500/15 to-indigo-500/10 p-6 text-white">
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.08),transparent_35%)]"></div>
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_0%,rgba(255,255,255,0.05),transparent_35%)]"></div>

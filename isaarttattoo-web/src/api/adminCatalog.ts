@@ -68,7 +68,10 @@ export function getProducts() {
 export function createProduct(payload: Partial<AdminProduct> & { categoryId?: number }) {
     return apiFetch<AdminProduct>("/api/catalog/products", {
         method: "POST",
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+            ...payload,
+            initialStock: payload.stock ?? 0,
+        }),
         ...authHeaders(),
     });
 }
