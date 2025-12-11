@@ -87,10 +87,6 @@ export default function AuthCard({ initialMode }: Props) {
                         <ul className="space-y-2 text-sm text-slate-100/90">
                             <li className="flex items-start gap-2">
                                 <span className="mt-1 h-2 w-2 rounded-full bg-cyan-300"></span>
-                                Acceso seguro con autenticación basada en tokens.
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <span className="mt-1 h-2 w-2 rounded-full bg-cyan-300"></span>
                                 Sincroniza tu carrito en todos tus dispositivos.
                             </li>
                             <li className="flex items-start gap-2">

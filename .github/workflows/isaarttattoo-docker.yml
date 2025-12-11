@@ -1,0 +1,142 @@
+name: Build and Push IsaArtTattoo Docker Images
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'IsaArtTattoo.IdentityApi/**'
+      - 'IsaArtTatto.OrdersApi/**'
+      - 'IsaArtTattoo.CatalogApi/**'
+      - 'IsaArtTattoo.ServiceDefaults/**'
+      - 'IsaArtTattoo.Shared/**'
+      - '.github/workflows/isaarttattoo-docker.yml'
+  pull_request:
+    branches:
+      - main
+      - master
+    paths:
+      - 'IsaArtTattoo.IdentityApi/**'
+      - 'IsaArtTatto.OrdersApi/**'
+      - 'IsaArtTattoo.CatalogApi/**'
+      - 'IsaArtTattoo.ServiceDefaults/**'
+      - 'IsaArtTattoo.Shared/**'
+  workflow_dispatch:
+
+jobs:
+  # 1) BUILD: construye imágenes de Identity, Orders y Catalog y las guarda como artifacts
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    strategy:
+      matrix:
+        include:
+          - id: identity
+            project_path: IsaArtTattoo.IdentityApi
+            local_tag: isaarttattoo-identity-api:test
+          - id: orders
+            project_path: IsaArtTatto.OrdersApi     # ojo: nombre EXACTO de la carpeta
+            local_tag: isaarttattoo-orders-api:test
+          - id: catalog
+            project_path: IsaArtTattoo.CatalogApi
+            local_tag: isaarttattoo-catalog-api:test
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image (${{ matrix.id }})
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./${{ matrix.project_path }}/Dockerfile
+          push: false
+          load: true
+          tags: ${{ matrix.local_tag }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Save Docker image artifact (${{ matrix.id }})
+        run: docker save ${{ matrix.local_tag }} -o /tmp/${{ matrix.id }}-image.tar
+
+      - name: Upload Docker image artifact (${{ matrix.id }})
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.id }}-image
+          path: /tmp/${{ matrix.id }}-image.tar
+          retention-days: 1
+
+  # 2) PUSH: build + push a GHCR y Docker Hub de Identity, Orders y Catalog
+  push:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name != 'pull_request'
+    permissions:
+      contents: read
+      packages: write
+
+    strategy:
+      matrix:
+        include:
+          - id: identity
+            project_path: IsaArtTattoo.IdentityApi
+            image_name: isaarttattoo-identity-api
+          - id: orders
+            project_path: IsaArtTatto.OrdersApi
+            image_name: isaarttattoo-orders-api
+          - id: catalog
+            project_path: IsaArtTattoo.CatalogApi
+            image_name: isaarttattoo-catalog-api
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # Login GHCR (usa GITHUB_TOKEN)
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Login Docker Hub (usa tus secrets)
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Genera tags/labels para ambas registries a la vez
+      - name: Extract metadata (tags, labels)
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ghcr.io/${{ github.repository_owner }}/${{ matrix.image_name }}
+            docker.io/jgonzalezon/${{ matrix.image_name }}
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix=
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main' }}
+
+      - name: Build and push Docker image (${{ matrix.id }}) to GHCR and Docker Hub
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./${{ matrix.project_path }}/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
