@@ -81,16 +81,28 @@ export default function HeaderAuthControls({ cartCount = 0, tone = "dark" }: Hea
                     Cerrar sesión
                 </button>
             ) : (
-                <Link
-                    to="/register"
-                    className={`rounded-xl px-3 py-2 text-center font-semibold transition ${
-                        isLight
-                            ? "border border-neutral-200 bg-white text-neutral-900 shadow-sm hover:bg-neutral-100"
-                            : "border border-blue-900/50 bg-neutral-900/70 text-blue-100 shadow-sm shadow-black/30 hover:border-blue-700 hover:bg-neutral-800"
-                    }`}
-                >
-                    Registrarse
-                </Link>
+                <>
+                    <Link
+                        to="/login"
+                        className={`rounded-xl px-3 py-2 text-center font-semibold transition ${
+                            isLight
+                                ? "border border-neutral-200 bg-white text-neutral-900 shadow-sm hover:bg-neutral-100"
+                                : "border border-blue-900/50 bg-neutral-900/70 text-blue-100 shadow-sm shadow-black/30 hover:border-blue-700 hover:bg-neutral-800"
+                        }`}
+                    >
+                        Iniciar sesión
+                    </Link>
+                    <Link
+                        to="/register"
+                        className={`rounded-xl px-3 py-2 text-center font-semibold transition ${
+                            isLight
+                                ? "border border-neutral-200 bg-white text-neutral-900 shadow-sm hover:bg-neutral-100"
+                                : "border border-blue-900/50 bg-neutral-900/70 text-blue-100 shadow-sm shadow-black/30 hover:border-blue-700 hover:bg-neutral-800"
+                        }`}
+                    >
+                        Registrarse
+                    </Link>
+                </>
             )}
         </nav>
     );
