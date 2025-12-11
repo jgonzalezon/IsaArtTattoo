@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#3dd5f3"/>
+      <stop offset="0.5" stop-color="#d946ef"/>
+      <stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+  </defs>
+  <rect width="320" height="320" rx="80" fill="#0b1021"/>
+  <circle cx="160" cy="160" r="140" fill="url(#g)" opacity="0.15"/>
+  <path d="M96 214c0-58 18-110 64-110s64 52 64 110" fill="none" stroke="url(#g)" stroke-width="26" stroke-linecap="round"/>
+  <path d="M118 214V118" stroke="#f1f5f9" stroke-width="14" stroke-linecap="round"/>
+  <path d="M202 214V118" stroke="#f1f5f9" stroke-width="14" stroke-linecap="round"/>
+  <text x="160" y="255" font-family="'Montserrat', 'Arial', sans-serif" font-size="38" fill="#f8fafc" text-anchor="middle" letter-spacing="6">isasart</text>
+  <text x="160" y="285" font-family="'Montserrat', 'Arial', sans-serif" font-size="16" fill="#cbd5f5" text-anchor="middle" letter-spacing="10">TATTOO</text>
+</svg>
