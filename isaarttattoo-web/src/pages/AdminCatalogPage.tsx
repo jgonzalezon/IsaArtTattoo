@@ -171,9 +171,8 @@ export default function AdminCatalogPage() {
         <StoreLayout
             title="Administración de catálogo"
             description="Gestiona productos, categorías y stock desde un solo lugar."
-            tone="light"
         >
-            <div className="space-y-4 text-neutral-900">
+            <div className="space-y-4">
                 <div className="flex flex-wrap items-center gap-2">
                     {([
                         { id: "categories", label: "Categorías" },
@@ -182,10 +181,10 @@ export default function AdminCatalogPage() {
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
+                            className={`rounded-full px-4 py-2 text-sm ${
                                 activeTab === tab.id
-                                    ? "border border-blue-200 bg-blue-50 text-blue-800 shadow-sm"
-                                    : "border border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-100"
+                                    ? "bg-white text-slate-900"
+                                    : "border border-white/10 text-white hover:bg-white/10"
                             }`}
                         >
                             {tab.label}
@@ -194,12 +193,12 @@ export default function AdminCatalogPage() {
                 </div>
 
                 {error && (
-                    <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+                    <div className="rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-100">
                         {error}
                     </div>
                 )}
                 {feedback && (
-                    <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800">
+                    <div className="rounded-xl border border-emerald-400/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-100">
                         {feedback}
                     </div>
                 )}
@@ -208,31 +207,31 @@ export default function AdminCatalogPage() {
                     <div className="space-y-6">
                         <form
                             onSubmit={handleCreateCategory}
-                            className="grid gap-3 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm md:grid-cols-3"
+                            className="grid gap-3 rounded-2xl border border-white/10 bg-white/5 p-4 md:grid-cols-3"
                         >
-                            <label className="grid gap-2 text-sm text-neutral-800">
+                            <label className="grid gap-2 text-sm text-slate-200">
                                 <span>Nombre</span>
                                 <input
-                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                    className="rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-white focus:border-cyan-400 focus:outline-none"
                                     value={categoryForm.name}
                                     onChange={(e) => setCategoryForm((c) => ({ ...c, name: e.target.value }))}
                                     required
                                 />
                             </label>
-                            <label className="grid gap-2 text-sm text-neutral-800">
+                            <label className="grid gap-2 text-sm text-slate-200">
                                 <span>Descripción</span>
                                 <input
-                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                    className="rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-white focus:border-cyan-400 focus:outline-none"
                                     value={categoryForm.description}
                                     onChange={(e) => setCategoryForm((c) => ({ ...c, description: e.target.value }))}
                                     placeholder="Breve descripción"
                                 />
                             </label>
-                            <label className="grid gap-2 text-sm text-neutral-800">
+                            <label className="grid gap-2 text-sm text-slate-200">
                                 <span>Orden</span>
                                 <input
                                     type="number"
-                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                    className="rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-white focus:border-cyan-400 focus:outline-none"
                                     value={categoryForm.displayOrder}
                                     onChange={(e) => setCategoryForm((c) => ({ ...c, displayOrder: Number(e.target.value) }))}
                                 />
@@ -240,29 +239,29 @@ export default function AdminCatalogPage() {
                             <div className="md:col-span-3 flex justify-end">
                                 <button
                                     type="submit"
-                                    className="rounded-lg bg-blue-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition hover:bg-blue-800"
+                                    className="rounded-lg bg-gradient-to-r from-cyan-400 to-fuchsia-500 px-4 py-2 text-sm font-semibold text-slate-900"
                                 >
                                     Crear categoría
                                 </button>
                             </div>
                         </form>
 
-                        <div className="overflow-auto rounded-2xl border border-neutral-200 bg-white shadow-sm">
-                            <table className="min-w-full text-sm text-neutral-800">
-                                <thead className="bg-neutral-100 text-left text-xs uppercase tracking-wide text-neutral-600">
+                        <div className="overflow-auto rounded-2xl border border-white/10 bg-white/5">
+                            <table className="min-w-full text-sm">
+                                <thead className="bg-slate-900/70">
                                     <tr>
-                                        <th className="px-4 py-2">Nombre</th>
-                                        <th className="px-4 py-2">Descripción</th>
-                                        <th className="px-4 py-2">Orden</th>
-                                        <th className="px-4 py-2">Acciones</th>
+                                        <th className="px-4 py-2 text-left">Nombre</th>
+                                        <th className="px-4 py-2 text-left">Descripción</th>
+                                        <th className="px-4 py-2 text-left">Orden</th>
+                                        <th className="px-4 py-2 text-left">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {sortedCategories.map((cat) => (
-                                        <tr key={cat.id} className="border-t border-neutral-100">
+                                        <tr key={cat.id} className="border-t border-white/5">
                                             <td className="px-4 py-2">
                                                 <input
-                                                    className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                                    className="w-full rounded-lg border border-white/10 bg-slate-950 px-2 py-1"
                                                     value={cat.name}
                                                     onChange={(e) =>
                                                         setCategories((prev) =>
@@ -275,7 +274,7 @@ export default function AdminCatalogPage() {
                                             </td>
                                             <td className="px-4 py-2">
                                                 <input
-                                                    className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                                    className="w-full rounded-lg border border-white/10 bg-slate-950 px-2 py-1"
                                                     value={cat.description ?? ""}
                                                     onChange={(e) =>
                                                         setCategories((prev) =>
@@ -289,7 +288,7 @@ export default function AdminCatalogPage() {
                                             <td className="px-4 py-2">
                                                 <input
                                                     type="number"
-                                                    className="w-24 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                                    className="w-24 rounded-lg border border-white/10 bg-slate-950 px-2 py-1"
                                                     value={cat.displayOrder}
                                                     onChange={(e) =>
                                                         setCategories((prev) =>
@@ -303,13 +302,13 @@ export default function AdminCatalogPage() {
                                             <td className="px-4 py-2">
                                                 <div className="flex gap-2">
                                                     <button
-                                                        className="rounded-lg bg-neutral-900 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-800"
+                                                        className="rounded-lg bg-emerald-600 px-3 py-1 text-xs text-white"
                                                         onClick={() => handleUpdateCategory(cat)}
                                                     >
                                                         Guardar
                                                     </button>
                                                     <button
-                                                        className="rounded-lg bg-blue-700 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-blue-800"
+                                                        className="rounded-lg bg-red-600 px-3 py-1 text-xs text-white"
                                                         onClick={() => deleteCategory(cat.id).then(loadData).catch(() => setError("No se pudo eliminar"))}
                                                     >
                                                         Eliminar
@@ -326,116 +325,107 @@ export default function AdminCatalogPage() {
                     <div className="space-y-6">
                         <form
                             onSubmit={handleCreateProduct}
-                            className="grid gap-3 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm md:grid-cols-6"
+                            className="grid gap-3 rounded-2xl border border-white/10 bg-white/5 p-4 md:grid-cols-6"
                         >
-                            <label className="grid gap-2 text-sm text-neutral-800 md:col-span-2">
+                            <label className="grid gap-2 text-sm text-slate-200 md:col-span-2">
                                 <span>Nombre</span>
                                 <input
-                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                    className="rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-white focus:border-cyan-400 focus:outline-none"
                                     value={productForm.name}
                                     onChange={(e) => setProductForm((p) => ({ ...p, name: e.target.value }))}
                                     required
                                 />
                             </label>
-                            <label className="grid gap-2 text-sm text-neutral-800 md:col-span-2">
+                            <label className="grid gap-2 text-sm text-slate-200 md:col-span-2">
                                 <span>Descripción corta</span>
                                 <input
-                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                    className="rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-white focus:border-cyan-400 focus:outline-none"
                                     value={productForm.shortDescription}
                                     onChange={(e) => setProductForm((p) => ({ ...p, shortDescription: e.target.value }))}
                                 />
                             </label>
-                            <label className="grid gap-2 text-sm text-neutral-800">
+                            <label className="grid gap-2 text-sm text-slate-200">
                                 <span>Precio</span>
                                 <input
                                     type="number"
                                     step="0.01"
-                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                    className="rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-white focus:border-cyan-400 focus:outline-none"
                                     value={productForm.price}
                                     onChange={(e) => setProductForm((p) => ({ ...p, price: Number(e.target.value) }))}
                                 />
                             </label>
-                            <label className="grid gap-2 text-sm text-neutral-800">
+                            <label className="grid gap-2 text-sm text-slate-200">
                                 <span>Stock</span>
                                 <input
                                     type="number"
-                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                    className="rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-white focus:border-cyan-400 focus:outline-none"
                                     value={productForm.stock}
                                     onChange={(e) => setProductForm((p) => ({ ...p, stock: Number(e.target.value) }))}
                                 />
                             </label>
-                            <label className="grid gap-2 text-sm text-neutral-800">
+                            <label className="grid gap-2 text-sm text-slate-200">
                                 <span>Categoría</span>
                                 <select
-                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none"
+                                    className="rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-white"
                                     value={productForm.categoryId}
                                     onChange={(e) => setProductForm((p) => ({ ...p, categoryId: Number(e.target.value) }))}
                                     required
                                 >
                                     <option value={0}>Selecciona una categoría</option>
                                     {sortedCategories.map((cat) => (
-                                        <option key={cat.id} value={cat.id} className="bg-white text-neutral-900">
+                                        <option key={cat.id} value={cat.id} className="bg-slate-900">
                                             {cat.name}
                                         </option>
                                     ))}
                                 </select>
                             </label>
-                            <label className="grid gap-2 text-sm text-neutral-800">
-                                <span>Activo</span>
-                                <select
-                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none"
-                                    value={productForm.isActive ? "yes" : "no"}
-                                    onChange={(e) => setProductForm((p) => ({ ...p, isActive: e.target.value === "yes" }))}
-                                >
-                                    <option value="yes" className="bg-white text-neutral-900">
-                                        Sí
-                                    </option>
-                                    <option value="no" className="bg-white text-neutral-900">
-                                        No
-                                    </option>
-                                </select>
+                            <label className="flex items-center gap-2 text-sm text-slate-200">
+                                <input
+                                    type="checkbox"
+                                    checked={productForm.isActive}
+                                    onChange={(e) => setProductForm((p) => ({ ...p, isActive: e.target.checked }))}
+                                />
+                                Activo
                             </label>
-                            <label className="grid gap-2 text-sm text-neutral-800 md:col-span-2">
-                                <span>Imagen</span>
-                                <div className="grid gap-2 rounded-lg border border-neutral-200 bg-neutral-50 p-3">
+                            <label className="grid gap-2 text-sm text-slate-200 md:col-span-2">
+                                <span>Imagen (opcional)</span>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    className="rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-white"
+                                    onChange={(e) =>
+                                        setProductForm((p) => ({
+                                            ...p,
+                                            imageFile: e.target.files?.[0] ?? null,
+                                        }))
+                                    }
+                                />
+                                <div className="grid gap-2 md:grid-cols-2">
                                     <input
-                                        type="file"
-                                        accept="image/*"
-                                        className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none"
+                                        type="text"
+                                        placeholder="Texto alternativo"
+                                        className="rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-white"
+                                        value={productForm.imageAlt}
+                                        onChange={(e) => setProductForm((p) => ({ ...p, imageAlt: e.target.value }))}
+                                    />
+                                    <input
+                                        type="number"
+                                        className="rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-white"
+                                        value={productForm.imageDisplayOrder}
                                         onChange={(e) =>
                                             setProductForm((p) => ({
                                                 ...p,
-                                                imageFile: e.target.files?.[0] ?? null,
+                                                imageDisplayOrder: Number(e.target.value),
                                             }))
                                         }
+                                        placeholder="Orden"
                                     />
-                                    <div className="grid gap-2 md:grid-cols-2">
-                                        <input
-                                            type="text"
-                                            placeholder="Texto alternativo"
-                                            className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none"
-                                            value={productForm.imageAlt}
-                                            onChange={(e) => setProductForm((p) => ({ ...p, imageAlt: e.target.value }))}
-                                        />
-                                        <input
-                                            type="number"
-                                            className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none"
-                                            value={productForm.imageDisplayOrder}
-                                            onChange={(e) =>
-                                                setProductForm((p) => ({
-                                                    ...p,
-                                                    imageDisplayOrder: Number(e.target.value),
-                                                }))
-                                            }
-                                            placeholder="Orden"
-                                        />
-                                    </div>
                                 </div>
                             </label>
                             <div className="md:col-span-6 flex justify-end">
                                 <button
                                     type="submit"
-                                    className="rounded-lg bg-blue-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition hover:bg-blue-800"
+                                    className="rounded-lg bg-gradient-to-r from-cyan-400 to-fuchsia-500 px-4 py-2 text-sm font-semibold text-slate-900"
                                 >
                                     Crear producto
                                 </button>
@@ -443,16 +433,16 @@ export default function AdminCatalogPage() {
                         </form>
 
                         <div className="flex flex-wrap items-center gap-3">
-                            <label className="text-sm text-neutral-800">
+                            <label className="text-sm text-slate-200">
                                 Filtrar por categoría:
                                 <select
-                                    className="ml-2 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none"
+                                    className="ml-2 rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-sm text-white"
                                     value={filterCategory}
                                     onChange={(e) => setFilterCategory(e.target.value)}
                                 >
                                     <option value="">Todas</option>
                                     {sortedCategories.map((cat) => (
-                                        <option key={cat.id} value={cat.name ?? ""} className="bg-white text-neutral-900">
+                                        <option key={cat.id} value={cat.name ?? ""} className="bg-slate-900">
                                             {cat.name}
                                         </option>
                                     ))}
@@ -460,25 +450,25 @@ export default function AdminCatalogPage() {
                             </label>
                         </div>
 
-                        <div className="overflow-auto rounded-2xl border border-neutral-200 bg-white shadow-sm">
-                            <table className="min-w-full text-sm text-neutral-800">
-                                <thead className="bg-neutral-100 text-left text-xs uppercase tracking-wide text-neutral-600">
+                        <div className="overflow-auto rounded-2xl border border-white/10 bg-white/5">
+                            <table className="min-w-full text-sm">
+                                <thead className="bg-slate-900/70">
                                     <tr>
-                                        <th className="px-4 py-2">Nombre</th>
-                                        <th className="px-4 py-2">Categoría</th>
-                                        <th className="px-4 py-2">Precio</th>
-                                        <th className="px-4 py-2">Stock</th>
-                                        <th className="px-4 py-2">Activo</th>
-                                        <th className="px-4 py-2">Imagen</th>
-                                        <th className="px-4 py-2">Acciones</th>
+                                        <th className="px-4 py-2 text-left">Nombre</th>
+                                        <th className="px-4 py-2 text-left">Categoría</th>
+                                        <th className="px-4 py-2 text-left">Precio</th>
+                                        <th className="px-4 py-2 text-left">Stock</th>
+                                        <th className="px-4 py-2 text-left">Activo</th>
+                                        <th className="px-4 py-2 text-left">Imagen</th>
+                                        <th className="px-4 py-2 text-left">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {filteredProducts.map((prod) => (
-                                        <tr key={prod.id} className="border-t border-neutral-100">
+                                        <tr key={prod.id} className="border-t border-white/5">
                                             <td className="px-4 py-2">
                                                 <input
-                                                    className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                                    className="w-full rounded-lg border border-white/10 bg-slate-950 px-2 py-1"
                                                     value={prod.name}
                                                     onChange={(e) =>
                                                         setProducts((prev) =>
@@ -489,7 +479,7 @@ export default function AdminCatalogPage() {
                                             </td>
                                             <td className="px-4 py-2">
                                                 <select
-                                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none"
+                                                    className="rounded-lg border border-white/10 bg-slate-950 px-2 py-1 text-white"
                                                     value={sortedCategories.find((c) => c.name === prod.categoryName)?.id ?? 0}
                                                     onChange={(e) =>
                                                         setProducts((prev) =>
@@ -506,11 +496,9 @@ export default function AdminCatalogPage() {
                                                         )
                                                     }
                                                 >
-                                                    <option value={0} className="bg-white text-neutral-900">
-                                                        Sin categoría
-                                                    </option>
+                                                    <option value={0}>Sin categoría</option>
                                                     {sortedCategories.map((cat) => (
-                                                        <option key={cat.id} value={cat.id} className="bg-white text-neutral-900">
+                                                        <option key={cat.id} value={cat.id} className="bg-slate-900">
                                                             {cat.name}
                                                         </option>
                                                     ))}
@@ -520,7 +508,7 @@ export default function AdminCatalogPage() {
                                                 <input
                                                     type="number"
                                                     step="0.01"
-                                                    className="w-24 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                                    className="w-24 rounded-lg border border-white/10 bg-slate-950 px-2 py-1"
                                                     value={prod.price}
                                                     onChange={(e) =>
                                                         setProducts((prev) =>
@@ -532,7 +520,7 @@ export default function AdminCatalogPage() {
                                             <td className="px-4 py-2">
                                                 <input
                                                     type="number"
-                                                    className="w-20 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                                    className="w-20 rounded-lg border border-white/10 bg-slate-950 px-2 py-1"
                                                     value={prod.stock}
                                                     onChange={(e) =>
                                                         setProducts((prev) =>
@@ -542,36 +530,22 @@ export default function AdminCatalogPage() {
                                                 />
                                             </td>
                                             <td className="px-4 py-2">
-                                                <select
-                                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none"
-                                                    value={prod.isActive ? "yes" : "no"}
+                                                <input
+                                                    type="checkbox"
+                                                    checked={prod.isActive}
                                                     onChange={(e) =>
                                                         setProducts((prev) =>
-                                                            prev.map((p) =>
-                                                                p.id === prod.id
-                                                                    ? {
-                                                                          ...p,
-                                                                          isActive: e.target.value === "yes",
-                                                                      }
-                                                                    : p,
-                                                            ),
+                                                            prev.map((p) => (p.id === prod.id ? { ...p, isActive: e.target.checked } : p)),
                                                         )
                                                     }
-                                                >
-                                                    <option value="yes" className="bg-white text-neutral-900">
-                                                        Sí
-                                                    </option>
-                                                    <option value="no" className="bg-white text-neutral-900">
-                                                        No
-                                                    </option>
-                                                </select>
+                                                />
                                             </td>
                                             <td className="px-4 py-2">
                                                 <div className="flex flex-col gap-2">
                                                     <input
                                                         type="file"
                                                         accept="image/*"
-                                                        className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none"
+                                                        className="text-xs text-slate-200"
                                                         onChange={(e) =>
                                                             setUploadState((prev) => ({
                                                                 ...prev,
@@ -586,7 +560,7 @@ export default function AdminCatalogPage() {
                                                     <input
                                                         type="text"
                                                         placeholder="Alt"
-                                                        className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none"
+                                                        className="rounded-lg border border-white/10 bg-slate-950 px-2 py-1 text-xs text-white"
                                                         value={uploadState[prod.id]?.altText ?? ""}
                                                         onChange={(e) =>
                                                             setUploadState((prev) => ({
@@ -602,7 +576,7 @@ export default function AdminCatalogPage() {
                                                     <div className="flex items-center gap-2">
                                                         <input
                                                             type="number"
-                                                            className="w-20 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none"
+                                                            className="w-20 rounded-lg border border-white/10 bg-slate-950 px-2 py-1 text-xs text-white"
                                                             value={uploadState[prod.id]?.displayOrder ?? 0}
                                                             onChange={(e) =>
                                                                 setUploadState((prev) => ({
@@ -616,7 +590,7 @@ export default function AdminCatalogPage() {
                                                             }
                                                         />
                                                         <button
-                                                            className="rounded-lg bg-blue-700 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-blue-800"
+                                                            className="rounded-lg bg-cyan-500 px-3 py-1 text-xs font-semibold text-slate-900 hover:bg-cyan-400"
                                                             onClick={() => handleUploadImage(prod.id)}
                                                         >
                                                             Subir
@@ -627,13 +601,13 @@ export default function AdminCatalogPage() {
                                             <td className="px-4 py-2">
                                                 <div className="flex gap-2">
                                                     <button
-                                                        className="rounded-lg bg-neutral-900 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-neutral-800"
+                                                        className="rounded-lg bg-emerald-600 px-3 py-1 text-xs text-white"
                                                         onClick={() => handleUpdateProduct(prod)}
                                                     >
                                                         Guardar
                                                     </button>
                                                     <button
-                                                        className="rounded-lg bg-blue-700 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-blue-800"
+                                                        className="rounded-lg bg-red-600 px-3 py-1 text-xs text-white"
                                                         onClick={() => deleteProduct(prod.id).then(loadData).catch(() => setError("No se pudo eliminar el producto"))}
                                                     >
                                                         Eliminar
