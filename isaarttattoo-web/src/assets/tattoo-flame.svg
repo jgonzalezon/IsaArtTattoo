@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320">
+  <defs>
+    <linearGradient id="fire" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff7043"/>
+      <stop offset="1" stop-color="#ff1744"/>
+    </linearGradient>
+    <linearGradient id="barb" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#94a3b8"/>
+      <stop offset="1" stop-color="#cbd5e1"/>
+    </linearGradient>
+  </defs>
+  <rect width="320" height="320" rx="36" fill="#0b1021"/>
+  <path d="M66 120c44-26 96-34 148-8" fill="none" stroke="#1f2937" stroke-width="18" stroke-linecap="round"/>
+  <path d="M96 178c24-16 54-26 82-18" fill="none" stroke="#1f2937" stroke-width="12" stroke-linecap="round"/>
+  <path d="M164 228c16-18 32-44 26-74-4-24-18-44-18-70 0-12 4-26 12-38 22 20 40 44 44 72 8 60-30 104-64 118z" fill="url(#fire)" stroke="#fef2f2" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M142 226c-2-30 12-58 36-72 18-12 24-26 20-42-10 8-22 12-30 24-10 16-14 34-26 48-10 12-16 26-12 42z" fill="#ffb703" opacity="0.7"/>
+  <path d="M72 120c22-4 44-12 66-2 18 8 36 6 54-2l22-10c6-4 16-4 20 4 4 8 0 18-8 20l-22 8c-22 6-44 6-64-2-16-6-30-6-48 0l-20 8c-8 2-14-4-16-12-2-10 8-12 16-12z" fill="url(#barb)" stroke="#cbd5e1" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M94 112l-10-22" stroke="#0f172a" stroke-width="6" stroke-linecap="round"/>
+  <path d="M154 114l10-22" stroke="#0f172a" stroke-width="6" stroke-linecap="round"/>
+  <path d="M202 110l10-22" stroke="#0f172a" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="120" cy="102" r="6" fill="#0f172a"/>
+  <circle cx="182" cy="102" r="6" fill="#0f172a"/>
+  <circle cx="226" cy="102" r="6" fill="#0f172a"/>
+</svg>
