@@ -40,95 +40,96 @@ export default function HomePage() {
 
     return (
         <StoreLayout
-            title="IsaArtTattoo Studio"
-            description="Arte permanente con experiencias guiadas y piezas exclusivas."
+            title="Colección IsaArtTattoo"
+            description="Diseños artísticos aplicables a piel, papel o textil con sello boutique."
         >
             <div className="grid gap-12">
                 <section className="grid items-center gap-10 lg:grid-cols-2">
                     <div className="space-y-6">
-                        <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.25em] text-cyan-200">
-                            <span className="h-2 w-2 rounded-full bg-fuchsia-400"></span>
-                            Nuevo catálogo 2025
+                        <div className="inline-flex items-center gap-2 rounded-full border border-rose-900/40 bg-rose-900/30 px-4 py-2 text-xs uppercase tracking-[0.25em] text-rose-100 shadow-inner shadow-black/30">
+                            <span className="h-2 w-2 rounded-full bg-rose-500"></span>
+                            Diseños listos 2025
                         </div>
 
                         <div className="space-y-4">
-                            <h2 className="text-4xl font-semibold leading-tight text-white md:text-5xl">
-                                Diseños listos para agendar o personalizar
+                            <h2 className="text-4xl font-semibold leading-tight text-rose-50 md:text-5xl">
+                                Piezas ilustradas para imprimir, vestir o tatuar
                             </h2>
-                            <p className="text-lg text-slate-200">
-                                Explora flashes curados, reserva tu sesión y sigue tus órdenes desde un mismo lugar. Somos un estudio boutique con enfoque en trazos finos y color.
+                            <p className="text-lg text-stone-200">
+                                Láminas para enmarcar, prints de edición limitada, sudaderas bordadas y flashes preparados para tu piel. Todo el arte delicado y vibrante de Isa en un mismo lugar.
                             </p>
                         </div>
 
                         <div className="flex flex-wrap gap-3">
                             <Link
                                 to="/products"
-                                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-400 to-fuchsia-500 px-5 py-3 text-base font-semibold text-slate-900 shadow-lg shadow-fuchsia-500/20 transition hover:shadow-cyan-400/30"
+                                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-rose-900 via-rose-700 to-rose-600 px-6 py-3 text-base font-semibold uppercase tracking-[0.18em] text-rose-50 shadow-lg shadow-rose-900/40 transition hover:shadow-rose-800/60"
                             >
                                 Ver catálogo
-                            </Link>
-                            <Link
-                                to="/login"
-                                className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-5 py-3 text-base font-semibold text-white transition hover:bg-white/10"
-                            >
-                                Iniciar sesión
                             </Link>
                             {showAdminPanel && (
                                 <Link
                                     to="/admin"
-                                    className="inline-flex items-center gap-2 rounded-xl border border-cyan-400/60 bg-cyan-400/10 px-5 py-3 text-base font-semibold text-cyan-100 transition hover:border-cyan-300 hover:text-white"
+                                    className="inline-flex items-center gap-2 rounded-xl border border-rose-800/60 bg-rose-900/40 px-5 py-3 text-base font-semibold text-rose-100 transition hover:border-rose-700"
                                 >
                                     Panel de administración
                                 </Link>
                             )}
                         </div>
 
-                        <div className="grid grid-cols-3 gap-4 rounded-2xl border border-white/10 bg-slate-900/40 p-4 text-center">
+                        <div className="grid grid-cols-3 gap-4 rounded-2xl border border-rose-900/40 bg-neutral-900/60 p-4 text-center shadow-inner shadow-black/30">
                             {stats.map((stat) => (
                                 <div key={stat.label} className="space-y-1">
-                                    <p className="text-2xl font-semibold text-cyan-300">{stat.value}</p>
-                                    <p className="text-xs uppercase tracking-wide text-slate-300">{stat.label}</p>
+                                    <p className="text-2xl font-semibold text-rose-200">{stat.value}</p>
+                                    <p className="text-xs uppercase tracking-wide text-stone-300">{stat.label}</p>
                                 </div>
                             ))}
                         </div>
                     </div>
 
                     <div className="relative">
-                        <div className="absolute -inset-6 rounded-[32px] bg-gradient-to-tr from-cyan-500/20 via-fuchsia-500/20 to-indigo-500/20 blur-3xl"></div>
-                        <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-slate-900/60 shadow-2xl">
+                        <div className="absolute -inset-6 rounded-[32px] bg-gradient-to-tr from-rose-900/30 via-neutral-900 to-black blur-3xl"></div>
+                        <div className="relative overflow-hidden rounded-[32px] border border-rose-900/40 bg-neutral-900/70 shadow-2xl shadow-rose-900/30">
                             <div className="flex h-full flex-col gap-6 p-6">
                                 <div className="flex items-start justify-between">
                                     <div>
-                                        <p className="text-xs uppercase tracking-[0.2em] text-cyan-200">
-                                            Agenda guiada
+                                        <p className="text-xs uppercase tracking-[0.2em] text-rose-200">
+                                            Reserva informativa
                                         </p>
-                                        <h3 className="text-2xl font-semibold text-white">Tu idea, nuestro trazo</h3>
+                                        <h3 className="text-2xl font-semibold text-rose-50">Tu idea, nuestro trazo</h3>
                                     </div>
-                                    <span className="rounded-full bg-fuchsia-400/20 px-3 py-1 text-xs font-semibold text-fuchsia-100">
-                                        Segura
+                                    <span className="rounded-full bg-rose-800/40 px-3 py-1 text-xs font-semibold text-rose-100">
+                                        Boutique
                                     </span>
                                 </div>
 
-                                <p className="text-sm text-slate-200">
-                                    Reserva online, confirma disponibilidad y recibe recordatorios automáticos. También puedes seguir tus órdenes y pagos desde el panel de cliente.
+                                <p className="text-sm text-stone-200">
+                                    Gestionamos las reservas de forma personalizada para asegurar que cada diseño encaje contigo y con el soporte que prefieras. Escríbenos y coordinaremos la mejor forma de producir tu pieza.
                                 </p>
 
                                 <div className="grid gap-4 sm:grid-cols-3">
-                                    <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                                        <p className="text-xs text-slate-300">Paso 1</p>
-                                        <p className="text-base font-semibold text-white">Elige un flash</p>
-                                        <p className="text-sm text-slate-300">Explora piezas listas para tatuar o personaliza colores.</p>
+                                    <div className="rounded-2xl border border-rose-900/40 bg-neutral-900/70 p-4 shadow-inner shadow-black/30">
+                                        <p className="text-xs text-stone-300">Paso 1</p>
+                                        <p className="text-base font-semibold text-rose-50">Elige un diseño</p>
+                                        <p className="text-sm text-stone-300">Ilustraciones pensadas para papel, textil o piel según tu gusto.</p>
                                     </div>
-                                    <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                                        <p className="text-xs text-slate-300">Paso 2</p>
-                                        <p className="text-base font-semibold text-white">Reserva</p>
-                                        <p className="text-sm text-slate-300">Selecciona fecha, paga la seña y recibe confirmación inmediata.</p>
+                                    <div className="rounded-2xl border border-rose-900/40 bg-neutral-900/70 p-4 shadow-inner shadow-black/30">
+                                        <p className="text-xs text-stone-300">Paso 2</p>
+                                        <p className="text-base font-semibold text-rose-50">Coordina la reserva</p>
+                                        <p className="text-sm text-stone-300">Por ahora gestionamos todo por contacto directo para darte atención personalizada.</p>
                                     </div>
-                                    <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                                        <p className="text-xs text-slate-300">Paso 3</p>
-                                        <p className="text-base font-semibold text-white">Disfruta</p>
-                                        <p className="text-sm text-slate-300">Llega al estudio y vive una sesión acompañada y segura.</p>
+                                    <div className="rounded-2xl border border-rose-900/40 bg-neutral-900/70 p-4 shadow-inner shadow-black/30">
+                                        <p className="text-xs text-stone-300">Paso 3</p>
+                                        <p className="text-base font-semibold text-rose-50">Recibe tu pieza</p>
+                                        <p className="text-sm text-stone-300">Preparamos tu print, prenda o cita de tatuaje con la misma dedicación.</p>
                                     </div>
+                                </div>
+
+                                <div className="rounded-2xl border border-rose-900/40 bg-rose-900/30 p-4 text-sm text-rose-50 shadow-inner shadow-black/30">
+                                    <p className="font-semibold">Contacto para reservas y encargos</p>
+                                    <p>Teléfono: +34 600 000 000</p>
+                                    <p>Email: contacto@isasartstudio.com</p>
+                                    <p className="text-stone-200/80">Atendemos de forma personalizada para que cada diseño llegue al soporte adecuado.</p>
                                 </div>
                             </div>
                         </div>
@@ -138,13 +139,13 @@ export default function HomePage() {
                 <section className="space-y-4">
                     <div className="flex flex-wrap items-center justify-between gap-3">
                         <div>
-                            <p className="text-xs uppercase tracking-[0.3em] text-cyan-200">Destacados</p>
-                            <h3 className="text-2xl font-semibold text-white">Piezas listas para agendar</h3>
-                            <p className="text-sm text-slate-300">Seleccionamos algunos diseños recientes para inspirarte.</p>
+                            <p className="text-xs uppercase tracking-[0.3em] text-rose-200">Destacados</p>
+                            <h3 className="text-2xl font-semibold text-rose-50">Diseños listos para llevar</h3>
+                            <p className="text-sm text-stone-300">Selección curada para imprimir, vestir o reservar en estudio.</p>
                         </div>
                         <Link
                             to="/products"
-                            className="inline-flex items-center gap-2 text-sm font-semibold text-cyan-200 hover:text-cyan-100"
+                            className="inline-flex items-center gap-2 text-sm font-semibold text-rose-100 hover:text-rose-50"
                         >
                             Ver catálogo completo →
                         </Link>
@@ -152,19 +153,19 @@ export default function HomePage() {
 
                     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                         {loading && (
-                            <div className="col-span-full rounded-2xl border border-white/10 bg-white/5 p-6 text-sm text-slate-200">
+                            <div className="col-span-full rounded-2xl border border-rose-900/40 bg-neutral-900/60 p-6 text-sm text-stone-200">
                                 Cargando piezas destacadas...
                             </div>
                         )}
 
                         {error && (
-                            <div className="col-span-full rounded-2xl border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-100">
+                            <div className="col-span-full rounded-2xl border border-red-800/40 bg-red-900/30 p-4 text-sm text-rose-50">
                                 {error}
                             </div>
                         )}
 
                         {!loading && !error && featured.length === 0 && (
-                            <div className="col-span-full rounded-2xl border border-white/10 bg-white/5 p-6 text-sm text-slate-200">
+                            <div className="col-span-full rounded-2xl border border-rose-900/40 bg-neutral-900/60 p-6 text-sm text-stone-200">
                                 Aún no hay productos disponibles. Revisa más tarde.
                             </div>
                         )}
@@ -172,31 +173,31 @@ export default function HomePage() {
                         {featured.map((product) => (
                             <article
                                 key={product.id}
-                                className="flex flex-col gap-3 rounded-2xl border border-white/10 bg-slate-900/40 p-5 shadow-lg"
+                                className="flex flex-col gap-3 rounded-2xl border border-rose-900/40 bg-neutral-900/70 p-5 shadow-lg shadow-black/30"
                             >
                                 {product.imageUrl && (
                                     <img
                                         src={product.imageUrl}
                                         alt={product.name}
-                                        className="h-40 w-full rounded-xl object-cover"
+                                        className="h-40 w-full rounded-xl object-cover border border-rose-900/30"
                                     />
                                 )}
                                 <div className="flex-1 space-y-2">
                                     <div className="flex items-start justify-between gap-3">
-                                        <h4 className="text-lg font-semibold text-white">{product.name}</h4>
-                                        <span className="rounded-full bg-cyan-500/10 px-3 py-1 text-xs font-semibold text-cyan-200">
-                                            Flash
+                                        <h4 className="text-lg font-semibold text-rose-50">{product.name}</h4>
+                                        <span className="rounded-full bg-rose-900/40 px-3 py-1 text-xs font-semibold text-rose-100">
+                                            Diseño híbrido
                                         </span>
                                     </div>
-                                    <p className="text-sm text-slate-300 line-clamp-3">
-                                        {product.description || "Pieza única disponible para tu próxima sesión."}
+                                    <p className="text-sm text-stone-300 line-clamp-3">
+                                        {product.description || "Arte listo para transformar en print, prenda o cita de tatuaje."}
                                     </p>
                                     {product.tags && product.tags.length > 0 && (
-                                        <div className="flex flex-wrap gap-2 text-xs text-cyan-200">
+                                        <div className="flex flex-wrap gap-2 text-xs text-rose-100">
                                             {product.tags.slice(0, 3).map((tag) => (
                                                 <span
                                                     key={tag}
-                                                    className="rounded-full bg-cyan-500/10 px-2 py-1 text-cyan-200"
+                                                    className="rounded-full bg-rose-900/40 px-2 py-1 text-rose-100"
                                                 >
                                                     {tag}
                                                 </span>
@@ -205,7 +206,7 @@ export default function HomePage() {
                                     )}
                                 </div>
                                 <div className="flex items-center justify-between">
-                                    <p className="text-xl font-semibold text-cyan-300">
+                                    <p className="text-xl font-semibold text-rose-200">
                                         {product.price.toLocaleString("es-ES", {
                                             style: "currency",
                                             currency: "EUR",
@@ -213,7 +214,7 @@ export default function HomePage() {
                                     </p>
                                     <Link
                                         to={`/products/${product.id}`}
-                                        className="rounded-lg bg-gradient-to-r from-cyan-400 to-fuchsia-500 px-4 py-2 text-sm font-semibold text-slate-900"
+                                        className="rounded-lg bg-gradient-to-r from-rose-900 via-rose-700 to-rose-600 px-4 py-2 text-sm font-semibold text-rose-50 shadow-lg shadow-rose-900/40"
                                     >
                                         Ver detalle
                                     </Link>

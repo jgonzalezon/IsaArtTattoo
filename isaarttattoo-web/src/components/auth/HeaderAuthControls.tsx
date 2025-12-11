@@ -15,35 +15,35 @@ export default function HeaderAuthControls({ cartCount = 0 }: HeaderAuthControls
     };
 
     return (
-        <nav className="flex flex-wrap items-center gap-3 text-sm text-slate-100">
+        <nav className="grid w-full gap-2 text-sm text-stone-100 md:auto-cols-max md:grid-flow-col md:items-center md:justify-end">
             <Link
                 to="/"
-                className="rounded-lg border border-white/10 px-3 py-1.5 hover:bg-white/10"
+                className="rounded-xl border border-rose-900/50 bg-neutral-900/70 px-3 py-2 text-center font-semibold tracking-wide text-rose-100 shadow-sm shadow-black/30 transition hover:border-rose-700 hover:bg-neutral-800"
             >
                 Inicio
             </Link>
             <Link
                 to="/products"
-                className="rounded-lg border border-white/10 px-3 py-1.5 hover:bg-white/10"
+                className="col-span-full w-full rounded-xl bg-gradient-to-r from-rose-900 via-rose-700 to-rose-600 px-4 py-2 text-center text-sm font-semibold uppercase tracking-[0.18em] text-rose-50 shadow-lg shadow-rose-900/40 transition hover:shadow-rose-800/50"
             >
                 Catálogo
             </Link>
             <Link
                 to="/cart"
-                className="rounded-lg border border-white/10 px-3 py-1.5 hover:bg-white/10"
+                className="rounded-xl border border-rose-900/40 bg-neutral-900/60 px-3 py-2 text-center text-sm font-medium text-rose-100 shadow-sm shadow-black/30 transition hover:border-rose-800"
             >
                 Carrito {cartCount ? `(${cartCount})` : ""}
             </Link>
             <Link
                 to="/orders"
-                className="rounded-lg border border-white/10 px-3 py-1.5 hover:bg-white/10"
+                className="rounded-xl border border-rose-900/40 bg-neutral-900/60 px-3 py-2 text-center text-sm font-medium text-rose-100 shadow-sm shadow-black/30 transition hover:border-rose-800"
             >
                 Órdenes
             </Link>
             {isAuthenticated && isAdmin && (
                 <Link
                     to="/admin"
-                    className="rounded-lg border border-cyan-400/40 bg-cyan-400/10 px-3 py-1.5 font-semibold text-cyan-100 hover:bg-cyan-400/20"
+                    className="rounded-xl border border-rose-700/50 bg-rose-900/40 px-3 py-2 text-center font-semibold text-rose-100 shadow-sm shadow-black/40 transition hover:bg-rose-900/60"
                 >
                     Administración
                 </Link>
@@ -51,25 +51,17 @@ export default function HeaderAuthControls({ cartCount = 0 }: HeaderAuthControls
             {isAuthenticated ? (
                 <button
                     onClick={handleLogout}
-                    className="rounded-lg bg-gradient-to-r from-cyan-400 to-fuchsia-500 px-3 py-1.5 text-slate-900"
+                    className="rounded-xl bg-gradient-to-r from-rose-700 to-rose-600 px-3 py-2 text-center font-semibold text-rose-50 shadow-lg shadow-rose-900/50 transition hover:from-rose-600 hover:to-rose-500"
                 >
                     Cerrar sesión
                 </button>
             ) : (
-                <>
-                    <Link
-                        to="/login"
-                        className="rounded-lg border border-white/10 px-3 py-1.5 hover:bg-white/10"
-                    >
-                        Iniciar sesión
-                    </Link>
-                    <Link
-                        to="/register"
-                        className="rounded-lg bg-gradient-to-r from-cyan-400 to-fuchsia-500 px-3 py-1.5 text-slate-900"
-                    >
-                        Registrarse
-                    </Link>
-                </>
+                <Link
+                    to="/register"
+                    className="rounded-xl border border-rose-900/50 bg-neutral-900/70 px-3 py-2 text-center font-semibold text-rose-100 shadow-sm shadow-black/30 transition hover:border-rose-700 hover:bg-neutral-800"
+                >
+                    Registrarse
+                </Link>
             )}
         </nav>
     );

@@ -35,11 +35,11 @@ export default function App() {
     return (
         <AuthProvider>
             <CartProvider>
-                <div className="relative min-h-dvh overflow-hidden bg-slate-950 text-slate-100">
-                    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_60%_at_50%_0%,rgba(56,189,248,.25),rgba(2,6,23,0))]"></div>
-                    <div className="absolute -top-1/3 left-1/2 h-[80vmin] w-[80vmin] -translate-x-1/2 rounded-full bg-gradient-to-tr from-fuchsia-500/30 via-cyan-400/30 to-indigo-400/30 blur-3xl animate-pulse"></div>
+                <div className="relative min-h-dvh overflow-hidden bg-neutral-950 text-stone-100">
+                    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_70%_at_50%_0%,rgba(136,19,55,0.28),rgba(12,10,9,0))]"></div>
+                    <div className="absolute -top-1/3 left-1/2 h-[86vmin] w-[86vmin] -translate-x-1/2 rounded-full bg-gradient-to-tr from-rose-900/40 via-neutral-900 to-black blur-3xl"></div>
 
-                    <div className="relative z-10 mx-auto min-h-dvh max-w-7xl px-4">
+                    <div className="relative z-10 mx-auto min-h-dvh max-w-7xl px-5 md:px-8">
                         <Routes>
                             <Route path="/" element={<HomePage />} />
 
