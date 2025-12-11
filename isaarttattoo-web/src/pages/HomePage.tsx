@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 
@@ -29,15 +29,6 @@ export default function HomePage() {
 
     const showAdminPanel = isAuthenticated && isAdmin;
 
-    const stats = useMemo(
-        () => [
-            { label: "Clientes felices", value: "+500" },
-            { label: "Estilos únicos", value: "12" },
-            { label: "Años creando", value: "8" },
-        ],
-        []
-    );
-
     return (
         <StoreLayout
             title="Colección IsaArtTattoo"
@@ -60,30 +51,21 @@ export default function HomePage() {
                             </p>
                         </div>
 
-                        <div className="flex flex-wrap gap-3">
+                        <div className="grid w-full gap-3 sm:max-w-md">
                             <Link
                                 to="/products"
-                                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-rose-900 via-rose-700 to-rose-600 px-6 py-3 text-base font-semibold uppercase tracking-[0.18em] text-rose-50 shadow-lg shadow-rose-900/40 transition hover:shadow-rose-800/60"
+                                className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-rose-900 via-rose-700 to-rose-600 px-6 py-4 text-base font-semibold uppercase tracking-[0.18em] text-rose-50 shadow-lg shadow-rose-900/40 transition hover:shadow-rose-800/60"
                             >
                                 Ver catálogo
                             </Link>
                             {showAdminPanel && (
                                 <Link
                                     to="/admin"
-                                    className="inline-flex items-center gap-2 rounded-xl border border-rose-800/60 bg-rose-900/40 px-5 py-3 text-base font-semibold text-rose-100 transition hover:border-rose-700"
+                                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-rose-800/60 bg-rose-950/40 px-5 py-3 text-base font-semibold text-rose-100 transition hover:border-rose-700"
                                 >
                                     Panel de administración
                                 </Link>
                             )}
-                        </div>
-
-                        <div className="grid grid-cols-3 gap-4 rounded-2xl border border-rose-900/40 bg-neutral-900/60 p-4 text-center shadow-inner shadow-black/30">
-                            {stats.map((stat) => (
-                                <div key={stat.label} className="space-y-1">
-                                    <p className="text-2xl font-semibold text-rose-200">{stat.value}</p>
-                                    <p className="text-xs uppercase tracking-wide text-stone-300">{stat.label}</p>
-                                </div>
-                            ))}
                         </div>
                     </div>
 

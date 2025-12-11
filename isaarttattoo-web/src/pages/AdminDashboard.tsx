@@ -27,25 +27,26 @@ export default function AdminDashboard() {
         <StoreLayout
             title="Panel de administración"
             description="Controla las operaciones del estudio desde un solo lugar."
+            tone="light"
         >
-            <div className="grid gap-6 lg:grid-cols-3">
+            <div className="grid gap-6 text-neutral-900 lg:grid-cols-3">
                 {adminSections.map((section) => (
                     <Link
                         key={section.href}
                         to={section.href}
-                        className="group flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/5 p-5 transition hover:-translate-y-1 hover:border-cyan-400/40 hover:shadow-lg hover:shadow-cyan-500/10"
+                        className="group flex flex-col gap-3 rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-xl hover:shadow-rose-100"
                     >
                         <div className="flex items-center justify-between">
-                            <div className="rounded-full bg-cyan-500/10 px-3 py-1 text-xs font-semibold text-cyan-200">
+                            <div className="rounded-full border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-800">
                                 {section.badge}
                             </div>
-                            <span className="text-lg text-white transition group-hover:text-cyan-200">→</span>
+                            <span className="text-lg text-neutral-500 transition group-hover:text-rose-700">→</span>
                         </div>
                         <div className="space-y-2">
-                            <h3 className="text-xl font-semibold text-white">{section.title}</h3>
-                            <p className="text-sm text-slate-200">{section.description}</p>
+                            <h3 className="text-xl font-semibold text-neutral-900">{section.title}</h3>
+                            <p className="text-sm text-neutral-600">{section.description}</p>
                         </div>
-                        <p className="text-sm font-semibold text-cyan-200 group-hover:text-cyan-100">
+                        <p className="text-sm font-semibold text-rose-700 group-hover:text-rose-800">
                             Ir a {section.title}
                         </p>
                     </Link>

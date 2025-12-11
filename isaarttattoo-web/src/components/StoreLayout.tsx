@@ -2,55 +2,98 @@ import type { ReactNode } from "react";
 import { useCart } from "../context/CartContext";
 import HeaderAuthControls from "./auth/HeaderAuthControls";
 
+type LayoutTone = "dark" | "light";
+
 interface Props {
     title: string;
     description?: string;
     children: ReactNode;
+    tone?: LayoutTone;
 }
 
-export default function StoreLayout({ title, description, children }: Props) {
+export default function StoreLayout({ title, description, children, tone = "dark" }: Props) {
     const { items } = useCart();
     const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
 
     const currentYear = new Date().getFullYear();
 
+    const isLight = tone === "light";
+
     return (
-        <div className="py-10 text-stone-100">
-            <header className="mb-10 rounded-3xl border border-rose-900/40 bg-neutral-900/80 p-6 shadow-2xl shadow-rose-900/20">
-                <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                    <div className="flex items-center gap-4">
-                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-rose-900/50 text-lg font-semibold uppercase tracking-wide text-rose-100 shadow-inner shadow-black/40">
+        <div className={`${isLight ? "bg-neutral-50 text-neutral-900" : "text-stone-100"} py-8`}>
+            <header
+                className={`mb-8 rounded-3xl border ${
+                    isLight ? "border-neutral-200 bg-white/95 shadow-lg shadow-rose-100/30" : "border-rose-900/40 bg-neutral-900/80 shadow-2xl shadow-rose-900/20"
+                } p-4 md:p-5`}
+            >
+                <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                    <div className="flex items-center gap-3">
+                        <div
+                            className={`flex h-12 w-12 items-center justify-center rounded-2xl text-base font-semibold uppercase tracking-wide shadow-inner ${
+                                isLight
+                                    ? "border border-rose-200 bg-rose-100 text-rose-900"
+                                    : "bg-rose-900/50 text-rose-100 shadow-black/40"
+                            }`}
+                        >
                             Isa
                         </div>
                         <div>
-                            <p className="text-xs uppercase tracking-[0.3em] text-rose-200">IsaArtTattoo Studio</p>
-                            <h1 className="text-3xl font-semibold text-rose-50">{title}</h1>
+                            <p className={`text-[11px] uppercase tracking-[0.3em] ${isLight ? "text-rose-800" : "text-rose-200"}`}>
+                                IsaArtTattoo Studio
+                            </p>
+                            <h1 className={`${isLight ? "text-2xl text-neutral-900" : "text-2xl text-rose-50"} font-semibold md:text-[26px]`}>
+                                {title}
+                            </h1>
                             {description && (
-                                <p className="text-sm text-stone-200/80">{description}</p>
+                                <p className={`${isLight ? "text-neutral-700" : "text-stone-200/80"} text-sm`}>{description}</p>
                             )}
                         </div>
                     </div>
-                    <HeaderAuthControls cartCount={totalItems} />
+                    <HeaderAuthControls cartCount={totalItems} tone={tone} />
                 </div>
             </header>
-            <div className="rounded-3xl border border-rose-900/40 bg-neutral-900/70 p-6 shadow-[0_20px_80px_rgba(0,0,0,0.45)]">
+            <div
+                className={`rounded-3xl border ${
+                    isLight
+                        ? "border-neutral-200 bg-white shadow-[0_16px_60px_rgba(0,0,0,0.08)]"
+                        : "border-rose-900/40 bg-neutral-900/70 shadow-[0_20px_80px_rgba(0,0,0,0.45)]"
+                } p-6`}
+            >
                 {children}
             </div>
-            <footer className="mt-10 rounded-3xl border border-rose-900/40 bg-neutral-900/90 p-6 text-sm text-stone-200 shadow-inner shadow-black/40">
+            <footer
+                className={`mt-8 rounded-3xl border ${
+                    isLight
+                        ? "border-neutral-200 bg-neutral-100 text-neutral-700 shadow-inner shadow-black/5"
+                        : "border-rose-900/40 bg-neutral-900/90 text-sm text-stone-200 shadow-inner shadow-black/40"
+                } p-5 text-sm`}
+            >
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-rose-900/60 text-xs font-semibold uppercase tracking-wide text-rose-100">
+                        <div
+                            className={`flex h-10 w-10 items-center justify-center rounded-xl text-xs font-semibold uppercase tracking-wide ${
+                                isLight
+                                    ? "border border-rose-200 bg-rose-100 text-rose-800"
+                                    : "bg-rose-900/60 text-rose-100"
+                            }`}
+                        >
                             Isa
                         </div>
-                        <div>
-                            <p className="text-base font-semibold text-rose-100">IsaArtTattoo Studio</p>
-                            <p className="text-xs text-stone-300">Diseños artísticos para piel, papel y tela.</p>
+                        <div className={isLight ? "text-neutral-900" : "text-stone-100"}>
+                            <p className={`text-base font-semibold ${isLight ? "text-rose-900" : "text-rose-100"}`}>
+                                IsaArtTattoo Studio
+                            </p>
+                            <p className={`text-xs ${isLight ? "text-neutral-600" : "text-stone-300"}`}>
+                                Diseños artísticos para piel, papel y tela.
+                            </p>
                         </div>
                     </div>
-                    <div className="grid gap-1 text-right text-xs sm:text-sm">
-                        <span className="text-rose-100">Teléfono: +34 600 000 000</span>
-                        <span className="text-rose-100">Email: contacto@isasartstudio.com</span>
-                        <span className="text-stone-300">© {currentYear} IsaArtTattoo. Todos los derechos reservados.</span>
+                    <div className={`grid gap-1 text-right text-xs sm:text-sm ${isLight ? "text-neutral-700" : "text-stone-200"}`}>
+                        <span className={isLight ? "text-rose-800" : "text-rose-100"}>Teléfono: +34 600 000 000</span>
+                        <span className={isLight ? "text-rose-800" : "text-rose-100"}>Email: contacto@isasartstudio.com</span>
+                        <span className={isLight ? "text-neutral-600" : "text-stone-300"}>
+                            © {currentYear} IsaArtTattoo. Todos los derechos reservados.
+                        </span>
                     </div>
                 </div>
             </footer>
