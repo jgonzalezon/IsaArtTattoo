@@ -24,8 +24,13 @@ export default function ProductList() {
                 ]);
                 setProducts(productList);
                 setCategories(catalogCategories);
-            } catch (err: any) {
-                setError(err.message || "No se pudo cargar el catálogo");
+            } catch (err: unknown) {
+                console.error(err);
+                if (err instanceof Error) {
+                    setError(err.message);
+                } else {
+                    setError("No se pudo actualizar la categoría");
+                }
             } finally {
                 setLoading(false);
             }

@@ -20,8 +20,12 @@ export default function LoginPage() {
         try {
             await login({ email, password });
             navigate("/products");
-        } catch (err: any) {
-            setError(err.message ?? "Error al iniciar sesión");
+        } catch (err: unknown) {
+            if (err instanceof Error) {
+                setError(err.message || "Error al iniciar sesión");
+            } else {
+                setError("Error al iniciar sesión");
+            }
         } finally {
             setLoading(false);
         }

@@ -1,4 +1,5 @@
 ﻿// src/lib/api.ts
+
 const RAW_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "";
 
 if (!RAW_BASE_URL) {
@@ -21,26 +22,22 @@ export async function apiFetch<T>(
 
     const url = `${BASE_URL}${path}`;
 
-    // Headers: respetamos los que vengan, pero si nadie ha puesto Content-Type lo fijamos a JSON
-    const headers: HeadersInit = {
-        ...(options.headers || {}),
-    };
-
-    const hasAuthorization = Object.keys(headers)
-        .some((h) => h.toLowerCase() === "authorization");
+    // Construimos Headers a partir de lo que venga en options
+    const headers = new Headers(options.headers ?? undefined);
 
     const token = localStorage.getItem("auth_token");
-    if (!hasAuthorization && token) {
-        (headers as any).Authorization = `Bearer ${token}`;
-    }
-
-    const hasContentType = Object.keys(headers)
-        .some((h) => h.toLowerCase() === "content-type");
-
+    const hasAuthorization = headers.has("Authorization");
+    const hasContentType = headers.has("Content-Type");
     const isFormData = options.body instanceof FormData;
 
+    // Añadimos Authorization si no viene y tenemos token
+    if (!hasAuthorization && token) {
+        headers.set("Authorization", `Bearer ${token}`);
+    }
+
+    // Si no es FormData y no viene Content-Type, lo fijamos a JSON
     if (!hasContentType && !isFormData) {
-        (headers as any)["Content-Type"] = "application/json";
+        headers.set("Content-Type", "application/json");
     }
 
     const res = await fetch(url, {

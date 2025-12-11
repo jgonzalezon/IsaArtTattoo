@@ -50,7 +50,25 @@ export default function AdminCatalogPage() {
     };
 
     useEffect(() => {
-        loadData();
+        let isMounted = true;
+
+        const fetchData = async () => {
+            try {
+                const [cat, prod] = await Promise.all([getCategories(), getProducts()]);
+                if (!isMounted) return; // evita setState tras unmount
+                setCategories(cat);
+                setProducts(prod);
+            } catch (err) {
+                console.error(err);
+                setError("No se pudo cargar el catálogo");
+            }
+        };
+
+        void fetchData();
+
+        return () => {
+            isMounted = false;
+        };
     }, []);
 
     const sortedCategories = useMemo(
