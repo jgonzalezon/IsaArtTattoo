@@ -36,8 +36,8 @@ export default function App() {
         <AuthProvider>
             <CartProvider>
                 <div className="relative min-h-dvh overflow-hidden bg-neutral-950 text-stone-100">
-                    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_70%_at_50%_0%,rgba(136,19,55,0.28),rgba(12,10,9,0))]"></div>
-                    <div className="absolute -top-1/3 left-1/2 h-[86vmin] w-[86vmin] -translate-x-1/2 rounded-full bg-gradient-to-tr from-rose-900/40 via-neutral-900 to-black blur-3xl"></div>
+                    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(70%_70%_at_50%_0%,rgba(30,64,175,0.28),rgba(12,10,9,0))]"></div>
+                    <div className="absolute -top-1/3 left-1/2 h-[86vmin] w-[86vmin] -translate-x-1/2 rounded-full bg-gradient-to-tr from-blue-900/40 via-neutral-900 to-black blur-3xl"></div>
 
                     <div className="relative z-10 mx-auto min-h-dvh max-w-7xl px-5 md:px-8">
                         <Routes>

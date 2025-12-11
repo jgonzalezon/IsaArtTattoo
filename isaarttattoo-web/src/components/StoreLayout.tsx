@@ -23,7 +23,7 @@ export default function StoreLayout({ title, description, children, tone = "dark
         <div className={`${isLight ? "bg-neutral-50 text-neutral-900" : "text-stone-100"} py-8`}>
             <header
                 className={`mb-8 rounded-3xl border ${
-                    isLight ? "border-neutral-200 bg-white/95 shadow-lg shadow-rose-100/30" : "border-rose-900/40 bg-neutral-900/80 shadow-2xl shadow-rose-900/20"
+                    isLight ? "border-neutral-200 bg-white/95 shadow-lg shadow-blue-100/30" : "border-blue-900/40 bg-neutral-900/80 shadow-2xl shadow-blue-900/20"
                 } p-4 md:p-5`}
             >
                 <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
@@ -31,17 +31,17 @@ export default function StoreLayout({ title, description, children, tone = "dark
                         <div
                             className={`flex h-12 w-12 items-center justify-center rounded-2xl text-base font-semibold uppercase tracking-wide shadow-inner ${
                                 isLight
-                                    ? "border border-rose-200 bg-rose-100 text-rose-900"
-                                    : "bg-rose-900/50 text-rose-100 shadow-black/40"
+                                    ? "border border-blue-200 bg-blue-50 text-blue-900"
+                                    : "bg-blue-900/50 text-blue-100 shadow-black/40"
                             }`}
                         >
                             Isa
                         </div>
                         <div>
-                            <p className={`text-[11px] uppercase tracking-[0.3em] ${isLight ? "text-rose-800" : "text-rose-200"}`}>
+                            <p className={`text-[11px] uppercase tracking-[0.3em] ${isLight ? "text-blue-800" : "text-blue-200"}`}>
                                 IsaArtTattoo Studio
                             </p>
-                            <h1 className={`${isLight ? "text-2xl text-neutral-900" : "text-2xl text-rose-50"} font-semibold md:text-[26px]`}>
+                            <h1 className={`${isLight ? "text-2xl text-neutral-900" : "text-2xl text-blue-50"} font-semibold md:text-[26px]`}>
                                 {title}
                             </h1>
                             {description && (
@@ -56,7 +56,7 @@ export default function StoreLayout({ title, description, children, tone = "dark
                 className={`rounded-3xl border ${
                     isLight
                         ? "border-neutral-200 bg-white shadow-[0_16px_60px_rgba(0,0,0,0.08)]"
-                        : "border-rose-900/40 bg-neutral-900/70 shadow-[0_20px_80px_rgba(0,0,0,0.45)]"
+                        : "border-blue-900/40 bg-neutral-900/70 shadow-[0_20px_80px_rgba(0,0,0,0.45)]"
                 } p-6`}
             >
                 {children}
@@ -65,7 +65,7 @@ export default function StoreLayout({ title, description, children, tone = "dark
                 className={`mt-8 rounded-3xl border ${
                     isLight
                         ? "border-neutral-200 bg-neutral-100 text-neutral-700 shadow-inner shadow-black/5"
-                        : "border-rose-900/40 bg-neutral-900/90 text-sm text-stone-200 shadow-inner shadow-black/40"
+                        : "border-blue-900/40 bg-neutral-900/90 text-sm text-stone-200 shadow-inner shadow-black/40"
                 } p-5 text-sm`}
             >
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -73,14 +73,14 @@ export default function StoreLayout({ title, description, children, tone = "dark
                         <div
                             className={`flex h-10 w-10 items-center justify-center rounded-xl text-xs font-semibold uppercase tracking-wide ${
                                 isLight
-                                    ? "border border-rose-200 bg-rose-100 text-rose-800"
-                                    : "bg-rose-900/60 text-rose-100"
+                                    ? "border border-blue-200 bg-blue-50 text-blue-800"
+                                    : "bg-blue-900/60 text-blue-100"
                             }`}
                         >
                             Isa
                         </div>
                         <div className={isLight ? "text-neutral-900" : "text-stone-100"}>
-                            <p className={`text-base font-semibold ${isLight ? "text-rose-900" : "text-rose-100"}`}>
+                            <p className={`text-base font-semibold ${isLight ? "text-blue-900" : "text-blue-100"}`}>
                                 IsaArtTattoo Studio
                             </p>
                             <p className={`text-xs ${isLight ? "text-neutral-600" : "text-stone-300"}`}>
@@ -89,8 +89,8 @@ export default function StoreLayout({ title, description, children, tone = "dark
                         </div>
                     </div>
                     <div className={`grid gap-1 text-right text-xs sm:text-sm ${isLight ? "text-neutral-700" : "text-stone-200"}`}>
-                        <span className={isLight ? "text-rose-800" : "text-rose-100"}>Teléfono: +34 600 000 000</span>
-                        <span className={isLight ? "text-rose-800" : "text-rose-100"}>Email: contacto@isasartstudio.com</span>
+                        <span className={isLight ? "text-blue-800" : "text-blue-100"}>Teléfono: +34 600 000 000</span>
+                        <span className={isLight ? "text-blue-800" : "text-blue-100"}>Email: contacto@isasartstudio.com</span>
                         <span className={isLight ? "text-neutral-600" : "text-stone-300"}>
                             © {currentYear} IsaArtTattoo. Todos los derechos reservados.
                         </span>

@@ -30,14 +30,14 @@ export default function HeaderAuthControls({ cartCount = 0, tone = "dark" }: Hea
                 className={`rounded-xl px-3 py-2 text-center font-semibold transition ${
                     isLight
                         ? "border border-neutral-200 bg-white text-neutral-900 shadow-sm hover:bg-neutral-100"
-                        : "border border-rose-900/50 bg-neutral-900/70 text-rose-100 shadow-sm shadow-black/30 hover:border-rose-700 hover:bg-neutral-800"
+                        : "border border-blue-900/50 bg-neutral-900/70 text-blue-100 shadow-sm shadow-black/30 hover:border-blue-700 hover:bg-neutral-800"
                 }`}
             >
                 Inicio
             </Link>
             <Link
                 to="/products"
-                className="col-span-full w-full rounded-xl bg-gradient-to-r from-rose-900 via-rose-700 to-rose-600 px-4 py-2 text-center text-sm font-semibold uppercase tracking-[0.18em] text-rose-50 shadow-lg shadow-rose-900/40 transition hover:shadow-rose-800/50"
+                className="col-span-full w-full rounded-xl bg-gradient-to-r from-blue-900 via-blue-700 to-blue-600 px-4 py-2 text-center text-sm font-semibold uppercase tracking-[0.18em] text-blue-50 shadow-lg shadow-blue-900/40 transition hover:shadow-blue-800/50"
             >
                 Catálogo
             </Link>
@@ -46,7 +46,7 @@ export default function HeaderAuthControls({ cartCount = 0, tone = "dark" }: Hea
                 className={`rounded-xl px-3 py-2 text-center text-sm font-medium transition ${
                     isLight
                         ? "border border-neutral-200 bg-white text-neutral-900 shadow-sm hover:bg-neutral-100"
-                        : "border border-rose-900/40 bg-neutral-900/60 text-rose-100 shadow-sm shadow-black/30 hover:border-rose-800"
+                        : "border border-blue-900/40 bg-neutral-900/60 text-blue-100 shadow-sm shadow-black/30 hover:border-blue-800"
                 }`}
             >
                 Carrito {cartCount ? `(${cartCount})` : ""}
@@ -56,7 +56,7 @@ export default function HeaderAuthControls({ cartCount = 0, tone = "dark" }: Hea
                 className={`rounded-xl px-3 py-2 text-center text-sm font-medium transition ${
                     isLight
                         ? "border border-neutral-200 bg-white text-neutral-900 shadow-sm hover:bg-neutral-100"
-                        : "border border-rose-900/40 bg-neutral-900/60 text-rose-100 shadow-sm shadow-black/30 hover:border-rose-800"
+                        : "border border-blue-900/40 bg-neutral-900/60 text-blue-100 shadow-sm shadow-black/30 hover:border-blue-800"
                 }`}
             >
                 Órdenes
@@ -66,8 +66,8 @@ export default function HeaderAuthControls({ cartCount = 0, tone = "dark" }: Hea
                     to="/admin"
                     className={`rounded-xl px-3 py-2 text-center font-semibold transition ${
                         isLight
-                            ? "border border-rose-200 bg-rose-50 text-rose-800 shadow-sm hover:bg-rose-100"
-                            : "border border-rose-700/50 bg-rose-900/40 text-rose-100 shadow-sm shadow-black/40 hover:bg-rose-900/60"
+                            ? "border border-blue-200 bg-blue-50 text-blue-800 shadow-sm hover:bg-blue-100"
+                            : "border border-blue-700/50 bg-blue-900/40 text-blue-100 shadow-sm shadow-black/40 hover:bg-blue-900/60"
                     }`}
                 >
                     Administración
@@ -76,7 +76,7 @@ export default function HeaderAuthControls({ cartCount = 0, tone = "dark" }: Hea
             {isAuthenticated ? (
                 <button
                     onClick={handleLogout}
-                    className="rounded-xl bg-gradient-to-r from-rose-700 to-rose-600 px-3 py-2 text-center font-semibold text-rose-50 shadow-lg shadow-rose-900/50 transition hover:from-rose-600 hover:to-rose-500"
+                    className="rounded-xl bg-gradient-to-r from-blue-700 to-blue-600 px-3 py-2 text-center font-semibold text-blue-50 shadow-lg shadow-blue-900/50 transition hover:from-blue-600 hover:to-blue-500"
                 >
                     Cerrar sesión
                 </button>
@@ -86,7 +86,7 @@ export default function HeaderAuthControls({ cartCount = 0, tone = "dark" }: Hea
                     className={`rounded-xl px-3 py-2 text-center font-semibold transition ${
                         isLight
                             ? "border border-neutral-200 bg-white text-neutral-900 shadow-sm hover:bg-neutral-100"
-                            : "border border-rose-900/50 bg-neutral-900/70 text-rose-100 shadow-sm shadow-black/30 hover:border-rose-700 hover:bg-neutral-800"
+                            : "border border-blue-900/50 bg-neutral-900/70 text-blue-100 shadow-sm shadow-black/30 hover:border-blue-700 hover:bg-neutral-800"
                     }`}
                 >
                     Registrarse

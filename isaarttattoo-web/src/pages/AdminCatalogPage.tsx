@@ -184,7 +184,7 @@ export default function AdminCatalogPage() {
                             onClick={() => setActiveTab(tab.id)}
                             className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
                                 activeTab === tab.id
-                                    ? "border border-rose-200 bg-rose-50 text-rose-800 shadow-sm"
+                                    ? "border border-blue-200 bg-blue-50 text-blue-800 shadow-sm"
                                     : "border border-neutral-200 bg-white text-neutral-700 hover:bg-neutral-100"
                             }`}
                         >
@@ -194,7 +194,7 @@ export default function AdminCatalogPage() {
                 </div>
 
                 {error && (
-                    <div className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-800">
+                    <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
                         {error}
                     </div>
                 )}
@@ -213,7 +213,7 @@ export default function AdminCatalogPage() {
                             <label className="grid gap-2 text-sm text-neutral-800">
                                 <span>Nombre</span>
                                 <input
-                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-rose-600 focus:outline-none focus:ring-1 focus:ring-rose-500"
+                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                     value={categoryForm.name}
                                     onChange={(e) => setCategoryForm((c) => ({ ...c, name: e.target.value }))}
                                     required
@@ -222,7 +222,7 @@ export default function AdminCatalogPage() {
                             <label className="grid gap-2 text-sm text-neutral-800">
                                 <span>Descripción</span>
                                 <input
-                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-rose-600 focus:outline-none focus:ring-1 focus:ring-rose-500"
+                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                     value={categoryForm.description}
                                     onChange={(e) => setCategoryForm((c) => ({ ...c, description: e.target.value }))}
                                     placeholder="Breve descripción"
@@ -232,7 +232,7 @@ export default function AdminCatalogPage() {
                                 <span>Orden</span>
                                 <input
                                     type="number"
-                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-rose-600 focus:outline-none focus:ring-1 focus:ring-rose-500"
+                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                     value={categoryForm.displayOrder}
                                     onChange={(e) => setCategoryForm((c) => ({ ...c, displayOrder: Number(e.target.value) }))}
                                 />
@@ -240,7 +240,7 @@ export default function AdminCatalogPage() {
                             <div className="md:col-span-3 flex justify-end">
                                 <button
                                     type="submit"
-                                    className="rounded-lg bg-rose-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition hover:bg-rose-800"
+                                    className="rounded-lg bg-blue-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition hover:bg-blue-800"
                                 >
                                     Crear categoría
                                 </button>
@@ -262,7 +262,7 @@ export default function AdminCatalogPage() {
                                         <tr key={cat.id} className="border-t border-neutral-100">
                                             <td className="px-4 py-2">
                                                 <input
-                                                    className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-rose-600 focus:outline-none focus:ring-1 focus:ring-rose-500"
+                                                    className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                                     value={cat.name}
                                                     onChange={(e) =>
                                                         setCategories((prev) =>
@@ -275,7 +275,7 @@ export default function AdminCatalogPage() {
                                             </td>
                                             <td className="px-4 py-2">
                                                 <input
-                                                    className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-rose-600 focus:outline-none focus:ring-1 focus:ring-rose-500"
+                                                    className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                                     value={cat.description ?? ""}
                                                     onChange={(e) =>
                                                         setCategories((prev) =>
@@ -289,7 +289,7 @@ export default function AdminCatalogPage() {
                                             <td className="px-4 py-2">
                                                 <input
                                                     type="number"
-                                                    className="w-24 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-rose-600 focus:outline-none focus:ring-1 focus:ring-rose-500"
+                                                    className="w-24 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                                     value={cat.displayOrder}
                                                     onChange={(e) =>
                                                         setCategories((prev) =>
@@ -309,7 +309,7 @@ export default function AdminCatalogPage() {
                                                         Guardar
                                                     </button>
                                                     <button
-                                                        className="rounded-lg bg-rose-700 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-rose-800"
+                                                        className="rounded-lg bg-blue-700 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-blue-800"
                                                         onClick={() => deleteCategory(cat.id).then(loadData).catch(() => setError("No se pudo eliminar"))}
                                                     >
                                                         Eliminar
@@ -331,7 +331,7 @@ export default function AdminCatalogPage() {
                             <label className="grid gap-2 text-sm text-neutral-800 md:col-span-2">
                                 <span>Nombre</span>
                                 <input
-                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-rose-600 focus:outline-none focus:ring-1 focus:ring-rose-500"
+                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                     value={productForm.name}
                                     onChange={(e) => setProductForm((p) => ({ ...p, name: e.target.value }))}
                                     required
@@ -340,7 +340,7 @@ export default function AdminCatalogPage() {
                             <label className="grid gap-2 text-sm text-neutral-800 md:col-span-2">
                                 <span>Descripción corta</span>
                                 <input
-                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-rose-600 focus:outline-none focus:ring-1 focus:ring-rose-500"
+                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                     value={productForm.shortDescription}
                                     onChange={(e) => setProductForm((p) => ({ ...p, shortDescription: e.target.value }))}
                                 />
@@ -350,7 +350,7 @@ export default function AdminCatalogPage() {
                                 <input
                                     type="number"
                                     step="0.01"
-                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-rose-600 focus:outline-none focus:ring-1 focus:ring-rose-500"
+                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                     value={productForm.price}
                                     onChange={(e) => setProductForm((p) => ({ ...p, price: Number(e.target.value) }))}
                                 />
@@ -359,7 +359,7 @@ export default function AdminCatalogPage() {
                                 <span>Stock</span>
                                 <input
                                     type="number"
-                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-rose-600 focus:outline-none focus:ring-1 focus:ring-rose-500"
+                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                     value={productForm.stock}
                                     onChange={(e) => setProductForm((p) => ({ ...p, stock: Number(e.target.value) }))}
                                 />
@@ -367,7 +367,7 @@ export default function AdminCatalogPage() {
                             <label className="grid gap-2 text-sm text-neutral-800">
                                 <span>Categoría</span>
                                 <select
-                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-rose-600 focus:outline-none"
+                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none"
                                     value={productForm.categoryId}
                                     onChange={(e) => setProductForm((p) => ({ ...p, categoryId: Number(e.target.value) }))}
                                     required
@@ -383,7 +383,7 @@ export default function AdminCatalogPage() {
                             <label className="grid gap-2 text-sm text-neutral-800">
                                 <span>Activo</span>
                                 <select
-                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-rose-600 focus:outline-none"
+                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none"
                                     value={productForm.isActive ? "yes" : "no"}
                                     onChange={(e) => setProductForm((p) => ({ ...p, isActive: e.target.value === "yes" }))}
                                 >
@@ -401,7 +401,7 @@ export default function AdminCatalogPage() {
                                     <input
                                         type="file"
                                         accept="image/*"
-                                        className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-rose-600 focus:outline-none"
+                                        className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none"
                                         onChange={(e) =>
                                             setProductForm((p) => ({
                                                 ...p,
@@ -413,13 +413,13 @@ export default function AdminCatalogPage() {
                                         <input
                                             type="text"
                                             placeholder="Texto alternativo"
-                                            className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-rose-600 focus:outline-none"
+                                            className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none"
                                             value={productForm.imageAlt}
                                             onChange={(e) => setProductForm((p) => ({ ...p, imageAlt: e.target.value }))}
                                         />
                                         <input
                                             type="number"
-                                            className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-rose-600 focus:outline-none"
+                                            className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none"
                                             value={productForm.imageDisplayOrder}
                                             onChange={(e) =>
                                                 setProductForm((p) => ({
@@ -435,7 +435,7 @@ export default function AdminCatalogPage() {
                             <div className="md:col-span-6 flex justify-end">
                                 <button
                                     type="submit"
-                                    className="rounded-lg bg-rose-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition hover:bg-rose-800"
+                                    className="rounded-lg bg-blue-700 px-4 py-2 text-sm font-semibold text-white shadow-md transition hover:bg-blue-800"
                                 >
                                     Crear producto
                                 </button>
@@ -446,7 +446,7 @@ export default function AdminCatalogPage() {
                             <label className="text-sm text-neutral-800">
                                 Filtrar por categoría:
                                 <select
-                                    className="ml-2 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 shadow-sm focus:border-rose-600 focus:outline-none"
+                                    className="ml-2 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none"
                                     value={filterCategory}
                                     onChange={(e) => setFilterCategory(e.target.value)}
                                 >
@@ -478,7 +478,7 @@ export default function AdminCatalogPage() {
                                         <tr key={prod.id} className="border-t border-neutral-100">
                                             <td className="px-4 py-2">
                                                 <input
-                                                    className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-rose-600 focus:outline-none focus:ring-1 focus:ring-rose-500"
+                                                    className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                                     value={prod.name}
                                                     onChange={(e) =>
                                                         setProducts((prev) =>
@@ -489,7 +489,7 @@ export default function AdminCatalogPage() {
                                             </td>
                                             <td className="px-4 py-2">
                                                 <select
-                                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-rose-600 focus:outline-none"
+                                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none"
                                                     value={sortedCategories.find((c) => c.name === prod.categoryName)?.id ?? 0}
                                                     onChange={(e) =>
                                                         setProducts((prev) =>
@@ -520,7 +520,7 @@ export default function AdminCatalogPage() {
                                                 <input
                                                     type="number"
                                                     step="0.01"
-                                                    className="w-24 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-rose-600 focus:outline-none focus:ring-1 focus:ring-rose-500"
+                                                    className="w-24 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                                     value={prod.price}
                                                     onChange={(e) =>
                                                         setProducts((prev) =>
@@ -532,7 +532,7 @@ export default function AdminCatalogPage() {
                                             <td className="px-4 py-2">
                                                 <input
                                                     type="number"
-                                                    className="w-20 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-rose-600 focus:outline-none focus:ring-1 focus:ring-rose-500"
+                                                    className="w-20 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
                                                     value={prod.stock}
                                                     onChange={(e) =>
                                                         setProducts((prev) =>
@@ -543,7 +543,7 @@ export default function AdminCatalogPage() {
                                             </td>
                                             <td className="px-4 py-2">
                                                 <select
-                                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-rose-600 focus:outline-none"
+                                                    className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none"
                                                     value={prod.isActive ? "yes" : "no"}
                                                     onChange={(e) =>
                                                         setProducts((prev) =>
@@ -571,7 +571,7 @@ export default function AdminCatalogPage() {
                                                     <input
                                                         type="file"
                                                         accept="image/*"
-                                                        className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-rose-600 focus:outline-none"
+                                                        className="w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none"
                                                         onChange={(e) =>
                                                             setUploadState((prev) => ({
                                                                 ...prev,
@@ -586,7 +586,7 @@ export default function AdminCatalogPage() {
                                                     <input
                                                         type="text"
                                                         placeholder="Alt"
-                                                        className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-rose-600 focus:outline-none"
+                                                        className="rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none"
                                                         value={uploadState[prod.id]?.altText ?? ""}
                                                         onChange={(e) =>
                                                             setUploadState((prev) => ({
@@ -602,7 +602,7 @@ export default function AdminCatalogPage() {
                                                     <div className="flex items-center gap-2">
                                                         <input
                                                             type="number"
-                                                            className="w-20 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-rose-600 focus:outline-none"
+                                                            className="w-20 rounded-lg border border-neutral-300 bg-white px-3 py-2 text-neutral-900 shadow-sm focus:border-blue-600 focus:outline-none"
                                                             value={uploadState[prod.id]?.displayOrder ?? 0}
                                                             onChange={(e) =>
                                                                 setUploadState((prev) => ({
@@ -616,7 +616,7 @@ export default function AdminCatalogPage() {
                                                             }
                                                         />
                                                         <button
-                                                            className="rounded-lg bg-rose-700 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-rose-800"
+                                                            className="rounded-lg bg-blue-700 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-blue-800"
                                                             onClick={() => handleUploadImage(prod.id)}
                                                         >
                                                             Subir
@@ -633,7 +633,7 @@ export default function AdminCatalogPage() {
                                                         Guardar
                                                     </button>
                                                     <button
-                                                        className="rounded-lg bg-rose-700 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-rose-800"
+                                                        className="rounded-lg bg-blue-700 px-3 py-2 text-xs font-semibold text-white shadow-sm hover:bg-blue-800"
                                                         onClick={() => deleteProduct(prod.id).then(loadData).catch(() => setError("No se pudo eliminar el producto"))}
                                                     >
                                                         Eliminar

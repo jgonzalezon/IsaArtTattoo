@@ -34,19 +34,19 @@ export default function AdminDashboard() {
                     <Link
                         key={section.href}
                         to={section.href}
-                        className="group flex flex-col gap-3 rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-xl hover:shadow-rose-100"
+                        className="group flex flex-col gap-3 rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-xl hover:shadow-blue-100"
                     >
                         <div className="flex items-center justify-between">
-                            <div className="rounded-full border border-rose-200 bg-rose-50 px-3 py-1 text-xs font-semibold text-rose-800">
+                            <div className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-800">
                                 {section.badge}
                             </div>
-                            <span className="text-lg text-neutral-500 transition group-hover:text-rose-700">→</span>
+                            <span className="text-lg text-neutral-500 transition group-hover:text-blue-700">→</span>
                         </div>
                         <div className="space-y-2">
                             <h3 className="text-xl font-semibold text-neutral-900">{section.title}</h3>
                             <p className="text-sm text-neutral-600">{section.description}</p>
                         </div>
-                        <p className="text-sm font-semibold text-rose-700 group-hover:text-rose-800">
+                        <p className="text-sm font-semibold text-blue-700 group-hover:text-blue-800">
                             Ir a {section.title}
                         </p>
                     </Link>
