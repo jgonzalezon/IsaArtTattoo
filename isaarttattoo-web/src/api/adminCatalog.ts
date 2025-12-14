@@ -1,5 +1,17 @@
 import { apiFetch } from "../lib/api";
 
+function authOptions(extra: RequestInit = {}): RequestInit {
+    const token = localStorage.getItem("auth_token");
+
+    return {
+        ...extra,
+        headers: {
+            ...(extra.headers || {}),
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+    };
+}
+
 export interface AdminCategory {
     id: number;
     name: string;
@@ -29,23 +41,23 @@ export function getCategories() {
 }
 
 export function createCategory(payload: Partial<AdminCategory>) {
-    return apiFetch<AdminCategory>("/api/admin/catalog/categories", {
+    return apiFetch<AdminCategory>("/api/admin/catalog/categories", authOptions({
         method: "POST",
         body: JSON.stringify(payload),
-    });
+    }));
 }
 
 export function updateCategory(id: number, payload: Partial<AdminCategory>) {
-    return apiFetch<AdminCategory>(`/api/admin/catalog/categories/${id}`, {
+    return apiFetch<AdminCategory>(`/api/admin/catalog/categories/${id}`, authOptions({
         method: "PUT",
         body: JSON.stringify(payload),
-    });
+    }));
 }
 
 export function deleteCategory(id: number) {
-    return apiFetch<void>(`/api/admin/catalog/categories/${id}`, {
+    return apiFetch<void>(`/api/admin/catalog/categories/${id}`, authOptions({
         method: "DELETE",
-    });
+    }));
 }
 
 export function getProducts() {
@@ -53,26 +65,26 @@ export function getProducts() {
 }
 
 export function createProduct(payload: Partial<AdminProduct> & { categoryId?: number }) {
-    return apiFetch<AdminProduct>("/api/admin/catalog/products", {
+    return apiFetch<AdminProduct>("/api/admin/catalog/products", authOptions({
         method: "POST",
         body: JSON.stringify({
             ...payload,
             initialStock: payload.stock ?? 0,
         }),
-    });
+    }));
 }
 
 export function updateProduct(id: number, payload: Partial<AdminProduct> & { categoryId?: number }) {
-    return apiFetch<AdminProduct>(`/api/admin/catalog/products/${id}`, {
+    return apiFetch<AdminProduct>(`/api/admin/catalog/products/${id}`, authOptions({
         method: "PUT",
         body: JSON.stringify(payload),
-    });
+    }));
 }
 
 export function deleteProduct(id: number) {
-    return apiFetch<void>(`/api/admin/catalog/products/${id}`, {
+    return apiFetch<void>(`/api/admin/catalog/products/${id}`, authOptions({
         method: "DELETE",
-    });
+    }));
 }
 
 export function createProductWithImage(payload: {
@@ -97,10 +109,10 @@ export function createProductWithImage(payload: {
     if (payload.altText) form.append("altText", payload.altText);
     if (payload.displayOrder !== undefined) form.append("displayOrder", payload.displayOrder.toString());
 
-    return apiFetch<AdminProduct>("/api/admin/catalog/products-with-image", {
+    return apiFetch<AdminProduct>("/api/admin/catalog/products-with-image", authOptions({
         method: "POST",
         body: form,
-    });
+    }));
 }
 
 export function uploadProductImage(
@@ -112,8 +124,8 @@ export function uploadProductImage(
     if (payload.altText) form.append("altText", payload.altText);
     if (payload.displayOrder !== undefined) form.append("displayOrder", payload.displayOrder.toString());
 
-    return apiFetch<ProductImage>(`/api/admin/catalog/products/${productId}/images/upload`, {
+    return apiFetch<ProductImage>(`/api/admin/catalog/products/${productId}/images/upload`, authOptions({
         method: "POST",
         body: form,
-    });
+    }));
 }
