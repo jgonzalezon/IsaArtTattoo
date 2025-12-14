@@ -62,7 +62,8 @@ public class RolesController : ControllerBase
             return BadRequest(result.Error);
         }
 
-        return Ok($"Rol '{name}' eliminado correctamente.");
+        // ✅ Retornar JSON en lugar de string plano
+        return Ok(new { message = $"Rol '{name}' eliminado correctamente." });
     }
 
     // POST: api/v1/roles/assign
@@ -85,6 +86,7 @@ public class RolesController : ControllerBase
             return BadRequest(result.Error);
         }
 
-        return Ok($"Rol '{dto.RoleName}' asignado correctamente al usuario.");
+        // ✅ Retornar JSON en lugar de string plano
+        return Ok(new { message = $"Rol '{dto.RoleName}' asignado correctamente al usuario." });
     }
 }

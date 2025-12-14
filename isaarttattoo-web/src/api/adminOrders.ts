@@ -17,18 +17,6 @@ export interface AdminOrderDetail extends AdminOrderListItem {
     updatedAt?: string;
 }
 
-const authOptions = (extra: RequestInit = {}): RequestInit => {
-    const token = localStorage.getItem("auth_token");
-    return {
-        ...extra,
-        headers: {
-            "Content-Type": "application/json",
-            ...(extra.headers || {}),
-            ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-    };
-};
-
 export function fetchAdminOrders(params: {
     status?: string;
     paymentStatus?: string;
@@ -42,17 +30,18 @@ export function fetchAdminOrders(params: {
     if (params.to) search.append("to", params.to);
 
     const query = search.toString();
-    return apiFetch<AdminOrderListItem[]>(`/api/v1/admin/orders${query ? `?${query}` : ""}`,
-        authOptions());
+    // ? Usar ruta estándar del Gateway: /api/v1/admin/orders
+    return apiFetch<AdminOrderListItem[]>(`/api/v1/admin/orders${query ? `?${query}` : ""}`);
 }
 
 export function fetchAdminOrderDetail(id: number) {
-    return apiFetch<AdminOrderDetail>(`/api/v1/admin/orders/${id}`, authOptions());
+    // ? Usar ruta estándar del Gateway
+    return apiFetch<AdminOrderDetail>(`/api/v1/admin/orders/${id}`);
 }
 
 export function postAdminOrderAction(id: number, action: string) {
+    // ? Usar ruta estándar del Gateway
     return apiFetch<AdminOrderDetail>(`/api/v1/admin/orders/${id}/${action}`, {
         method: "POST",
-        ...authOptions(),
     });
 }

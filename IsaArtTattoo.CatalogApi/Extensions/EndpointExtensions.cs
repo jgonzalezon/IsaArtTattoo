@@ -1,6 +1,7 @@
 ﻿using IsaArtTattoo.CatalogApi.Application.Dto;
 using IsaArtTattoo.CatalogApi.Application.Services;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Antiforgery;
 
 namespace IsaArtTattoo.CatalogApi.Extensions;
@@ -256,17 +257,17 @@ public static class EndpointExtensions
         .WithDescription("Recibe un archivo (multipart/form-data), lo sube a Supabase Storage y guarda la URL pública en la tabla product_images. Solo administradores.");
         // POST /api/admin/catalog/products-with-image
         adminGroup.MapPost("/products-with-image", async (
-            // Campos del producto (se leerán de form-data)
-            string name,
-            string? shortDescription,
-            decimal price,
-            int? categoryId,
-            int initialStock,
-            bool isActive,
+            // ✅ Agregar [FromForm] para que OpenAPI entienda que vienen del formulario
+            [FromForm] string name,
+            [FromForm] string? shortDescription,
+            [FromForm] decimal price,
+            [FromForm] int? categoryId,
+            [FromForm] int initialStock,
+            [FromForm] bool isActive,
             // Campos de la imagen
-            IFormFile file,
-            string? altText,
-            int? displayOrder,
+            [FromForm] IFormFile file,
+            [FromForm] string? altText,
+            [FromForm] int? displayOrder,
             IImageStorageService storage,
             ICatalogService service,
             CancellationToken ct) =>

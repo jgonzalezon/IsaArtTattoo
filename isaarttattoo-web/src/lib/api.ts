@@ -1,82 +1,55 @@
 ﻿// src/lib/api.ts
 
+// El API Gateway SIEMPRE es el punto de entrada
+// En desarrollo: https://localhost:7213 (API Gateway)
+// Los servicios internos se comunican por service discovery
 const FALLBACK_GATEWAY_URL = "https://localhost:7213";
-const RAW_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? FALLBACK_GATEWAY_URL;
 
-if (!import.meta.env.VITE_API_BASE_URL) {
-    console.warn("VITE_API_BASE_URL no está definido; usando API Gateway por defecto en https://localhost:7213");
-}
-
-// Normalizamos: sin barra final
-let normalizedBaseUrl = RAW_BASE_URL.endsWith("/")
-    ? RAW_BASE_URL.slice(0, -1)
-    : RAW_BASE_URL;
-
-// Evitamos llamar directamente al CatalogApi (puerto 7232); siempre vamos por gateway
-if (normalizedBaseUrl.includes("localhost:7232")) {
-    console.warn(
-        "VITE_API_BASE_URL apunta al CatalogApi; redirigiendo al API Gateway https://localhost:7213",
-    );
-    normalizedBaseUrl = FALLBACK_GATEWAY_URL;
-}
-
-const BASE_URL = normalizedBaseUrl;
+// ✅ NUNCA usar VITE_API_BASE_URL - siempre forzar al Gateway
+const BASE_URL = FALLBACK_GATEWAY_URL;
 
 export async function apiFetch<T>(
     path: string,
     options: RequestInit = {}
 ): Promise<T> {
-    // Aseguramos que path empieza por "/"
-    if (!path.startsWith("/")) {
-        path = `/${path}`;
+    const token = localStorage.getItem("auth_token");
+
+    // ✅ NO establecer Content-Type si el body es FormData
+    // El navegador lo establece automáticamente a multipart/form-data
+    const isFormData = options.body instanceof FormData;
+    
+    const headers: Record<string, string> = {
+        ...(isFormData ? {} : { "Content-Type": "application/json" }),
+        ...(options.headers as Record<string, string>),
+    };
+
+    // Enviar el token JWT si está disponible
+    if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
     }
 
     const url = `${BASE_URL}${path}`;
 
-    // Construimos Headers a partir de lo que venga en options
-    const headers = new Headers(options.headers ?? undefined);
+    try {
+        const response = await fetch(url, {
+            ...options,
+            headers,
+        });
 
-    const token = localStorage.getItem("auth_token");
-    const hasAuthorization = headers.has("Authorization");
-    const hasContentType = headers.has("Content-Type");
-    const isFormData = options.body instanceof FormData;
-
-    // Añadimos Authorization si no viene y tenemos token
-    if (!hasAuthorization && token) {
-        headers.set("Authorization", `Bearer ${token}`);
-    }
-
-    // Si no es FormData y no viene Content-Type, lo fijamos a JSON
-    if (!hasContentType && !isFormData) {
-        headers.set("Content-Type", "application/json");
-    }
-
-    const res = await fetch(url, {
-        ...options,
-        headers,
-    });
-
-    if (!res.ok) {
-        const text = await res.text();
-        throw new Error(text || `Error HTTP ${res.status}`);
-    }
-
-    if (res.status === 204) {
-        return undefined as T;
-    }
-
-    const contentType = res.headers.get("content-type") ?? "";
-
-    if (contentType.includes("application/json")) {
-        try {
-            const json = await res.json();
-            return json as T;
-        } catch {
-            const text = await res.text();
-            return text as unknown as T;
+        if (!response.ok) {
+            throw new Error(
+                `API error: ${response.status} ${response.statusText}`
+            );
         }
-    }
 
-    const text = await res.text();
-    return text as unknown as T;
+        // Manejar respuestas sin body (204 No Content)
+        if (response.status === 204) {
+            return undefined as T;
+        }
+
+        return response.json();
+    } catch (error) {
+        console.error(`API Fetch error:`, error);
+        throw error;
+    }
 }

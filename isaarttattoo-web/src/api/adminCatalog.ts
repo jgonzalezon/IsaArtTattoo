@@ -1,17 +1,5 @@
 import { apiFetch } from "../lib/api";
 
-function authOptions(extra: RequestInit = {}): RequestInit {
-    const token = localStorage.getItem("auth_token");
-
-    return {
-        ...extra,
-        headers: {
-            ...(extra.headers || {}),
-            ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-    };
-}
-
 export interface AdminCategory {
     id: number;
     name: string;
@@ -41,23 +29,32 @@ export function getCategories() {
 }
 
 export function createCategory(payload: Partial<AdminCategory>) {
-    return apiFetch<AdminCategory>("/api/admin/catalog/categories", authOptions({
-        method: "POST",
-        body: JSON.stringify(payload),
-    }));
+    return apiFetch<AdminCategory>(
+        "/api/admin/catalog/categories",
+        {
+            method: "POST",
+            body: JSON.stringify(payload),
+        }
+    );
 }
 
 export function updateCategory(id: number, payload: Partial<AdminCategory>) {
-    return apiFetch<AdminCategory>(`/api/admin/catalog/categories/${id}`, authOptions({
-        method: "PUT",
-        body: JSON.stringify(payload),
-    }));
+    return apiFetch<AdminCategory>(
+        `/api/admin/catalog/categories/${id}`,
+        {
+            method: "PUT",
+            body: JSON.stringify(payload),
+        }
+    );
 }
 
 export function deleteCategory(id: number) {
-    return apiFetch<void>(`/api/admin/catalog/categories/${id}`, authOptions({
-        method: "DELETE",
-    }));
+    return apiFetch<void>(
+        `/api/admin/catalog/categories/${id}`,
+        {
+            method: "DELETE",
+        }
+    );
 }
 
 export function getProducts() {
@@ -65,26 +62,35 @@ export function getProducts() {
 }
 
 export function createProduct(payload: Partial<AdminProduct> & { categoryId?: number }) {
-    return apiFetch<AdminProduct>("/api/admin/catalog/products", authOptions({
-        method: "POST",
-        body: JSON.stringify({
-            ...payload,
-            initialStock: payload.stock ?? 0,
-        }),
-    }));
+    return apiFetch<AdminProduct>(
+        "/api/admin/catalog/products",
+        {
+            method: "POST",
+            body: JSON.stringify({
+                ...payload,
+                initialStock: payload.stock ?? 0,
+            }),
+        }
+    );
 }
 
 export function updateProduct(id: number, payload: Partial<AdminProduct> & { categoryId?: number }) {
-    return apiFetch<AdminProduct>(`/api/admin/catalog/products/${id}`, authOptions({
-        method: "PUT",
-        body: JSON.stringify(payload),
-    }));
+    return apiFetch<AdminProduct>(
+        `/api/admin/catalog/products/${id}`,
+        {
+            method: "PUT",
+            body: JSON.stringify(payload),
+        }
+    );
 }
 
 export function deleteProduct(id: number) {
-    return apiFetch<void>(`/api/admin/catalog/products/${id}`, authOptions({
-        method: "DELETE",
-    }));
+    return apiFetch<void>(
+        `/api/admin/catalog/products/${id}`,
+        {
+            method: "DELETE",
+        }
+    );
 }
 
 export function createProductWithImage(payload: {
@@ -107,25 +113,33 @@ export function createProductWithImage(payload: {
     form.append("isActive", payload.isActive ? "true" : "false");
     form.append("file", payload.file);
     if (payload.altText) form.append("altText", payload.altText);
-    if (payload.displayOrder !== undefined) form.append("displayOrder", payload.displayOrder.toString());
+    if (payload.displayOrder !== undefined)
+        form.append("displayOrder", payload.displayOrder.toString());
 
-    return apiFetch<AdminProduct>("/api/admin/catalog/products-with-image", authOptions({
-        method: "POST",
-        body: form,
-    }));
+    return apiFetch<AdminProduct>(
+        "/api/admin/catalog/products-with-image",
+        {
+            method: "POST",
+            body: form,
+        }
+    );
 }
 
 export function uploadProductImage(
     productId: number,
-    payload: { file: File; altText?: string; displayOrder?: number },
+    payload: { file: File; altText?: string; displayOrder?: number }
 ) {
     const form = new FormData();
     form.append("file", payload.file);
     if (payload.altText) form.append("altText", payload.altText);
-    if (payload.displayOrder !== undefined) form.append("displayOrder", payload.displayOrder.toString());
+    if (payload.displayOrder !== undefined)
+        form.append("displayOrder", payload.displayOrder.toString());
 
-    return apiFetch<ProductImage>(`/api/admin/catalog/products/${productId}/images/upload`, authOptions({
-        method: "POST",
-        body: form,
-    }));
+    return apiFetch<ProductImage>(
+        `/api/admin/catalog/products/${productId}/images/upload`,
+        {
+            method: "POST",
+            body: form,
+        }
+    );
 }

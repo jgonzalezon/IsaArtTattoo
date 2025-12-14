@@ -39,7 +39,7 @@ public class AuthController : ControllerBase
         if (!result.Succeeded)
             return BadRequest(result.Error);
 
-        return Ok("Correo confirmado correctamente.");
+        return Ok(new { message = "Correo confirmado correctamente." });
     }
 
     // Login solo si confirmado
@@ -62,7 +62,7 @@ public class AuthController : ControllerBase
         if (!result.Succeeded)
             return NotFound(result.Error);
 
-        return Ok("Correo de confirmación reenviado.");
+        return Ok(new { message = "Correo de confirmación reenviado." });
     }
 
     // Solicitar reset de contraseña
@@ -74,7 +74,7 @@ public class AuthController : ControllerBase
         if (!result.Succeeded)
             return NotFound(result.Error);
 
-        return Ok("Se ha enviado un correo con las instrucciones para restablecer la contraseña.");
+        return Ok(new { message = "Se ha enviado un correo con las instrucciones para restablecer la contraseña." });
     }
 
     // Restablecer contraseña
@@ -86,7 +86,7 @@ public class AuthController : ControllerBase
         if (!result.Succeeded)
             return BadRequest(result.Errors);
 
-        return Ok("Contraseña restablecida correctamente.");
+        return Ok(new { message = "Contraseña restablecida correctamente." });
     }
 
     [Authorize]

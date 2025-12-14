@@ -14,6 +14,17 @@ builder.Services.AddCatalogApplicationServices(); // Servicios de aplicación + e
 // OpenAPI / Scalar (sin SwaggerGen)
 builder.Services.AddCatalogOpenApi();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 var app = builder.Build();
 
 // Migraciones automáticas (catálogo)
@@ -25,8 +36,13 @@ if (app.Environment.IsDevelopment())
     app.MapCatalogOpenApi();  // /openapi, /swagger, /scalar
 }
 
-app.UseHttpsRedirection();
-app.UseCors(CatalogCorsExtensions.AllowWebPolicyName);
+// ? Solo redirigir HTTPS en producción (YARP usa HTTP en desarrollo)
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
+
+app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 

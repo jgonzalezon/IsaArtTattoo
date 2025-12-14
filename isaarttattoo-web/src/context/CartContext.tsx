@@ -46,7 +46,7 @@ function persist(items: CartItem[]) {
 }
 
 export function CartProvider({ children }: { children: ReactNode }) {
-    const { token } = useAuth();
+    const { isAuthenticated } = useAuth();
     const [items, setItems] = useState<CartItem[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -65,11 +65,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
     useEffect(() => {
         const loadRemote = async () => {
-            if (!token) return;
+            if (!isAuthenticated) return;
             setLoading(true);
             setError(null);
             try {
-                const res = await fetchCart(token);
+                const res = await fetchCart();
                 if (res?.items) {
                     const hydrated = res.items
                         .filter((i) => i.productId && i.quantity)
@@ -82,22 +82,26 @@ export function CartProvider({ children }: { children: ReactNode }) {
                     setItems(hydrated);
                     persist(hydrated);
                 }
-            } catch (err: any) {
-                setError(err.message || "No se pudo cargar el carrito");
+            } catch (err: unknown) {
+                const message =
+                    err instanceof Error
+                        ? err.message
+                        : "No se pudo cargar el carrito";
+                setError(message);
             } finally {
                 setLoading(false);
             }
         };
 
         loadRemote();
-    }, [token]);
+    }, [isAuthenticated]);
 
     const refresh = async () => {
-        if (!token) return;
+        if (!isAuthenticated) return;
         setLoading(true);
         setError(null);
         try {
-            const res = await fetchCart(token);
+            const res = await fetchCart();
             const hydrated = res.items.map((i) => ({
                 productId: i.productId,
                 quantity: i.quantity,
@@ -106,8 +110,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
             }));
             setItems(hydrated);
             persist(hydrated);
-        } catch (err: any) {
-            setError(err.message || "No se pudo actualizar el carrito");
+        } catch (err: unknown) {
+            const message =
+                err instanceof Error
+                    ? err.message
+                    : "No se pudo actualizar el carrito";
+            setError(message);
         } finally {
             setLoading(false);
         }
@@ -124,14 +132,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
         setItems(updated);
         persist(updated);
 
-        if (!token) return;
+        if (!isAuthenticated) return;
         try {
-            await addCartItem(token, {
+            await addCartItem({
                 productId: item.productId,
                 quantity: existing ? existing.quantity : item.quantity,
             });
-        } catch (err: any) {
-            setError(err.message || "No se pudo añadir al carrito");
+        } catch (err: unknown) {
+            const message =
+                err instanceof Error
+                    ? err.message
+                    : "No se pudo añadir al carrito";
+            setError(message);
         }
     };
 
@@ -142,11 +154,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
         setItems(updated);
         persist(updated);
 
-        if (!token) return;
+        if (!isAuthenticated) return;
         try {
-            await updateCartItem(token, { productId, quantity });
-        } catch (err: any) {
-            setError(err.message || "No se pudo actualizar el carrito");
+            await updateCartItem({ productId, quantity });
+        } catch (err: unknown) {
+            const message =
+                err instanceof Error
+                    ? err.message
+                    : "No se pudo actualizar el carrito";
+            setError(message);
         }
     };
 
@@ -155,11 +171,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
         setItems(updated);
         persist(updated);
 
-        if (!token) return;
+        if (!isAuthenticated) return;
         try {
-            await removeCartItem(token, productId);
-        } catch (err: any) {
-            setError(err.message || "No se pudo eliminar el producto");
+            await removeCartItem(productId);
+        } catch (err: unknown) {
+            const message =
+                err instanceof Error
+                    ? err.message
+                    : "No se pudo eliminar el producto";
+            setError(message);
         }
     };
 
@@ -169,18 +189,22 @@ export function CartProvider({ children }: { children: ReactNode }) {
     };
 
     const checkout = async (payload: OrderRequest) => {
-        if (!token) {
+        if (!isAuthenticated) {
             setError("Necesitas iniciar sesión para comprar");
             return null;
         }
         setLoading(true);
         setError(null);
         try {
-            const res = await submitOrder(token, payload);
+            const res = await submitOrder(payload);
             clear();
             return res.id;
-        } catch (err: any) {
-            setError(err.message || "No se pudo completar la compra");
+        } catch (err: unknown) {
+            const message =
+                err instanceof Error
+                    ? err.message
+                    : "No se pudo completar la compra";
+            setError(message);
             return null;
         } finally {
             setLoading(false);

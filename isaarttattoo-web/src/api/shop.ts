@@ -82,17 +82,6 @@ export interface OrderSummary {
     items?: OrderItem[];
 }
 
-const authHeaders = (token: string | null): Record<string, string> =>
-    token
-        ? {
-              Authorization: `Bearer ${token}`,
-          }
-        : {};
-
-export function fetchCategories() {
-    return apiFetch<Category[]>("/api/catalog/categories");
-}
-
 function mapListItem(apiProduct: ApiProductListItem): Product {
     return {
         id: apiProduct.id.toString(),
@@ -119,6 +108,10 @@ function mapProductDetail(apiProduct: ApiProductDetail): Product {
     };
 }
 
+export function fetchCategories() {
+    return apiFetch<Category[]>("/api/catalog/categories");
+}
+
 export function fetchProducts() {
     return apiFetch<ApiProductListItem[]>("/api/catalog/products").then(
         (items) => items.map(mapListItem)
@@ -131,45 +124,38 @@ export function fetchProductById(id: string) {
     );
 }
 
-export function fetchCart(token: string | null) {
-    return apiFetch<CartResponse>("/api/v1/cart", {
-        headers: authHeaders(token),
-    });
+export function fetchCart() {
+    // apiFetch incluye automáticamente el token si existe
+    return apiFetch<CartResponse>("/api/v1/cart");
 }
 
-export function addCartItem(token: string | null, payload: CartItemPayload) {
+export function addCartItem(payload: CartItemPayload) {
     return apiFetch<CartResponse>("/api/v1/cart/items", {
         method: "POST",
-        headers: authHeaders(token),
         body: JSON.stringify(payload),
     });
 }
 
-export function updateCartItem(token: string | null, payload: CartItemPayload) {
+export function updateCartItem(payload: CartItemPayload) {
     return apiFetch<CartResponse>(`/api/v1/cart/items/${payload.productId}`, {
         method: "PUT",
-        headers: authHeaders(token),
         body: JSON.stringify(payload),
     });
 }
 
-export function removeCartItem(token: string | null, productId: string) {
+export function removeCartItem(productId: string) {
     return apiFetch<CartResponse>(`/api/v1/cart/items/${productId}`, {
         method: "DELETE",
-        headers: authHeaders(token),
     });
 }
 
-export function submitOrder(token: string | null, payload: OrderRequest) {
+export function submitOrder(payload: OrderRequest) {
     return apiFetch<{ id: string }>("/api/v1/orders", {
         method: "POST",
-        headers: authHeaders(token),
         body: JSON.stringify(payload),
     });
 }
 
-export function fetchOrders(token: string | null) {
-    return apiFetch<OrderSummary[]>("/api/v1/orders", {
-        headers: authHeaders(token),
-    });
+export function fetchOrders() {
+    return apiFetch<OrderSummary[]>("/api/v1/orders");
 }

@@ -73,7 +73,7 @@ public class UsersController : ControllerBase
             return BadRequest(result.Error);
         }
 
-        return Ok("Roles actualizados correctamente.");
+        return Ok(new { message = "Roles actualizados correctamente." });
     }
 
     // PUT api/users/password
@@ -93,7 +93,7 @@ public class UsersController : ControllerBase
             return BadRequest(result.Error);
         }
 
-        return Ok("Contraseña actualizada correctamente.");
+        return Ok(new { message = "Contraseña actualizada correctamente." });
     }
 
     // DELETE api/users/{id}
@@ -113,6 +113,6 @@ public class UsersController : ControllerBase
             return BadRequest(result.Error);
         }
 
-        return Ok("Usuario eliminado correctamente.");
+        return Ok(new { message = "Usuario eliminado correctamente." });
     }
 }

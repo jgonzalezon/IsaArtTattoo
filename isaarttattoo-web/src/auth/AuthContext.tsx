@@ -23,12 +23,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [token, setToken] = useState<string | null>(null);
     const [isAdmin, setIsAdmin] = useState(false);
 
-    // opcional: hidratar desde localStorage
+    // Hidratar token desde localStorage
     useEffect(() => {
         const stored = localStorage.getItem("auth_token");
         if (stored) setToken(stored);
     }, []);
 
+    // Verificar si el usuario es admin cuando el token cambia
     useEffect(() => {
         setIsAdmin(userIsAdmin(token));
     }, [token]);

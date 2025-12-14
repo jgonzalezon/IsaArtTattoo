@@ -13,9 +13,6 @@ export interface LoginResponse {
 export function login(data: LoginRequest) {
     return apiFetch<LoginResponse>("/api/v1/Auth/login", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
         body: JSON.stringify(data),
     });
 }
@@ -28,9 +25,6 @@ export interface RegisterRequest {
 export function register(data: RegisterRequest) {
     return apiFetch<unknown>("/api/v1/Auth/register", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
         body: JSON.stringify(data),
     });
 }
@@ -56,9 +50,6 @@ export function resetPassword(data: ResetPasswordRequest) {
         "/api/v1/Auth/reset-password",
         {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
             body: JSON.stringify(data),
         }
     );
@@ -67,9 +58,6 @@ export function resetPassword(data: ResetPasswordRequest) {
 export function resendConfirmation(email: string) {
     return apiFetch<string>("/api/v1/Auth/resend-confirmation", {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
         body: JSON.stringify({ email }),
     });
 }

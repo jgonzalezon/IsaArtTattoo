@@ -1,32 +1,63 @@
 ﻿// src/components/auth/RequireAdmin.tsx
 import type { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
 
 interface Props {
     children: ReactNode;
 }
 
-interface JwtPayload {
-    [key: string]: any;
+interface DecodedToken {
+    [key: string]: unknown;
     role?: string | string[];
 }
 
-export function userIsAdmin(): boolean {   //  export aquí
-    const token = localStorage.getItem("token");
-    if (!token) return false;
+// Función para decodificar JWT manualmente (sin dependencia)
+function parseJwtToken(token: string | null): DecodedToken | null {
+    if (!token) return null;
 
     try {
-        const decoded = jwtDecode<JwtPayload>(token);
-        const role =
-            decoded["role"] ||
-            decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+        const parts = token.split(".");
+        if (parts.length !== 3) {
+            return null;
+        }
 
-        if (Array.isArray(role)) return role.includes("Admin");
-        return role === "Admin";
+        const payload = parts[1];
+        const base64 = payload
+            .replace(/-/g, "+")
+            .replace(/_/g, "/");
+        
+        const jsonString = atob(base64);
+        const decoded = JSON.parse(jsonString) as DecodedToken;
+        
+        return decoded;
     } catch {
+        return null;
+    }
+}
+
+export function userIsAdmin(tokenArg?: string | null): boolean {
+    // Prioridad: 1. parámetro, 2. localStorage
+    const token = tokenArg !== undefined ? tokenArg : localStorage.getItem("auth_token");
+    
+    const decoded = parseJwtToken(token);
+    if (!decoded) {
         return false;
     }
+
+    // Intentar múltiples lugares donde podría estar el role
+    const role = 
+        decoded.role ||
+        decoded["roles"] ||
+        decoded["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+
+    if (!role) {
+        return false;
+    }
+
+    // Manejar array o string
+    return Array.isArray(role) 
+        ? role.includes("Admin")
+        : role === "Admin";
 }
 
 export function RequireAdmin({ children }: Props) {

@@ -37,65 +37,52 @@ export interface DeleteRoleRequest {
     name: string;
 }
 
-// Helper para meter el JWT
-function authOptions(extra: RequestInit = {}): RequestInit {
-    // IMPORTANTE: misma clave que en AuthCard
-    const token = localStorage.getItem("auth_token");
-
-    return {
-        ...extra,
-        headers: {
-            ...(extra.headers || {}),
-            ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-    };
-}
-
 export async function getUsers() {
-    return apiFetch<UserSummary[]>("/api/v1/Users", authOptions());
+    // apiFetch incluye automáticamente el token JWT
+    return apiFetch<UserSummary[]>("/api/v1/Users");
 }
 
 export async function createUser(payload: CreateUserRequest) {
-    return apiFetch("/api/v1/Users", authOptions({
+    return apiFetch("/api/v1/Users", {
         method: "POST",
         body: JSON.stringify(payload),
-    }));
+    });
 }
 
 export async function updateUserRoles(payload: UpdateUserRolesRequest) {
-    return apiFetch("/api/v1/Users/roles", authOptions({
+    return apiFetch("/api/v1/Users/roles", {
         method: "PUT",
         body: JSON.stringify(payload),
-    }));
+    });
 }
 
 export async function changeUserPassword(payload: ChangeUserPasswordRequest) {
-    return apiFetch("/api/v1/Users/password", authOptions({
+    return apiFetch("/api/v1/Users/password", {
         method: "PUT",
         body: JSON.stringify(payload),
-    }));
+    });
 }
 
 export async function deleteUser(id: string) {
-    return apiFetch(`/api/v1/Users/${id}`, authOptions({
+    return apiFetch(`/api/v1/Users/${id}`, {
         method: "DELETE",
-    }));
+    });
 }
 
 export async function fetchRoles() {
-    return apiFetch<RoleResponse[]>("/api/v1/Roles/Listar roles", authOptions());
+    return apiFetch<RoleResponse[]>("/api/v1/Roles/Listar roles");
 }
 
 export async function createRole(payload: CreateRoleRequest) {
-    return apiFetch("/api/v1/Roles/Crear Rol", authOptions({
+    return apiFetch("/api/v1/Roles/Crear Rol", {
         method: "POST",
         body: JSON.stringify(payload),
-    }));
+    });
 }
 
 export async function deleteRole(name: string) {
     const encodedName = encodeURIComponent(name);
-    return apiFetch(`/api/v1/Roles/Borrar Rol ${encodedName}` as const, authOptions({
+    return apiFetch(`/api/v1/Roles/Borrar Rol ${encodedName}` as const, {
         method: "DELETE",
-    }));
+    });
 }

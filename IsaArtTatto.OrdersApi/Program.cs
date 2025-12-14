@@ -2,8 +2,6 @@ using IsaArtTattoo.OrdersApi.Application.Services;
 using IsaArtTattoo.OrdersApi.Extensions;
 using System.Reflection;
 
-
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Telemetría / health / service discovery
@@ -33,7 +31,12 @@ if (app.Environment.IsDevelopment())
     app.MapOrdersOpenApi();
 }
 
-app.UseHttpsRedirection();
+// ? Solo redirigir HTTPS en producción (YARP usa HTTP en desarrollo)
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
+
 app.UseCors(OrdersCorsExtensions.AllowWebPolicyName);
 app.UseAuthentication();
 app.UseAuthorization();

@@ -5,7 +5,7 @@ import { fetchOrders } from "../api/shop";
 import { useAuth } from "../auth/AuthContext";
 
 export default function OrderHistory() {
-    const { token, isAuthenticated } = useAuth();
+    const { isAuthenticated } = useAuth();
     const [orders, setOrders] = useState<OrderSummary[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -18,17 +18,22 @@ export default function OrderHistory() {
                 return;
             }
             try {
-                const res = await fetchOrders(token);
+                // apiFetch incluye automáticamente el token JWT
+                const res = await fetchOrders();
                 setOrders(res);
-            } catch (err: any) {
-                setError(err.message || "No se pudieron cargar las órdenes");
+            } catch (err: unknown) {
+                const message =
+                    err instanceof Error
+                        ? err.message
+                        : "No se pudieron cargar las órdenes";
+                setError(message);
             } finally {
                 setLoading(false);
             }
         };
 
         load();
-    }, [isAuthenticated, navigate, token]);
+    }, [isAuthenticated, navigate]);
 
     if (loading) return <p className="text-slate-200">Cargando historial...</p>;
     if (error)

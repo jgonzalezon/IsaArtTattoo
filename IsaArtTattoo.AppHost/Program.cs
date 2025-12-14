@@ -40,7 +40,7 @@ var rabbit = builder
 
 
 // ========================================================
-// IDENTITY API
+// IDENTITY API (INTERNAL ONLY - no external endpoints)
 // ========================================================
 
 var identityApi = builder
@@ -49,14 +49,19 @@ var identityApi = builder
     .WaitFor(rabbit)          // espera a RabbitMQ
     .WithReference(rabbit)    // le pasa connection string
     .WithReference(identityDb);
+    // NO añadimos WithExternalHttpEndpoints() - solo accesible vía Gateway
 
 
+
+// ========================================================
+// CATALOG API (INTERNAL ONLY - no external endpoints)
+// ========================================================
 
 var catalogApi = builder
     .AddProject<Projects.IsaArtTattoo_CatalogApi>("catalog-api")
     .WaitFor(catalogDb)
-    .WithReference(catalogDb)
-    .WithExternalHttpEndpoints();
+    .WithReference(catalogDb);
+    // NO añadimos WithExternalHttpEndpoints() - solo accesible vía Gateway
 
 
 // ========================================================
@@ -89,19 +94,19 @@ var mailServer = builder
     .WithEndpoint(port: 1025, targetPort: 1025, name: "smtp");
 
 // ========================================================
-// RUN
+// ORDERS API (INTERNAL ONLY - no external endpoints)
 // ========================================================
 
 var ordersApi = builder.AddProject<Projects.IsaArtTatto_OrdersApi>("orders-api")
     .WithReference(ordersDb)
     .WaitFor(ordersDb)
     .WaitFor(catalogApi)
-    .WithReference(catalogApi)
-    .WithExternalHttpEndpoints();
+    .WithReference(catalogApi);
+    // NO añadimos WithExternalHttpEndpoints() - solo accesible vía Gateway
 
 
 // ========================================================
-// API GATEWAY
+// API GATEWAY (ONLY EXTERNAL ENDPOINT FOR FRONTEND)
 // ========================================================
 
 var gateway = builder
@@ -110,13 +115,7 @@ var gateway = builder
     .WithReference(identityApi)
     .WithReference(catalogApi)
     .WithReference(ordersApi)
-    .WithExternalHttpEndpoints(); // expone HTTP y HTTPS
-
-
-// URL HTTPS del gateway para el frontend
-var gatewayHttpUrl = gateway
-    .GetEndpoint("https")
-    .Property(EndpointProperty.Url);
+    .WithExternalHttpEndpoints(); // ? SOLO el Gateway expone endpoints al frontend
 
 
 // ========================================================
@@ -128,7 +127,8 @@ var frontendPath = Path.Combine(builder.AppHostDirectory, "..", "isaarttattoo-we
 var frontend = builder
     .AddExecutable("isaarttattoo-web", "npm", frontendPath, "run", "dev")
     .WithHttpEndpoint(targetPort: 5173, name: "http")
-    .WithEnvironment("VITE_API_BASE_URL", gatewayHttpUrl)
+    // ? FORZAR URL del Gateway a puerto 7213 (desarrollo)
+    .WithEnvironment("VITE_API_BASE_URL", "https://localhost:7213")
     .WithReference(gateway);
 
 // ========================================================
