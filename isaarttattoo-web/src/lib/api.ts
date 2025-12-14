@@ -1,15 +1,26 @@
 ﻿// src/lib/api.ts
 
-const RAW_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "";
+const FALLBACK_GATEWAY_URL = "https://localhost:7213";
+const RAW_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? FALLBACK_GATEWAY_URL;
 
-if (!RAW_BASE_URL) {
-    console.warn("VITE_API_BASE_URL no está definido");
+if (!import.meta.env.VITE_API_BASE_URL) {
+    console.warn("VITE_API_BASE_URL no está definido; usando API Gateway por defecto en https://localhost:7213");
 }
 
 // Normalizamos: sin barra final
-const BASE_URL = RAW_BASE_URL.endsWith("/")
+let normalizedBaseUrl = RAW_BASE_URL.endsWith("/")
     ? RAW_BASE_URL.slice(0, -1)
     : RAW_BASE_URL;
+
+// Evitamos llamar directamente al CatalogApi (puerto 7232); siempre vamos por gateway
+if (normalizedBaseUrl.includes("localhost:7232")) {
+    console.warn(
+        "VITE_API_BASE_URL apunta al CatalogApi; redirigiendo al API Gateway https://localhost:7213",
+    );
+    normalizedBaseUrl = FALLBACK_GATEWAY_URL;
+}
+
+const BASE_URL = normalizedBaseUrl;
 
 export async function apiFetch<T>(
     path: string,
