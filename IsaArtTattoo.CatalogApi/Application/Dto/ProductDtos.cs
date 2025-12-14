@@ -41,6 +41,17 @@ public record ProductListItemDto(
     string? CategoryName
 );
 
+public record AdminProductListItemDto(
+    int Id,
+    string Name,
+    string? ShortDescription,
+    decimal Price,
+    int Stock,
+    bool IsActive,
+    int? CategoryId,
+    string? CategoryName
+);
+
 public record ProductImageDto(
     int Id,
     string Url,

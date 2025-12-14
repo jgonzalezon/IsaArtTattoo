@@ -18,7 +18,7 @@ export default function AdminCatalogPage() {
     const [activeTab, setActiveTab] = useState<"categories" | "products">("categories");
     const [categories, setCategories] = useState<AdminCategory[]>([]);
     const [products, setProducts] = useState<AdminProduct[]>([]);
-    const [filterCategory, setFilterCategory] = useState<string>("");
+    const [filterCategory, setFilterCategory] = useState<number | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [feedback, setFeedback] = useState<string | null>(null);
 
@@ -144,7 +144,10 @@ export default function AdminCatalogPage() {
 
     const handleUpdateProduct = async (product: AdminProduct) => {
         try {
-            await updateProduct(product.id, product);
+            const categoryId =
+                product.categoryId ?? sortedCategories.find((c) => c.name === product.categoryName)?.id ?? undefined;
+
+            await updateProduct(product.id, { ...product, categoryId });
             setFeedback("Producto actualizado");
             await loadData();
         } catch (err) {
@@ -180,7 +183,7 @@ export default function AdminCatalogPage() {
     const filteredProducts = useMemo(
         () =>
             products.filter((p) =>
-                filterCategory ? p.categoryName === filterCategory : true,
+                filterCategory ? p.categoryId === filterCategory : true,
             ),
         [products, filterCategory],
     );
@@ -455,12 +458,15 @@ export default function AdminCatalogPage() {
                                 Filtrar por categoría:
                                 <select
                                     className="ml-2 rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-sm text-white"
-                                    value={filterCategory}
-                                    onChange={(e) => setFilterCategory(e.target.value)}
+                                    value={filterCategory ?? 0}
+                                    onChange={(e) => {
+                                        const next = Number(e.target.value);
+                                        setFilterCategory(Number.isNaN(next) || next === 0 ? null : next);
+                                    }}
                                 >
-                                    <option value="">Todas</option>
+                                    <option value={0}>Todas</option>
                                     {sortedCategories.map((cat) => (
-                                        <option key={cat.id} value={cat.name ?? ""} className="bg-slate-900">
+                                        <option key={cat.id} value={cat.id} className="bg-slate-900">
                                             {cat.name}
                                         </option>
                                     ))}
@@ -498,16 +504,21 @@ export default function AdminCatalogPage() {
                                             <td className="px-4 py-2">
                                                 <select
                                                     className="rounded-lg border border-white/10 bg-slate-950 px-2 py-1 text-white"
-                                                    value={sortedCategories.find((c) => c.name === prod.categoryName)?.id ?? 0}
+                                                    value={prod.categoryId ?? 0}
                                                     onChange={(e) =>
                                                         setProducts((prev) =>
                                                             prev.map((p) =>
                                                                 p.id === prod.id
                                                                     ? {
                                                                           ...p,
+                                                                          categoryId:
+                                                                              Number(e.target.value) === 0
+                                                                                  ? null
+                                                                                  : Number(e.target.value),
                                                                           categoryName:
-                                                                              sortedCategories.find((c) => c.id === Number(e.target.value))?.name ??
-                                                                              "",
+                                                                              sortedCategories.find(
+                                                                                  (c) => c.id === Number(e.target.value),
+                                                                              )?.name ?? "",
                                                                       }
                                                                     : p,
                                                             ),
