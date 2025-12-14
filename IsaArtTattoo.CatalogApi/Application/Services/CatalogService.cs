@@ -120,6 +120,27 @@ public class CatalogService : ICatalogService
         }).ToList();
     }
 
+    public async Task<IReadOnlyList<AdminProductListItemDto>> GetAdminProductsAsync(CancellationToken ct = default)
+    {
+        var products = await _db.Products
+            .Include(p => p.Category)
+            .OrderBy(p => p.Name)
+            .ToListAsync(ct);
+
+        return products
+            .Select(p => new AdminProductListItemDto(
+                p.Id,
+                p.Name,
+                p.ShortDescription,
+                p.Price,
+                p.Stock,
+                p.IsActive,
+                p.CategoryId,
+                p.Category?.Name
+            ))
+            .ToList();
+    }
+
     public async Task<ProductDetailDto?> GetProductByIdAsync(int id, CancellationToken ct = default)
     {
         var p = await _db.Products
