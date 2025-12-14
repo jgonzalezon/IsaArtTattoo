@@ -13,6 +13,8 @@ public class OrdersDbContext : DbContext
 
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<OrderItem> OrderItems => Set<OrderItem>();
+    public DbSet<Cart> Carts => Set<Cart>();
+    public DbSet<CartItem> CartItems => Set<CartItem>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -65,6 +67,34 @@ public class OrdersDbContext : DbContext
                 .WithMany(o => o.Items)
                 .HasForeignKey(oi => oi.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // ✅ Configurar Cart
+        modelBuilder.Entity<Cart>(entity =>
+        {
+            entity.ToTable("carts");
+            entity.HasKey(c => c.UserId);
+
+            entity.Property(c => c.UserId)
+                .IsRequired()
+                .HasMaxLength(200);
+
+            entity.HasMany(c => c.Items)
+                .WithOne(ci => ci.Cart)
+                .HasForeignKey(ci => ci.CartUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // ✅ Configurar CartItem
+        modelBuilder.Entity<CartItem>(entity =>
+        {
+            entity.ToTable("cart_items");
+
+            entity.HasKey(ci => new { ci.Id });
+
+            entity.Property(ci => ci.CartUserId)
+                .IsRequired()
+                .HasMaxLength(200);
         });
     }
 }

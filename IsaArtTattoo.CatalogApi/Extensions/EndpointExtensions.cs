@@ -90,6 +90,32 @@ public static class EndpointExtensions
         .WithSummary("Detalle de producto")
         .WithDescription("Devuelve el detalle del producto, incluyendo imágenes y stock.");
 
+        // ✅ POST /api/catalog/products/{id}/reserve-stock (PÚBLICO)
+        publicGroup.MapPost("/products/{id:int}/reserve-stock", async (
+            int id,
+            AdjustStockDto dto,
+            ICatalogService service,
+            CancellationToken ct) =>
+        {
+            var updated = await service.AdjustStockAsync(id, dto, ct);
+            return updated is null ? Results.NotFound() : Results.Ok(updated);
+        })
+        .WithSummary("Reserva stock de un producto")
+        .WithDescription("Endpoint público para reservar/ajustar stock cuando se realiza un pago de orden.");
+
+        // ✅ PUT /api/catalog/products/{id}/active (PÚBLICO)
+        publicGroup.MapPut("/products/{id:int}/active", async (
+            int id,
+            [FromBody] SetProductActiveDto dto,
+            ICatalogService service,
+            CancellationToken ct) =>
+        {
+            var updated = await service.SetProductActiveStatusAsync(id, dto.IsActive, ct);
+            return updated is null ? Results.NotFound() : Results.Ok(updated);
+        })
+        .WithSummary("Cambia el estado activo/inactivo de un producto")
+        .WithDescription("Endpoint público para cambiar si un producto está activo o inactivo.");
+
         // ---------- ZONA ADMIN ----------
 
         var adminGroup = app.MapGroup("/api/admin/catalog")

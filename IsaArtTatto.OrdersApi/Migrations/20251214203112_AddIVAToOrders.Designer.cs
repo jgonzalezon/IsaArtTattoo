@@ -3,6 +3,7 @@ using System;
 using IsaArtTattoo.OrdersApi.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace IsaArtTatto.OrdersApi.Migrations
 {
     [DbContext(typeof(OrdersDbContext))]
-    partial class OrdersDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251214203112_AddIVAToOrders")]
+    partial class AddIVAToOrders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,49 +24,6 @@ namespace IsaArtTatto.OrdersApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("IsaArtTattoo.OrdersApi.Domain.Entities.Cart", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("UserId");
-
-                    b.ToTable("carts", (string)null);
-                });
-
-            modelBuilder.Entity("IsaArtTattoo.OrdersApi.Domain.Entities.CartItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CartUserId")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CartUserId");
-
-                    b.ToTable("cart_items", (string)null);
-                });
 
             modelBuilder.Entity("IsaArtTattoo.OrdersApi.Domain.Entities.Order", b =>
                 {
@@ -166,17 +126,6 @@ namespace IsaArtTatto.OrdersApi.Migrations
                     b.ToTable("order_items", (string)null);
                 });
 
-            modelBuilder.Entity("IsaArtTattoo.OrdersApi.Domain.Entities.CartItem", b =>
-                {
-                    b.HasOne("IsaArtTattoo.OrdersApi.Domain.Entities.Cart", "Cart")
-                        .WithMany("Items")
-                        .HasForeignKey("CartUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cart");
-                });
-
             modelBuilder.Entity("IsaArtTattoo.OrdersApi.Domain.Entities.OrderItem", b =>
                 {
                     b.HasOne("IsaArtTattoo.OrdersApi.Domain.Entities.Order", "Order")
@@ -186,11 +135,6 @@ namespace IsaArtTatto.OrdersApi.Migrations
                         .IsRequired();
 
                     b.Navigation("Order");
-                });
-
-            modelBuilder.Entity("IsaArtTattoo.OrdersApi.Domain.Entities.Cart", b =>
-                {
-                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("IsaArtTattoo.OrdersApi.Domain.Entities.Order", b =>

@@ -12,6 +12,7 @@ import ProductDetailPage from "./pages/ProductDetailPage";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import OrdersPage from "./pages/OrdersPage";
+import OrderDetailPage from "./pages/OrderDetailPage";
 import { AuthProvider } from "./auth/AuthContext";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import { CartProvider } from "./context/CartContext";
@@ -108,6 +109,15 @@ export default function App() {
                                 element={
                                     <ProtectedRoute>
                                         <OrdersPage />
+                                    </ProtectedRoute>
+                                }
+                            />
+
+                            <Route
+                                path="/orders/:id"
+                                element={
+                                    <ProtectedRoute>
+                                        <OrderDetailPage />
                                     </ProtectedRoute>
                                 }
                             />

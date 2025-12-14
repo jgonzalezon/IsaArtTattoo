@@ -87,6 +87,10 @@ public record AdjustStockDto(
     string? Reason
 );
 
+public record SetProductActiveDto(
+    bool IsActive
+);
+
 public record AddProductImageDto(
     string Url,
     string? AltText,

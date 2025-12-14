@@ -15,7 +15,10 @@ public class Order
     public OrderStatus Status { get; set; } = OrderStatus.Pending;
     public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.Unpaid;
 
-    public decimal TotalAmount { get; set; }
+    // ✅ Desglose de precios
+    public decimal SubtotalAmount { get; set; }  // Antes de IVA
+    public decimal TaxAmount { get; set; }       // IVA (21%)
+    public decimal TotalAmount { get; set; }     // Subtotal + IVA
     public string Currency { get; set; } = "EUR";
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

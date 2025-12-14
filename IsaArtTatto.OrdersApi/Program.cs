@@ -16,6 +16,9 @@ builder.AddOrdersCors();
 builder.Services.AddControllers();
 builder.Services.AddOrdersOpenApi();
 
+// ? IHttpContextAccessor para JwtTokenHandler
+builder.Services.AddHttpContextAccessor();
+
 // Servicios de aplicación (Orders + HttpClient a Catalog)
 builder.Services.AddOrdersApplicationServices();
 builder.Services.AddScoped<IUserOrdersService, UserOrdersService>();

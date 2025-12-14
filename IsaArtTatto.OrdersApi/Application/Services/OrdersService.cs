@@ -10,14 +10,18 @@ public class OrdersService : IOrdersService
 {
     private readonly OrdersDbContext _db;
     private readonly IStockService _stock;
+    private readonly ICatalogServiceClient _catalogClient;
 
-    public OrdersService(OrdersDbContext db, IStockService stock)
+    public OrdersService(OrdersDbContext db, IStockService stock, ICatalogServiceClient catalogClient)
     {
         _db = db;
         _stock = stock;
+        _catalogClient = catalogClient;
     }
 
     // ---------- Helpers ----------
+
+    private const decimal TAX_RATE = 0.21m; // 21% IVA
 
     private static OrderDetailDto MapToDetailDto(Order o)
         => new(
@@ -26,6 +30,8 @@ public class OrdersService : IOrdersService
             o.UserId,
             o.Status,
             o.PaymentStatus,
+            o.SubtotalAmount,
+            o.TaxAmount,
             o.TotalAmount,
             o.Currency,
             o.CreatedAt,
@@ -52,6 +58,8 @@ public class OrdersService : IOrdersService
             o.CreatedAt,
             o.Status,
             o.PaymentStatus,
+            o.SubtotalAmount,
+            o.TaxAmount,
             o.TotalAmount
         );
 
@@ -68,21 +76,22 @@ public class OrdersService : IOrdersService
         if (dto.Items == null || dto.Items.Count == 0)
             throw new InvalidOperationException("La orden debe tener al menos un producto.");
 
-        // NOTA: aquí podrías llamar a Catalog para obtener nombre y precio actual.
-        // Por simplicidad, fakeamos nombre/precio. Lo ideal es que OrdersApi
-        // tenga un HttpClient a CatalogApi para resolver esto.
-
         var items = new List<OrderItem>();
-        decimal total = 0;
+        decimal subtotal = 0;
 
         foreach (var item in dto.Items)
         {
-            // TODO: reemplazar por llamada real a CatalogApi
-            var productName = $"Product {item.ProductId}";
-            var unitPrice = 10m; // Precio fake
+            // ✅ Obtener nombre y precio real desde CatalogApi
+            var product = await _catalogClient.GetProductAsync(item.ProductId, ct);
+            
+            if (product is null)
+            {
+                throw new InvalidOperationException($"Producto {item.ProductId} no encontrado en catálogo.");
+            }
 
-            var subtotal = unitPrice * item.Quantity;
-            total += subtotal;
+            var (productName, unitPrice) = product.Value;
+            var itemSubtotal = unitPrice * item.Quantity;
+            subtotal += itemSubtotal;
 
             items.Add(new OrderItem
             {
@@ -90,9 +99,13 @@ public class OrdersService : IOrdersService
                 ProductName = productName,
                 UnitPrice = unitPrice,
                 Quantity = item.Quantity,
-                Subtotal = subtotal
+                Subtotal = itemSubtotal
             });
         }
+
+        // ✅ Calcular IVA (21%)
+        var taxAmount = subtotal * TAX_RATE;
+        var total = subtotal + taxAmount;
 
         var order = new Order
         {
@@ -100,6 +113,8 @@ public class OrdersService : IOrdersService
             UserId = userId,
             Status = OrderStatus.Pending,
             PaymentStatus = PaymentStatus.Unpaid,
+            SubtotalAmount = subtotal,
+            TaxAmount = taxAmount,
             TotalAmount = total,
             Currency = "EUR",
             CreatedAt = DateTime.UtcNow,
@@ -171,6 +186,18 @@ public class OrdersService : IOrdersService
         order.PaymentStatus = PaymentStatus.Paid;
         order.PaidAt = DateTime.UtcNow;
         order.UpdatedAt = DateTime.UtcNow;
+
+        // ✅ Reservar stock al pagar (pero sin cambiar a Confirmed)
+        if (order.Status == OrderStatus.Pending)
+        {
+            var items = order.Items.Select(i => (i.ProductId, i.Quantity)).ToList();
+            var success = await _stock.ReserveStockAsync(items, ct);
+            if (!success)
+                throw new InvalidOperationException("No se pudo reservar stock para la orden.");
+
+            // ❌ NO cambiar a Confirmed - mantener en Pending
+            // order.Status = OrderStatus.Confirmed;
+        }
 
         await _db.SaveChangesAsync(ct);
 
@@ -255,6 +282,18 @@ public class OrdersService : IOrdersService
         order.PaymentStatus = PaymentStatus.Paid;
         order.PaidAt = DateTime.UtcNow;
         order.UpdatedAt = DateTime.UtcNow;
+
+        // ✅ Reservar stock al pagar (pero sin cambiar a Confirmed)
+        if (order.Status == OrderStatus.Pending)
+        {
+            var items = order.Items.Select(i => (i.ProductId, i.Quantity)).ToList();
+            var success = await _stock.ReserveStockAsync(items, ct);
+            if (!success)
+                throw new InvalidOperationException("No se pudo reservar stock para la orden.");
+
+            // ❌ NO cambiar a Confirmed - mantener en Pending
+            // order.Status = OrderStatus.Confirmed;
+        }
 
         await _db.SaveChangesAsync(ct);
 

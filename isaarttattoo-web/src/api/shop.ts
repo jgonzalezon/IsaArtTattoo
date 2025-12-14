@@ -48,13 +48,15 @@ type ApiProductDetail = {
 };
 
 export interface CartItemPayload {
-    productId: string;
+    productId: string | number;
     quantity: number;
 }
 
-export interface CartItemResponse extends CartItemPayload {
-    name?: string;
-    price?: number;
+export interface CartItemResponse {
+    productId: number;
+    productName: string;
+    unitPrice: number;
+    quantity: number;
 }
 
 export interface CartResponse {
@@ -74,12 +76,33 @@ export interface OrderRequest {
     shippingAddress?: string;
 }
 
+// ? Actualizar para que coincida con el backend
 export interface OrderSummary {
-    id: string;
-    createdAt?: string;
-    total: number;
-    status?: string;
-    items?: OrderItem[];
+    id: number;
+    orderNumber: string;
+    createdAt: string;
+    status: string;
+    paymentStatus: string;
+    subtotalAmount: number;  // ? NEW
+    taxAmount: number;       // ? NEW
+    totalAmount: number;
+}
+
+export interface OrderDetail extends OrderSummary {
+    userId: string;
+    currency: string;
+    updatedAt?: string;
+    paidAt?: string;
+    cancelledAt?: string;
+    shippedAt?: string;
+    deliveredAt?: string;
+    items: Array<{
+        productId: number;
+        productName: string;
+        unitPrice: number;
+        quantity: number;
+        subtotal: number;
+    }>;
 }
 
 function mapListItem(apiProduct: ApiProductListItem): Product {
@@ -124,6 +147,23 @@ export function fetchProductById(id: string) {
     );
 }
 
+// ? Nueva función para validar que la cantidad no exceda el stock
+export function canAddToCart(product: Product, desiredQuantity: number): { can: boolean; reason?: string } {
+    if (!product.stock && product.stock !== 0) {
+        return { can: true }; // Si no hay información de stock, permitir
+    }
+    
+    if (product.stock === 0) {
+        return { can: false, reason: "Producto agotado" };
+    }
+    
+    if (desiredQuantity > product.stock) {
+        return { can: false, reason: `Solo hay ${product.stock} disponibles` };
+    }
+    
+    return { can: true };
+}
+
 export function fetchCart() {
     // apiFetch incluye automáticamente el token si existe
     return apiFetch<CartResponse>("/api/v1/cart");
@@ -132,19 +172,24 @@ export function fetchCart() {
 export function addCartItem(payload: CartItemPayload) {
     return apiFetch<CartResponse>("/api/v1/cart/items", {
         method: "POST",
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+            productId: typeof payload.productId === "string" ? parseInt(payload.productId, 10) : payload.productId,
+            quantity: payload.quantity,
+        }),
     });
 }
 
 export function updateCartItem(payload: CartItemPayload) {
-    return apiFetch<CartResponse>(`/api/v1/cart/items/${payload.productId}`, {
+    const productId = typeof payload.productId === "string" ? parseInt(payload.productId, 10) : payload.productId;
+    return apiFetch<CartResponse>(`/api/v1/cart/items/${productId}`, {
         method: "PUT",
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ quantity: payload.quantity }),
     });
 }
 
-export function removeCartItem(productId: string) {
-    return apiFetch<CartResponse>(`/api/v1/cart/items/${productId}`, {
+export function removeCartItem(productId: string | number) {
+    const id = typeof productId === "string" ? parseInt(productId, 10) : productId;
+    return apiFetch<CartResponse>(`/api/v1/cart/items/${id}`, {
         method: "DELETE",
     });
 }
@@ -156,6 +201,65 @@ export function submitOrder(payload: OrderRequest) {
     });
 }
 
+// ? Obtener lista de órdenes del usuario
 export function fetchOrders() {
-    return apiFetch<OrderSummary[]>("/api/v1/orders");
+    return apiFetch<OrderSummary[]>("/api/v1/orders").then(
+        (orders) => orders.map((order) => mapOrderDetail(order))
+    );
+}
+
+// ? Obtener detalle de una orden
+export function fetchOrderById(id: number) {
+    return apiFetch<OrderDetail>(`/api/v1/orders/${id}`).then(
+        (order) => mapOrderDetail(order)
+    );
+}
+
+// ? Cancelar una orden
+export function cancelOrder(id: number) {
+    return apiFetch<OrderDetail>(`/api/v1/orders/${id}/cancel`, {
+        method: "POST",
+    }).then((order) => mapOrderDetail(order));
+}
+
+// ? Marcar como pagada
+export function markOrderAsPaid(id: number) {
+    return apiFetch<OrderDetail>(`/api/v1/orders/${id}/pay`, {
+        method: "POST",
+    }).then((order) => mapOrderDetail(order));
+}
+
+// ? Función para mapear enum del backend a strings legibles
+function mapOrderDetail(order: OrderSummary | OrderDetail): OrderDetail {
+    // Mapear PaymentStatus enum a string
+    const paymentStatusMap: Record<number | string, string> = {
+        0: "Unpaid",
+        1: "Paid",
+        2: "Refunded",
+        3: "Failed",
+        "Unpaid": "Unpaid",
+        "Paid": "Paid",
+        "Refunded": "Refunded",
+        "Failed": "Failed",
+    };
+
+    // Mapear OrderStatus enum a string
+    const statusMap: Record<number | string, string> = {
+        0: "Pending",
+        1: "Confirmed",
+        2: "Shipped",
+        3: "Delivered",
+        4: "Cancelled",
+        "Pending": "Pending",
+        "Confirmed": "Confirmed",
+        "Shipped": "Shipped",
+        "Delivered": "Delivered",
+        "Cancelled": "Cancelled",
+    };
+
+    return {
+        ...order,
+        status: statusMap[order.status] || order.status,
+        paymentStatus: paymentStatusMap[order.paymentStatus] || order.paymentStatus,
+    } as OrderDetail;
 }

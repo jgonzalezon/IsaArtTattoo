@@ -110,11 +110,24 @@ public class OrdersController : ControllerBase
     [HttpPost("{id:int}/pay")]
     [ProducesResponseType(typeof(OrderDetailDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<OrderDetailDto>> SetPaid(int id, CancellationToken ct)
     {
-        var userId = GetUserId();
-        var order = await _service.SetOrderPaidByUserAsync(userId, id, ct);
-        if (order is null) return NotFound();
-        return Ok(order);
+        try
+        {
+            var userId = GetUserId();
+            var order = await _service.SetOrderPaidByUserAsync(userId, id, ct);
+            if (order is null) 
+                return NotFound(new { error = "Pedido no encontrado" });
+            return Ok(order);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { error = "Error interno del servidor", details = ex.Message });
+        }
     }
 }

@@ -2,10 +2,28 @@ import type { FormEvent } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../auth/AuthContext";
+
+// ✅ Helper para decodificar JWT y obtener email
+function getEmailFromToken(token: string | null): string | null {
+    if (!token) return null;
+    try {
+        const parts = token.split('.');
+        if (parts.length !== 3) return null;
+        const decoded = JSON.parse(atob(parts[1]));
+        return decoded.unique_name || decoded.email || decoded.sub || null;
+    } catch {
+        return null;
+    }
+}
 
 export default function CheckoutForm() {
     const { items, subtotal, tax, total, checkout, loading, error } = useCart();
-    const [contactEmail, setContactEmail] = useState("");
+    const { token } = useAuth();
+    
+    // ✅ Inicializar con email desde token si está disponible
+    const initialEmail = getEmailFromToken(token) || "";
+    const [contactEmail, setContactEmail] = useState(initialEmail);
     const [shippingAddress, setShippingAddress] = useState("");
     const [notes, setNotes] = useState("");
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -21,7 +39,7 @@ export default function CheckoutForm() {
                 productId: item.productId,
                 quantity: item.quantity,
                 unitPrice: item.price,
-            })),
+            })) as Parameters<typeof checkout>[0]['items'],
         });
         if (orderId) {
             setSuccessMessage(`Orden creada (#${orderId}).`);
@@ -58,7 +76,7 @@ export default function CheckoutForm() {
                     </div>
                 )}
                 <label className="grid gap-2 text-sm text-slate-200">
-                    Correo electrónico
+                    Correo electrónico {token && contactEmail && <span className="text-xs text-slate-400">(autocompleted)</span>}
                     <input
                         required
                         type="email"

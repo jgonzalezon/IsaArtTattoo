@@ -260,6 +260,10 @@ public class CatalogService : ICatalogService
         if (product.Stock < 0)
             product.Stock = 0;
 
+        // ✅ Si el stock llega a 0, marcar como inactivo
+        if (product.Stock == 0)
+            product.IsActive = false;
+
         product.UpdatedAt = DateTime.UtcNow;
 
         await _db.SaveChangesAsync(ct);
@@ -287,6 +291,24 @@ public class CatalogService : ICatalogService
         await _db.SaveChangesAsync(ct);
 
         return new ProductImageDto(img.Id, img.Url, img.AltText, img.DisplayOrder);
+    }
+
+    // ✅ Nuevo método público: cambiar estado activo/inactivo
+    public async Task<ProductDetailDto?> SetProductActiveStatusAsync(int id, bool isActive, CancellationToken ct = default)
+    {
+        var product = await _db.Products
+            .Include(p => p.Category)
+            .Include(p => p.Images)
+            .FirstOrDefaultAsync(p => p.Id == id, ct);
+
+        if (product is null) return null;
+
+        product.IsActive = isActive;
+        product.UpdatedAt = DateTime.UtcNow;
+
+        await _db.SaveChangesAsync(ct);
+
+        return MapToDetailDto(product);
     }
 
     // ---------- Helpers ----------

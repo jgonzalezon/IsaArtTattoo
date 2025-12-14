@@ -29,7 +29,9 @@ public class UserOrdersServiceTests
             userId,
             OrderStatus.Pending,
             PaymentStatus.Unpaid,
-            100m,
+            100m,      // SubtotalAmount
+            21m,       // TaxAmount
+            121m,      // TotalAmount
             "EUR",
             System.DateTime.UtcNow,
             null,
@@ -46,7 +48,9 @@ public class UserOrdersServiceTests
             System.DateTime.UtcNow,
             OrderStatus.Pending,
             PaymentStatus.Unpaid,
-            100m);
+            100m,      // SubtotalAmount
+            21m,       // TaxAmount
+            121m);     // TotalAmount
 
     #region CreateOrderAsync
 

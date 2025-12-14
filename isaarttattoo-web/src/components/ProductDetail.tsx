@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import type { Product } from "../api/shop";
-import { fetchProductById } from "../api/shop";
+import { fetchProductById, canAddToCart } from "../api/shop";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../auth/AuthContext";
 
 export default function ProductDetail() {
     const { id } = useParams();
     const [product, setProduct] = useState<Product | null>(null);
+    const [quantity, setQuantity] = useState(1);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const { addItem } = useCart();
@@ -20,8 +21,11 @@ export default function ProductDetail() {
                 if (!id) return;
                 const res = await fetchProductById(id);
                 setProduct(res);
-            } catch (err: any) {
-                setError(err.message || "No se pudo cargar el producto");
+                setQuantity(1);
+            } catch (err: unknown) {
+                setError(
+                    err instanceof Error ? err.message : "No se pudo cargar el producto"
+                );
             } finally {
                 setLoading(false);
             }
@@ -44,14 +48,26 @@ export default function ProductDetail() {
             navigate("/login");
             return;
         }
+
+        // ✅ Validar stock
+        const validation = canAddToCart(product, quantity);
+        if (!validation.can) {
+            alert(validation.reason);
+            return;
+        }
+
         addItem({
             productId: product.id,
             name: product.name,
             price: product.price,
-            quantity: 1,
+            quantity,
         });
         navigate("/cart");
     };
+
+    // ✅ Calcular máxima cantidad permitida
+    const maxQuantity = product.stock && product.stock > 0 ? product.stock : 1;
+    const isOutOfStock = product.stock === 0;
 
     const heroImage = product.imageUrl || product.images?.[0]?.url;
 
@@ -111,13 +127,61 @@ export default function ProductDetail() {
                         currency: "EUR",
                     })}
                 </p>
+
+                {/* ✅ Mostrar stock */}
                 {typeof product.stock === "number" && (
-                    <p className="text-sm text-emerald-200">Stock: {product.stock}</p>
+                    <div
+                        className={`text-sm font-semibold ${
+                            isOutOfStock ? "text-red-400" : "text-emerald-200"
+                        }`}
+                    >
+                        {isOutOfStock
+                            ? "❌ Agotado"
+                            : `✅ Stock disponible: ${product.stock}`}
+                    </div>
                 )}
+
+                {/* ✅ Selector de cantidad */}
+                {!isOutOfStock && (
+                    <div className="space-y-2">
+                        <label className="text-sm text-slate-200">
+                            Cantidad ({quantity} de {maxQuantity})
+                        </label>
+                        <input
+                            type="range"
+                            min="1"
+                            max={maxQuantity}
+                            value={quantity}
+                            onChange={(e) => setQuantity(parseInt(e.target.value))}
+                            className="w-full"
+                        />
+                        <div className="flex gap-2">
+                            <button
+                                onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                                className="flex-1 rounded-lg border border-white/10 px-2 py-2 text-sm font-semibold hover:bg-white/10"
+                                disabled={quantity <= 1}
+                            >
+                                −
+                            </button>
+                            <div className="flex-1 rounded-lg border border-white/10 bg-slate-900/60 px-2 py-2 text-center text-sm font-semibold">
+                                {quantity}
+                            </div>
+                            <button
+                                onClick={() => setQuantity(Math.min(maxQuantity, quantity + 1))}
+                                className="flex-1 rounded-lg border border-white/10 px-2 py-2 text-sm font-semibold hover:bg-white/10"
+                                disabled={quantity >= maxQuantity}
+                            >
+                                +
+                            </button>
+                        </div>
+                    </div>
+                )}
+
                 <div className="flex gap-3">
                     <button
                         onClick={handleAddToCart}
-                        className="rounded-xl bg-gradient-to-r from-cyan-400 to-fuchsia-500 px-5 py-3 font-semibold text-slate-900"
+                        disabled={isOutOfStock}
+                        className="rounded-xl bg-gradient-to-r from-cyan-400 to-fuchsia-500 px-5 py-3 font-semibold text-slate-900 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         Añadir al carrito
                     </button>

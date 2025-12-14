@@ -6,47 +6,49 @@ namespace IsaArtTattoo.OrdersApi.Infrastructure.Services;
 public class CatalogStockService : IStockService
 {
     private readonly HttpClient _http;
+    private readonly ILogger<CatalogStockService> _logger;
 
-    public CatalogStockService(HttpClient http, IConfiguration cfg)
+    public CatalogStockService(HttpClient http, ILogger<CatalogStockService> logger)
     {
         _http = http ?? throw new ArgumentNullException(nameof(http));
-
-        // Token opcional para llamadas de admin al Catalog (si lo usas)
-        var adminBearerToken = cfg["Catalog:AdminBearerToken"];
-
-        if (!string.IsNullOrWhiteSpace(adminBearerToken))
-        {
-            _http.DefaultRequestHeaders.Authorization =
-                new System.Net.Http.Headers.AuthenticationHeaderValue(
-                    "Bearer",
-                    adminBearerToken
-                );
-        }
-
-        // ❌ Ya NO miramos Catalog:BaseUrl ni seteamos BaseAddress aquí.
-        // BaseAddress la rellena Aspire usando service discovery ("catalog-api").
+        _logger = logger;
     }
 
     public async Task<bool> ReserveStockAsync(
         IEnumerable<(int ProductId, int Quantity)> items,
         CancellationToken ct = default)
     {
-        // Llamamos a Catalog en serie (simple). Más adelante puedes optimizar.
         foreach (var (productId, quantity) in items)
         {
             var payload = new
             {
                 quantity = -Math.Abs(quantity),
-                reason = "Order confirmed"
+                reason = "Order paid"
             };
 
-            var resp = await _http.PostAsJsonAsync(
-                "/api/admin/catalog/products/" + productId + "/stock",
-                payload,
-                ct);
-
-            if (!resp.IsSuccessStatusCode)
+            try
             {
+                // ✅ Usar endpoint público para reservar stock
+                var resp = await _http.PostAsJsonAsync(
+                    $"http://catalog-api/api/catalog/products/{productId}/reserve-stock",
+                    payload,
+                    ct);
+
+                if (!resp.IsSuccessStatusCode)
+                {
+                    _logger.LogWarning(
+                        "No se pudo reservar stock para producto {ProductId}: {StatusCode}",
+                        productId,
+                        resp.StatusCode);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(
+                    ex,
+                    "Error al reservar stock para producto {ProductId}",
+                    productId);
                 return false;
             }
         }
@@ -66,13 +68,29 @@ public class CatalogStockService : IStockService
                 reason = "Order cancelled / stock release"
             };
 
-            var resp = await _http.PostAsJsonAsync(
-                "/api/admin/catalog/products/" + productId + "/stock",
-                payload,
-                ct);
-
-            if (!resp.IsSuccessStatusCode)
+            try
             {
+                // ✅ Usar endpoint público para liberar stock
+                var resp = await _http.PostAsJsonAsync(
+                    $"http://catalog-api/api/catalog/products/{productId}/reserve-stock",
+                    payload,
+                    ct);
+
+                if (!resp.IsSuccessStatusCode)
+                {
+                    _logger.LogWarning(
+                        "No se pudo liberar stock para producto {ProductId}: {StatusCode}",
+                        productId,
+                        resp.StatusCode);
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(
+                    ex,
+                    "Error al liberar stock para producto {ProductId}",
+                    productId);
                 return false;
             }
         }

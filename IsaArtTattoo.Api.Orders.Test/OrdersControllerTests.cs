@@ -56,7 +56,9 @@ public class OrdersControllerTests
             userId,
             OrderStatus.Pending,
             PaymentStatus.Unpaid,
-            100m,
+            100m,      // SubtotalAmount
+            21m,       // TaxAmount (21% de 100)
+            121m,      // TotalAmount
             "EUR",
             DateTime.UtcNow,
             null,
@@ -73,7 +75,9 @@ public class OrdersControllerTests
             DateTime.UtcNow,
             OrderStatus.Pending,
             PaymentStatus.Unpaid,
-            100m);
+            100m,      // SubtotalAmount
+            21m,       // TaxAmount
+            121m);     // TotalAmount
 
     #region CreateOrder
 

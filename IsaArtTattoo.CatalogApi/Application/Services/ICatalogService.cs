@@ -41,4 +41,7 @@ public interface ICatalogService
     Task<ProductDetailDto?> UpdateProductAsync(int id, UpdateProductDto dto, CancellationToken ct = default);
     Task<ProductDetailDto?> AdjustStockAsync(int id, AdjustStockDto dto, CancellationToken ct = default);
     Task<ProductImageDto?> AddProductImageAsync(int productId, AddProductImageDto dto, CancellationToken ct = default);
+
+    // Público: cambiar estado activo/inactivo (usuarios identificados)
+    Task<ProductDetailDto?> SetProductActiveStatusAsync(int id, bool isActive, CancellationToken ct = default);
 }

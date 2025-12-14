@@ -92,13 +92,21 @@ public class AdminOrdersController : ControllerBase
     [HttpPost("{id:int}/set-paid")]
     [ProducesResponseType(typeof(OrderDetailDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<OrderDetailDto>> SetPaid(int id, CancellationToken ct)
     {
-        var result = await _service.SetOrderPaidAsync(id, ct);
-        if (!result.Succeeded || result.Order is null)
-            return NotFound(result.Error ?? "Pedido no encontrado.");
+        try
+        {
+            var result = await _service.SetOrderPaidAsync(id, ct);
+            if (!result.Succeeded || result.Order is null)
+                return NotFound(result.Error ?? "Pedido no encontrado.");
 
-        return Ok(result.Order);
+            return Ok(result.Order);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { error = ex.Message });
+        }
     }
 
     /// <summary>

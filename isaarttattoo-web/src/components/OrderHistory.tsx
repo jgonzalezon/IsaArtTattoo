@@ -27,6 +27,7 @@ export default function OrderHistory() {
                         ? err.message
                         : "No se pudieron cargar las órdenes";
                 setError(message);
+                console.error("Error loading orders:", err);
             } finally {
                 setLoading(false);
             }
@@ -49,54 +50,56 @@ export default function OrderHistory() {
 
     return (
         <div className="space-y-4">
-            {orders.map((order) => (
-                <div
-                    key={order.id}
-                    className="rounded-2xl border border-white/10 bg-slate-900/50 p-4"
-                >
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                        <div>
-                            <p className="text-sm uppercase tracking-wide text-cyan-300">
-                                Pedido #{order.id}
-                            </p>
-                            <p className="text-lg font-semibold text-white">
-                                {order.total.toLocaleString("es-ES", {
-                                    style: "currency",
-                                    currency: "EUR",
-                                })}
-                            </p>
-                            <p className="text-xs text-slate-300">
-                                {order.createdAt
-                                    ? new Date(order.createdAt).toLocaleString("es-ES")
-                                    : "En preparación"}
-                            </p>
+            {orders
+                .filter((order) => order && order.id && order.totalAmount !== undefined)
+                .map((order) => (
+                    <div
+                        key={order.id}
+                        className="rounded-2xl border border-white/10 bg-slate-900/50 p-4 hover:border-cyan-400/40 transition cursor-pointer"
+                        onClick={() => navigate(`/orders/${order.id}`)}
+                    >
+                        <div className="flex flex-wrap items-center justify-between gap-3">
+                            <div>
+                                <p className="text-sm uppercase tracking-wide text-cyan-300">
+                                    {order.orderNumber}
+                                </p>
+                                <p className="text-lg font-semibold text-white">
+                                    {(order.totalAmount ?? 0).toLocaleString("es-ES", {
+                                        style: "currency",
+                                        currency: "EUR",
+                                    })}
+                                </p>
+                                <p className="text-xs text-slate-300">
+                                    {order.createdAt
+                                        ? new Date(order.createdAt).toLocaleString("es-ES")
+                                        : "En preparación"}
+                                </p>
+                            </div>
+                            <div className="flex flex-col items-end gap-2">
+                                <span className={`rounded-full px-3 py-1 text-sm font-medium ${
+                                    order.status === "Delivered"
+                                        ? "bg-emerald-500/20 text-emerald-200"
+                                        : order.status === "Shipped"
+                                          ? "bg-blue-500/20 text-blue-200"
+                                          : order.status === "Confirmed"
+                                            ? "bg-cyan-500/20 text-cyan-200"
+                                            : order.status === "Cancelled"
+                                              ? "bg-red-500/20 text-red-200"
+                                              : "bg-white/10 text-white"
+                                }`}>
+                                    {order.status || "Pendiente"}
+                                </span>
+                                <span className={`rounded-full px-3 py-1 text-xs font-medium ${
+                                    order.paymentStatus === "Paid"
+                                        ? "bg-emerald-500/20 text-emerald-200"
+                                        : "bg-yellow-500/20 text-yellow-200"
+                                }`}>
+                                    {order.paymentStatus === "Paid" ? "Pagado" : "Pendiente de pago"}
+                                </span>
+                            </div>
                         </div>
-                        <span className="rounded-full bg-white/10 px-3 py-1 text-sm text-white">
-                            {order.status || "Pendiente"}
-                        </span>
                     </div>
-                    {order.items && (
-                        <div className="mt-3 space-y-2 text-sm text-slate-200">
-                            {order.items.map((item) => (
-                                <div
-                                    key={`${order.id}-${item.productId}`}
-                                    className="flex items-center justify-between rounded-lg bg-white/5 px-3 py-2"
-                                >
-                                    <span>
-                                        {item.productId} x{item.quantity}
-                                    </span>
-                                    <span>
-                                        {(item.unitPrice * item.quantity).toLocaleString("es-ES", {
-                                            style: "currency",
-                                            currency: "EUR",
-                                        })}
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
-            ))}
+                ))}
         </div>
     );
 }

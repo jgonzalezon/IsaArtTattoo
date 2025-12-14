@@ -71,14 +71,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
             try {
                 const res = await fetchCart();
                 if (res?.items) {
-                    const hydrated = res.items
-                        .filter((i) => i.productId && i.quantity)
-                        .map((i) => ({
-                            productId: i.productId,
-                            quantity: i.quantity,
-                            name: i.name ?? "Producto",
-                            price: i.price ?? 0,
-                        }));
+                    const hydrated = res.items.map((i) => ({
+                        productId: i.productId.toString(),
+                        quantity: i.quantity,
+                        name: i.productName ?? "Producto",
+                        price: i.unitPrice ?? 0,
+                    }));
                     setItems(hydrated);
                     persist(hydrated);
                 }
@@ -103,10 +101,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
         try {
             const res = await fetchCart();
             const hydrated = res.items.map((i) => ({
-                productId: i.productId,
+                productId: i.productId.toString(),
                 quantity: i.quantity,
-                name: i.name ?? "Producto",
-                price: i.price ?? 0,
+                name: i.productName ?? "Producto",
+                price: i.unitPrice ?? 0,
             }));
             setItems(hydrated);
             persist(hydrated);

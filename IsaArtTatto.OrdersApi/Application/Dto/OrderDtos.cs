@@ -21,6 +21,8 @@ public record OrderListItemDto(
     DateTime CreatedAt,
     OrderStatus Status,
     PaymentStatus PaymentStatus,
+    decimal SubtotalAmount,
+    decimal TaxAmount,
     decimal TotalAmount
 );
 
@@ -40,6 +42,8 @@ public record OrderDetailDto(
     string UserId,
     OrderStatus Status,
     PaymentStatus PaymentStatus,
+    decimal SubtotalAmount,
+    decimal TaxAmount,
     decimal TotalAmount,
     string Currency,
     DateTime CreatedAt,
