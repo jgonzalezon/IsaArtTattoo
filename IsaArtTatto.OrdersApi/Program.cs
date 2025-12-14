@@ -22,6 +22,7 @@ builder.Services.AddHttpContextAccessor();
 // Servicios de aplicación (Orders + HttpClient a Catalog)
 builder.Services.AddOrdersApplicationServices();
 builder.Services.AddScoped<IUserOrdersService, UserOrdersService>();
+builder.Services.AddScoped<IAdminOrdersService, AdminOrdersService>();
 
 
 var app = builder.Build();
