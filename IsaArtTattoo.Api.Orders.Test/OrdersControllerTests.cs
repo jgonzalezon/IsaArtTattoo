@@ -270,7 +270,16 @@ public class OrdersControllerTests
         var result = await controller.SetPaid(1, CancellationToken.None);
 
         // Assert
-        Assert.That(result.Result, Is.TypeOf<NotFoundResult>());
+        Assert.That(result.Result, Is.TypeOf<NotFoundObjectResult>());
+        var nf = (NotFoundObjectResult)result.Result!;
+        Assert.That(nf.Value, Is.Not.Null);
+        
+        var value = nf.Value!;
+        var prop = value.GetType().GetProperty("error");
+        Assert.That(prop, Is.Not.Null, "La respuesta debe tener una propiedad 'error'");
+        
+        var error = prop!.GetValue(value) as string;
+        Assert.That(error, Is.EqualTo("Pedido no encontrado"));
     }
 
     #endregion

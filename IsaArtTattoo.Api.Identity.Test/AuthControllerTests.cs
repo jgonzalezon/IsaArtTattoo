@@ -101,7 +101,15 @@ public class AuthControllerTests
         // Assert
         Assert.That(result, Is.TypeOf<OkObjectResult>());
         var ok = (OkObjectResult)result;
-        Assert.That(ok.Value, Is.EqualTo("Correo confirmado correctamente."));
+        Assert.That(ok.Value, Is.Not.Null);
+
+        var value = ok.Value!;
+        var prop = value.GetType().GetProperty("message");
+
+        Assert.That(prop, Is.Not.Null, "La respuesta debe tener una propiedad 'message'");
+
+        var message = prop!.GetValue(value) as string;
+        Assert.That(message, Is.EqualTo("Correo confirmado correctamente."));
     }
 
     [Test]
@@ -197,7 +205,15 @@ public class AuthControllerTests
         // Assert
         Assert.That(result, Is.TypeOf<OkObjectResult>());
         var ok = (OkObjectResult)result;
-        Assert.That(ok.Value, Is.EqualTo("Correo de confirmación reenviado."));
+        Assert.That(ok.Value, Is.Not.Null);
+
+        var value = ok.Value!;
+        var prop = value.GetType().GetProperty("message");
+
+        Assert.That(prop, Is.Not.Null, "La respuesta debe tener una propiedad 'message'");
+
+        var message = prop!.GetValue(value) as string;
+        Assert.That(message, Is.EqualTo("Correo de confirmación reenviado."));
     }
 
     [Test]
@@ -239,7 +255,15 @@ public class AuthControllerTests
         // Assert
         Assert.That(result, Is.TypeOf<OkObjectResult>());
         var ok = (OkObjectResult)result;
-        Assert.That(ok.Value,
+        Assert.That(ok.Value, Is.Not.Null);
+
+        var value = ok.Value!;
+        var prop = value.GetType().GetProperty("message");
+
+        Assert.That(prop, Is.Not.Null, "La respuesta debe tener una propiedad 'message'");
+
+        var message = prop!.GetValue(value) as string;
+        Assert.That(message,
             Is.EqualTo("Se ha enviado un correo con las instrucciones para restablecer la contraseña."));
     }
 
@@ -282,7 +306,15 @@ public class AuthControllerTests
         // Assert
         Assert.That(result, Is.TypeOf<OkObjectResult>());
         var ok = (OkObjectResult)result;
-        Assert.That(ok.Value, Is.EqualTo("Contraseña restablecida correctamente."));
+        Assert.That(ok.Value, Is.Not.Null);
+
+        var value = ok.Value!;
+        var prop = value.GetType().GetProperty("message");
+
+        Assert.That(prop, Is.Not.Null, "La respuesta debe tener una propiedad 'message'");
+
+        var message = prop!.GetValue(value) as string;
+        Assert.That(message, Is.EqualTo("Contraseña restablecida correctamente."));
     }
 
     [Test]
