@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Pagination from "../components/Pagination";
 import {
     fetchAdminOrders,
     fetchAdminOrderDetail,
@@ -22,10 +23,13 @@ export default function AdminOrdersPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
+    const [currentPage, setCurrentPage] = useState(1);
 
     // Filtros
     const [filterStatus, setFilterStatus] = useState<OrderStatus | null>(null);
     const [filterPaymentStatus, setFilterPaymentStatus] = useState<PaymentStatus | null>(null);
+
+    const ITEMS_PER_PAGE = 15;
 
     // Cargar órdenes
     const loadOrders = async () => {
@@ -37,8 +41,9 @@ export default function AdminOrdersPage() {
                 paymentStatus: filterPaymentStatus
             });
             setOrders(data);
+            setCurrentPage(1);
         } catch (err: unknown) {
-            setError(err instanceof Error ? err.message : "No se pudieron cargar las órdenes");
+            setError(err instanceof Error ? err.message : "No se pudieron cargar las ordenes");
         } finally {
             setLoading(false);
         }
@@ -130,7 +135,7 @@ export default function AdminOrdersPage() {
 
     const handleCancel = async () => {
         if (!selectedOrder) return;
-        if (!confirm("¿Seguro que deseas cancelar esta orden?")) return;
+        if (!confirm("Seguro que deseas cancelar esta orden?")) return;
         
         try {
             setLoading(true);
@@ -152,11 +157,16 @@ export default function AdminOrdersPage() {
         loadOrders();
     }, [filterStatus, filterPaymentStatus]);
 
+    // Paginación
+    const totalPages = Math.ceil(orders.length / ITEMS_PER_PAGE);
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const paginatedOrders = orders.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
     return (
         <div className="space-y-6">
             <header className="flex flex-wrap items-center justify-between gap-4">
                 <div className="space-y-2">
-                    <h1 className="text-2xl font-semibold text-white">Gestión de órdenes</h1>
+                    <h1 className="text-2xl font-semibold text-white">Gestion de ordenes</h1>
                     <p className="text-sm text-slate-300">
                         Administra todos los pedidos, cambios de estado y pagos
                     </p>
@@ -165,7 +175,7 @@ export default function AdminOrdersPage() {
                     to="/admin"
                     className="rounded-lg border border-cyan-300/40 bg-cyan-400/10 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:border-cyan-300/80 hover:bg-cyan-400/20"
                 >
-                    ? Volver al panel
+                    Volver al panel
                 </Link>
             </header>
 
@@ -230,46 +240,60 @@ export default function AdminOrdersPage() {
 
                 {/* Lista de órdenes */}
                 <div className="rounded-2xl border border-white/10 bg-white/5 p-4 md:col-span-2">
-                    <h2 className="mb-4 text-lg font-semibold text-white">Órdenes</h2>
+                    <h2 className="mb-4 text-lg font-semibold text-white">Ordenes</h2>
 
                     {loading && orders.length === 0 ? (
                         <p className="text-slate-400">Cargando...</p>
                     ) : orders.length === 0 ? (
-                        <p className="text-slate-400">No hay órdenes con estos filtros</p>
+                        <p className="text-slate-400">No hay ordenes con estos filtros</p>
                     ) : (
-                        <div className="space-y-2 max-h-96 overflow-y-auto">
-                            {orders.map((order) => (
-                                <button
-                                    key={order.id}
-                                    onClick={() => loadOrderDetail(order.id)}
-                                    className={`w-full rounded-lg border p-3 text-left transition ${
-                                        selectedOrder?.id === order.id
-                                            ? "border-cyan-400 bg-cyan-400/10"
-                                            : "border-white/10 bg-slate-900/40 hover:border-white/20"
-                                    }`}
-                                >
-                                    <div className="flex items-start justify-between gap-2">
-                                        <div className="flex-1">
-                                            <p className="font-semibold text-white">{order.orderNumber}</p>
-                                            <p className="text-xs text-slate-400">
-                                                {new Date(order.createdAt).toLocaleDateString("es-ES")}
-                                            </p>
+                        <>
+                            <div className="space-y-2 max-h-96 overflow-y-auto">
+                                {paginatedOrders.map((order) => (
+                                    <button
+                                        key={order.id}
+                                        onClick={() => loadOrderDetail(order.id)}
+                                        className={`w-full rounded-lg border p-3 text-left transition ${
+                                            selectedOrder?.id === order.id
+                                                ? "border-cyan-400 bg-cyan-400/10"
+                                                : "border-white/10 bg-slate-900/40 hover:border-white/20"
+                                        }`}
+                                    >
+                                        <div className="flex items-start justify-between gap-2">
+                                            <div className="flex-1">
+                                                <p className="font-semibold text-white">{order.orderNumber}</p>
+                                                <p className="text-xs text-slate-400">
+                                                    {new Date(order.createdAt).toLocaleDateString("es-ES")}
+                                                </p>
+                                            </div>
+                                            <div className="flex gap-1 text-xs">
+                                                <span className="rounded px-2 py-1 bg-blue-600/30 text-blue-200">
+                                                    {getOrderStatusLabel(order.status)}
+                                                </span>
+                                                <span className="rounded px-2 py-1 bg-green-600/30 text-green-200">
+                                                    {getPaymentStatusLabel(order.paymentStatus)}
+                                                </span>
+                                            </div>
                                         </div>
-                                        <div className="flex gap-1 text-xs">
-                                            <span className="rounded px-2 py-1 bg-blue-600/30 text-blue-200">
-                                                {getOrderStatusLabel(order.status)}
-                                            </span>
-                                            <span className="rounded px-2 py-1 bg-green-600/30 text-green-200">
-                                                {getPaymentStatusLabel(order.paymentStatus)}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <p className="mt-2 text-sm font-semibold text-cyan-300">
-                                        {order.totalAmount.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
-                                    </p>
-                                </button>
-                            ))}
-                        </div>
+                                        <p className="mt-2 text-sm font-semibold text-cyan-300">
+                                            {order.totalAmount.toLocaleString("es-ES", { style: "currency", currency: "EUR" })}
+                                        </p>
+                                    </button>
+                                ))}
+                            </div>
+
+                            {totalPages > 1 && (
+                                <div className="mt-4 flex justify-center">
+                                    <Pagination
+                                        currentPage={currentPage}
+                                        totalPages={totalPages}
+                                        onPageChange={setCurrentPage}
+                                        itemsPerPage={ITEMS_PER_PAGE}
+                                        totalItems={orders.length}
+                                    />
+                                </div>
+                            )}
+                        </>
                     )}
                 </div>
             </div>

@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import StoreLayout from "../components/StoreLayout";
+import Pagination from "../components/Pagination";
 import {
     getCategories,
     createCategory,
@@ -21,6 +22,10 @@ export default function AdminCatalogPage() {
     const [filterCategory, setFilterCategory] = useState<string>("");
     const [error, setError] = useState<string | null>(null);
     const [feedback, setFeedback] = useState<string | null>(null);
+    const [categoryPage, setCategoryPage] = useState(1);
+    const [productPage, setProductPage] = useState(1);
+
+    const ITEMS_PER_PAGE = 15;
 
     const [categoryForm, setCategoryForm] = useState({ name: "", description: "", displayOrder: 0 });
     const [productForm, setProductForm] = useState({
@@ -45,7 +50,7 @@ export default function AdminCatalogPage() {
             setProducts(prod);
         } catch (err) {
             console.error(err);
-            setError("No se pudo cargar el catálogo");
+            setError("No se pudo cargar el catalogo");
         }
     };
 
@@ -55,12 +60,12 @@ export default function AdminCatalogPage() {
         const fetchData = async () => {
             try {
                 const [cat, prod] = await Promise.all([getCategories(), getProducts()]);
-                if (!isMounted) return; // evita setState tras unmount
+                if (!isMounted) return;
                 setCategories(cat);
                 setProducts(prod);
             } catch (err) {
                 console.error(err);
-                setError("No se pudo cargar el catálogo");
+                setError("No se pudo cargar el catalogo");
             }
         };
 
@@ -76,28 +81,49 @@ export default function AdminCatalogPage() {
         [categories],
     );
 
+    const categoryTotalPages = Math.ceil(sortedCategories.length / ITEMS_PER_PAGE);
+    const paginatedCategories = useMemo(() => {
+        const startIndex = (categoryPage - 1) * ITEMS_PER_PAGE;
+        return sortedCategories.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+    }, [sortedCategories, categoryPage]);
+
+    const filteredProducts = useMemo(
+        () =>
+            products.filter((p) =>
+                filterCategory ? p.categoryName === filterCategory : true,
+            ),
+        [products, filterCategory],
+    );
+
+    const productTotalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+    const paginatedProducts = useMemo(() => {
+        const startIndex = (productPage - 1) * ITEMS_PER_PAGE;
+        return filteredProducts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+    }, [filteredProducts, productPage]);
+
     const handleCreateCategory = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!categoryForm.name) return;
         try {
             await createCategory(categoryForm);
             setCategoryForm({ name: "", description: "", displayOrder: 0 });
-            setFeedback("Categoría creada");
+            setFeedback("Categoria creada");
+            setCategoryPage(1);
             await loadData();
         } catch (err) {
             console.error(err);
-            setError("No se pudo crear la categoría");
+            setError("No se pudo crear la categoria");
         }
     };
 
     const handleUpdateCategory = async (category: AdminCategory) => {
         try {
             await updateCategory(category.id, category);
-            setFeedback("Categoría actualizada");
+            setFeedback("Categoria actualizada");
             await loadData();
         } catch (err) {
             console.error(err);
-            setError("No se pudo actualizar la categoría");
+            setError("No se pudo actualizar la categoria");
         }
     };
 
@@ -135,6 +161,7 @@ export default function AdminCatalogPage() {
                 imageDisplayOrder: 0,
             });
             setFeedback("Producto creado");
+            setProductPage(1);
             await loadData();
         } catch (err) {
             console.error(err);
@@ -177,23 +204,15 @@ export default function AdminCatalogPage() {
         }
     };
 
-    const filteredProducts = useMemo(
-        () =>
-            products.filter((p) =>
-                filterCategory ? p.categoryName === filterCategory : true,
-            ),
-        [products, filterCategory],
-    );
-
     return (
         <StoreLayout
-            title="Administración de catálogo"
-            description="Gestiona productos, categorías y stock desde un solo lugar."
+            title="Administracion de catalogo"
+            description="Gestiona productos, categorias y stock desde un solo lugar."
         >
             <div className="space-y-4">
                 <div className="flex flex-wrap items-center gap-2">
                     {([
-                        { id: "categories", label: "Categorías" },
+                        { id: "categories", label: "Categorias" },
                         { id: "products", label: "Productos" },
                     ] as const).map((tab) => (
                         <button
@@ -237,12 +256,12 @@ export default function AdminCatalogPage() {
                                 />
                             </label>
                             <label className="grid gap-2 text-sm text-slate-200">
-                                <span>Descripción</span>
+                                <span>Descripcion</span>
                                 <input
                                     className="rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-white focus:border-cyan-400 focus:outline-none"
                                     value={categoryForm.description}
                                     onChange={(e) => setCategoryForm((c) => ({ ...c, description: e.target.value }))}
-                                    placeholder="Breve descripción"
+                                    placeholder="Breve descripcion"
                                 />
                             </label>
                             <label className="grid gap-2 text-sm text-slate-200">
@@ -259,7 +278,7 @@ export default function AdminCatalogPage() {
                                     type="submit"
                                     className="rounded-lg bg-gradient-to-r from-cyan-400 to-fuchsia-500 px-4 py-2 text-sm font-semibold text-slate-900"
                                 >
-                                    Crear categoría
+                                    Crear categoria
                                 </button>
                             </div>
                         </form>
@@ -269,13 +288,13 @@ export default function AdminCatalogPage() {
                                 <thead className="bg-slate-900/70">
                                     <tr>
                                         <th className="px-4 py-2 text-left">Nombre</th>
-                                        <th className="px-4 py-2 text-left">Descripción</th>
+                                        <th className="px-4 py-2 text-left">Descripcion</th>
                                         <th className="px-4 py-2 text-left">Orden</th>
                                         <th className="px-4 py-2 text-left">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {sortedCategories.map((cat) => (
+                                    {paginatedCategories.map((cat) => (
                                         <tr key={cat.id} className="border-t border-white/5">
                                             <td className="px-4 py-2">
                                                 <input
@@ -338,6 +357,18 @@ export default function AdminCatalogPage() {
                                 </tbody>
                             </table>
                         </div>
+
+                        {categoryTotalPages > 1 && (
+                            <div className="flex justify-center">
+                                <Pagination
+                                    currentPage={categoryPage}
+                                    totalPages={categoryTotalPages}
+                                    onPageChange={setCategoryPage}
+                                    itemsPerPage={ITEMS_PER_PAGE}
+                                    totalItems={sortedCategories.length}
+                                />
+                            </div>
+                        )}
                     </div>
                 ) : (
                     <div className="space-y-6">
@@ -355,7 +386,7 @@ export default function AdminCatalogPage() {
                                 />
                             </label>
                             <label className="grid gap-2 text-sm text-slate-200 md:col-span-2">
-                                <span>Descripción corta</span>
+                                <span>Descripcion corta</span>
                                 <input
                                     className="rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-white focus:border-cyan-400 focus:outline-none"
                                     value={productForm.shortDescription}
@@ -382,14 +413,14 @@ export default function AdminCatalogPage() {
                                 />
                             </label>
                             <label className="grid gap-2 text-sm text-slate-200">
-                                <span>Categoría</span>
+                                <span>Categoria</span>
                                 <select
                                     className="rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-white"
                                     value={productForm.categoryId}
                                     onChange={(e) => setProductForm((p) => ({ ...p, categoryId: Number(e.target.value) }))}
                                     required
                                 >
-                                    <option value={0}>Selecciona una categoría</option>
+                                    <option value={0}>Selecciona una categoria</option>
                                     {sortedCategories.map((cat) => (
                                         <option key={cat.id} value={cat.id} className="bg-slate-900">
                                             {cat.name}
@@ -452,11 +483,14 @@ export default function AdminCatalogPage() {
 
                         <div className="flex flex-wrap items-center gap-3">
                             <label className="text-sm text-slate-200">
-                                Filtrar por categoría:
+                                Filtrar por categoria:
                                 <select
                                     className="ml-2 rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-sm text-white"
                                     value={filterCategory}
-                                    onChange={(e) => setFilterCategory(e.target.value)}
+                                    onChange={(e) => {
+                                        setFilterCategory(e.target.value);
+                                        setProductPage(1);
+                                    }}
                                 >
                                     <option value="">Todas</option>
                                     {sortedCategories.map((cat) => (
@@ -473,7 +507,7 @@ export default function AdminCatalogPage() {
                                 <thead className="bg-slate-900/70">
                                     <tr>
                                         <th className="px-4 py-2 text-left">Nombre</th>
-                                        <th className="px-4 py-2 text-left">Categoría</th>
+                                        <th className="px-4 py-2 text-left">Categoria</th>
                                         <th className="px-4 py-2 text-left">Precio</th>
                                         <th className="px-4 py-2 text-left">Stock</th>
                                         <th className="px-4 py-2 text-left">Activo</th>
@@ -482,7 +516,7 @@ export default function AdminCatalogPage() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {filteredProducts.map((prod) => (
+                                    {paginatedProducts.map((prod) => (
                                         <tr key={prod.id} className="border-t border-white/5">
                                             <td className="px-4 py-2">
                                                 <input
@@ -514,7 +548,7 @@ export default function AdminCatalogPage() {
                                                         )
                                                     }
                                                 >
-                                                    <option value={0}>Sin categoría</option>
+                                                    <option value={0}>Sin categoria</option>
                                                     {sortedCategories.map((cat) => (
                                                         <option key={cat.id} value={cat.id} className="bg-slate-900">
                                                             {cat.name}
@@ -637,6 +671,18 @@ export default function AdminCatalogPage() {
                                 </tbody>
                             </table>
                         </div>
+
+                        {productTotalPages > 1 && (
+                            <div className="flex justify-center">
+                                <Pagination
+                                    currentPage={productPage}
+                                    totalPages={productTotalPages}
+                                    onPageChange={setProductPage}
+                                    itemsPerPage={ITEMS_PER_PAGE}
+                                    totalItems={filteredProducts.length}
+                                />
+                            </div>
+                        )}
                     </div>
                 )}
             </div>

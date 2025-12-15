@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import Pagination from "../Pagination";
 import {
     getUsers,
     createUser,
@@ -18,6 +19,7 @@ export default function AdminUsersPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [feedback, setFeedback] = useState<string | null>(null);
+    const [currentPage, setCurrentPage] = useState(1);
 
     const [newEmail, setNewEmail] = useState("");
     const [newPassword, setNewPassword] = useState("");
@@ -28,12 +30,15 @@ export default function AdminUsersPage() {
     const [passwordUserId, setPasswordUserId] = useState<string | null>(null);
     const [passwordNew, setPasswordNew] = useState("");
 
+    const ITEMS_PER_PAGE = 15;
+
     const loadData = async () => {
         try {
             setLoading(true);
             const usersResponse = await getUsers();
             const sortedUsers = usersResponse.sort((a, b) => a.email.localeCompare(b.email));
             setUsers(sortedUsers);
+            setCurrentPage(1);
 
             try {
                 const rolesResponse = await fetchRoles();
@@ -68,6 +73,11 @@ export default function AdminUsersPage() {
     }, [roles, roleToDelete]);
 
     const roleOptions = useMemo(() => roles.map((r) => r.name), [roles]);
+
+    // Paginacion
+    const totalPages = Math.ceil(users.length / ITEMS_PER_PAGE);
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const paginatedUsers = users.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
     const handleCreateUser = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -115,7 +125,7 @@ export default function AdminUsersPage() {
             setError("Selecciona un rol para borrar.");
             return;
         }
-        if (!confirm(`¿Seguro que quieres borrar el rol "${roleToDelete}"?`)) return;
+        if (!confirm(`Seguro que quieres borrar el rol "${roleToDelete}"?`)) return;
         setError(null);
         setFeedback(null);
         try {
@@ -155,7 +165,7 @@ export default function AdminUsersPage() {
     };
 
     const handleDeleteUser = async (user: UserSummary) => {
-        if (!confirm(`¿Seguro que quieres eliminar a ${user.email}?`)) return;
+        if (!confirm(`Seguro que quieres eliminar a ${user.email}?`)) return;
         try {
             await deleteUser(user.id);
             setFeedback("Usuario eliminado");
@@ -179,7 +189,7 @@ export default function AdminUsersPage() {
                     to="/admin"
                     className="rounded-lg border border-cyan-300/40 bg-cyan-400/10 px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:border-cyan-300/80 hover:bg-cyan-400/20"
                 >
-                    ← Volver al panel
+                    Volver al panel
                 </Link>
             </header>
 
@@ -264,7 +274,7 @@ export default function AdminUsersPage() {
                     <p className="text-sm text-slate-300">Asignar roles disponibles desde el directorio.</p>
                     <form onSubmit={handleCreateUser} className="mt-4 grid gap-3 md:grid-cols-6">
                         <label className="grid gap-2 text-sm text-slate-200 md:col-span-3">
-                            <span>Correo electrónico</span>
+                            <span>Correo electronico</span>
                             <input
                                 type="email"
                                 className="w-full rounded-lg border border-white/10 bg-slate-950 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
@@ -282,7 +292,7 @@ export default function AdminUsersPage() {
                                 value={newPassword}
                                 onChange={(e) => setNewPassword(e.target.value)}
                                 required
-                                placeholder="••••••••"
+                                placeholder="........"
                             />
                         </label>
                         <fieldset className="md:col-span-4">
@@ -331,9 +341,9 @@ export default function AdminUsersPage() {
                 <div className="flex items-center justify-between border-b border-white/5 px-4 py-3">
                     <div>
                         <h2 className="text-lg font-semibold text-white">Usuarios</h2>
-                        <p className="text-xs text-slate-400">Roles dinámicos desde la API.</p>
+                        <p className="text-xs text-slate-400">Roles dinamicos desde la API.</p>
                     </div>
-                    {loading && <span className="text-xs text-slate-400">Cargando…</span>}
+                    {loading && <span className="text-xs text-slate-400">Cargando</span>}
                 </div>
                 <div className="overflow-x-auto">
                     <table className="min-w-full text-sm">
@@ -346,14 +356,14 @@ export default function AdminUsersPage() {
                             </tr>
                         </thead>
                         <tbody>
-                            {users.map((u) => {
+                            {paginatedUsers.map((u) => {
                                 const availableRoles = Array.from(new Set([...(u.roles ?? []), ...roleOptions]));
                                 return (
                                     <tr key={u.id} className="border-t border-white/5">
                                         <td className="px-4 py-2">{u.email}</td>
                                         <td className="px-4 py-2">
                                             {u.emailConfirmed ? (
-                                                <span className="text-emerald-400">Sí</span>
+                                                <span className="text-emerald-400">Si</span>
                                             ) : (
                                                 <span className="text-amber-400">No</span>
                                             )}
@@ -417,6 +427,18 @@ export default function AdminUsersPage() {
                         </tbody>
                     </table>
                 </div>
+
+                {totalPages > 1 && (
+                    <div className="border-t border-white/5 px-4 py-4 flex justify-center">
+                        <Pagination
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            onPageChange={setCurrentPage}
+                            itemsPerPage={ITEMS_PER_PAGE}
+                            totalItems={users.length}
+                        />
+                    </div>
+                )}
             </section>
 
             {passwordUserId && (
@@ -433,7 +455,7 @@ export default function AdminUsersPage() {
                                     value={passwordNew}
                                     onChange={(e) => setPasswordNew(e.target.value)}
                                     required
-                                    placeholder="••••••••"
+                                    placeholder="........"
                                 />
                             </label>
                             <div className="flex justify-end gap-2 text-sm">

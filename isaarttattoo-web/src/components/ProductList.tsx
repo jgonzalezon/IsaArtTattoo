@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Category, Product } from "../api/shop";
 import { fetchCategories, fetchProducts } from "../api/shop";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../auth/AuthContext";
+import Pagination from "./Pagination";
 
 export default function ProductList() {
     const [products, setProducts] = useState<Product[]>([]);
@@ -11,9 +12,12 @@ export default function ProductList() {
     const [activeTag, setActiveTag] = useState<string>("Todos");
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [currentPage, setCurrentPage] = useState(1);
     const { addItem } = useCart();
     const { isAuthenticated } = useAuth();
     const navigate = useNavigate();
+
+    const ITEMS_PER_PAGE = 7;
 
     useEffect(() => {
         const load = async () => {
@@ -24,6 +28,7 @@ export default function ProductList() {
                 ]);
                 setProducts(productList);
                 setCategories(catalogCategories);
+                setCurrentPage(1);
             } catch (err: unknown) {
                 console.error(err);
                 if (err instanceof Error) {
@@ -38,22 +43,6 @@ export default function ProductList() {
 
         load();
     }, []);
-
-    if (loading) {
-        return <p className="text-slate-200">Cargando catálogo...</p>;
-    }
-
-    if (error) {
-        return (
-            <div className="rounded-xl border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-100">
-                {error}
-            </div>
-        );
-    }
-
-    if (products.length === 0) {
-        return <p className="text-slate-300">Aún no hay productos disponibles.</p>;
-    }
 
     const normalize = (value: string) => value.trim().toLowerCase();
 
@@ -78,6 +67,11 @@ export default function ProductList() {
     ];
 
     const filteredProducts = filterByTag(products, activeTag);
+    const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+    const paginatedProducts = useMemo(() => {
+        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+        return filteredProducts.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+    }, [filteredProducts, currentPage]);
 
     const handleAddToCart = (product: Product) => {
         if (!isAuthenticated) {
@@ -90,6 +84,11 @@ export default function ProductList() {
             price: product.price,
             quantity: 1,
         });
+    };
+
+    const handleTagChange = (tag: string) => {
+        setActiveTag(tag);
+        setCurrentPage(1);
     };
 
     const featuredSections = [
@@ -187,13 +186,30 @@ export default function ProductList() {
         );
     };
 
+    // Early returns after all hooks
+    if (loading) {
+        return <p className="text-slate-200">Cargando catálogo...</p>;
+    }
+
+    if (error) {
+        return (
+            <div className="rounded-xl border border-red-500/40 bg-red-500/10 p-4 text-sm text-red-100">
+                {error}
+            </div>
+        );
+    }
+
+    if (products.length === 0) {
+        return <p className="text-slate-300">Aún no hay productos disponibles.</p>;
+    }
+
     return (
         <div className="space-y-8">
             <div className="flex flex-wrap gap-3">
                 {filters.map((tag) => (
                     <button
                         key={tag}
-                        onClick={() => setActiveTag(tag)}
+                        onClick={() => handleTagChange(tag)}
                         className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
                             activeTag === tag
                                 ? "bg-cyan-400 text-slate-900 shadow-lg shadow-cyan-500/30"
@@ -206,8 +222,20 @@ export default function ProductList() {
             </div>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {filteredProducts.map((product) => renderProductCard(product))}
+                {paginatedProducts.map((product) => renderProductCard(product))}
             </div>
+
+            {totalPages > 1 && (
+                <div className="flex justify-center">
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={setCurrentPage}
+                        itemsPerPage={ITEMS_PER_PAGE}
+                        totalItems={filteredProducts.length}
+                    />
+                </div>
+            )}
 
             <div className="space-y-6">
                 {featuredSections.map((section) => {
@@ -226,7 +254,7 @@ export default function ProductList() {
                                     <p className="text-sm text-slate-300">{section.description}</p>
                                 </div>
                                 <button
-                                    onClick={() => setActiveTag(section.tag)}
+                                    onClick={() => handleTagChange(section.tag)}
                                     className="rounded-full bg-white/10 px-3 py-1.5 text-xs font-semibold text-white hover:bg-white/20"
                                 >
                                     Ver más
