@@ -10,23 +10,30 @@ var builder = DistributedApplication.CreateBuilder(args);
 // ========================================================
 // POSTGRES
 // ========================================================
-
-var pgUser = builder.AddParameter("pg-user", "postgres");
-var pgPass = builder.AddParameter("pg-password", "postgres");
+var jwtSecret = builder.AddParameter("jwt-key", secret: true);
+var pgUser = builder.AddParameter("pg-user", secret: true);
+var pgPass = builder.AddParameter("pg-password", secret: true);
 
 var postgres = builder.AddPostgres("pg")
     .WithPgAdmin()
     .WithImageTag("16")
     .WithUserName(pgUser)
     .WithPassword(pgPass)
-    .WithDataVolume("pgdata");
+    .WithDataVolume("pgdata")
+    .WithLifetime(ContainerLifetime.Persistent);
 
 
 var identityDb = postgres.AddDatabase("identitydb");
 var catalogDb = postgres.AddDatabase("catalogdb");
 var ordersDb = postgres.AddDatabase("ordersdb");
 
+// ========================================================
+// REDIS
+// ========================================================
 
+var redis = builder.AddRedis("cache")
+    .WithDataVolume("isaarttattoo-redis-data")
+    .WithLifetime(ContainerLifetime.Persistent);
 
 // ========================================================
 // RABBITMQ
@@ -39,6 +46,20 @@ var rabbit = builder
     .WithManagementPlugin();
 
 
+
+// ========================================================
+// MAILDEV (servidor SMTP local para testing)
+// ========================================================
+
+var mailServer = builder
+    .AddContainer("maildev", "maildev/maildev:latest")
+    .WithLifetime(ContainerLifetime.Persistent)
+    .WithHttpEndpoint(port: 1080, targetPort: 1080, name: "web")
+    .WithEndpoint(port: 1025, targetPort: 1025, name: "smtp")
+    .WithLifetime(ContainerLifetime.Persistent);
+
+
+
 // ========================================================
 // IDENTITY API (INTERNAL ONLY - no external endpoints)
 // ========================================================
@@ -47,6 +68,7 @@ var identityApi = builder
     .AddProject<Projects.IsaArtTattoo_IdentityApi>("identity-api")
     .WaitFor(identityDb)      // espera a Postgres
     .WaitFor(rabbit)          // espera a RabbitMQ
+    .WithEnvironment("Jwt:Key", jwtSecret)
     .WithReference(rabbit)    // le pasa connection string
     .WithReference(identityDb);
     // NO añadimos WithExternalHttpEndpoints() - solo accesible vía Gateway
@@ -59,6 +81,7 @@ var identityApi = builder
 
 var catalogApi = builder
     .AddProject<Projects.IsaArtTattoo_CatalogApi>("catalog-api")
+    .WithEnvironment("Jwt:Key", jwtSecret)
     .WaitFor(catalogDb)
     .WithReference(catalogDb);
     // NO añadimos WithExternalHttpEndpoints() - solo accesible vía Gateway
@@ -74,31 +97,13 @@ var notifications = builder
     .WithReference(rabbit);
 
 
-
-// ========================================================
-// REDIS
-// ========================================================
-
-var redis = builder.AddRedis("cache")
-    .WithDataVolume("isaarttattoo-redis-data");
-
-
-// ========================================================
-// MAILDEV (servidor SMTP local para testing)
-// ========================================================
-
-var mailServer = builder
-    .AddContainer("maildev", "maildev/maildev:latest")
-    .WithLifetime(ContainerLifetime.Persistent)
-    .WithHttpEndpoint(port: 1080, targetPort: 1080, name: "web")
-    .WithEndpoint(port: 1025, targetPort: 1025, name: "smtp");
-
 // ========================================================
 // ORDERS API (INTERNAL ONLY - no external endpoints)
 // ========================================================
 
 var ordersApi = builder.AddProject<Projects.IsaArtTatto_OrdersApi>("orders-api")
     .WithReference(ordersDb)
+    .WithEnvironment("Jwt:Key", jwtSecret)
     .WaitFor(ordersDb)
     .WaitFor(catalogApi)
     .WithReference(catalogApi);
@@ -111,6 +116,7 @@ var ordersApi = builder.AddProject<Projects.IsaArtTatto_OrdersApi>("orders-api")
 
 var gateway = builder
     .AddProject<Projects.IsaArtTattoo_ApiGateWay>("isaarttattoo-apigateway")
+    .WithEnvironment("Jwt:Key", jwtSecret)
     .WithReference(redis)
     .WithReference(identityApi)
     .WithReference(catalogApi)
