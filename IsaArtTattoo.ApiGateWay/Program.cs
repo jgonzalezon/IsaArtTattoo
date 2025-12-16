@@ -51,7 +51,7 @@ app.UseCors("GatewayCors");
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseRateLimiter();
+//app.UseRateLimiter();
 
 // 🔹 Aplicar la policy *explícitamente* al reverse proxy
 app.MapReverseProxy()

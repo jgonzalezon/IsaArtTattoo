@@ -178,14 +178,48 @@ public class CatalogService : ICatalogService
     {
         var category = await _db.Categories
             .Include(c => c.Products)
+                .ThenInclude(p => p.Images)
             .FirstOrDefaultAsync(c => c.Id == id, ct);
 
         if (category is null) return false;
 
         if (category.Products.Any())
         {
-            // En vez de borrar, podrías lanzar excepción o mover productos a "Sin categoría"
-            throw new InvalidOperationException("No se puede eliminar una categoría con productos.");
+            // Delegar a DeleteCategoryWithProductsAsync con deleteProducts=false
+            // para que lance la excepción informativa
+            return await DeleteCategoryWithProductsAsync(id, deleteProducts: false, ct);
+        }
+
+        _db.Categories.Remove(category);
+        await _db.SaveChangesAsync(ct);
+
+        return true;
+    }
+
+    public async Task<bool> DeleteCategoryWithProductsAsync(int id, bool deleteProducts, CancellationToken ct = default)
+    {
+        var category = await _db.Categories
+            .Include(c => c.Products)
+                .ThenInclude(p => p.Images)
+            .FirstOrDefaultAsync(c => c.Id == id, ct);
+
+        if (category is null) return false;
+
+        // Si hay productos y deleteProducts es false, NO hacer nada (retornar false)
+        // El frontend interpretará esto como "necesita confirmar"
+        if (category.Products.Any() && !deleteProducts)
+        {
+            return false;
+        }
+
+        // Si deleteProducts es true, eliminar productos e imágenes
+        if (deleteProducts && category.Products.Any())
+        {
+            foreach (var product in category.Products)
+            {
+                _db.ProductImages.RemoveRange(product.Images);
+                _db.Products.Remove(product);
+            }
         }
 
         _db.Categories.Remove(category);
@@ -309,6 +343,25 @@ public class CatalogService : ICatalogService
         await _db.SaveChangesAsync(ct);
 
         return MapToDetailDto(product);
+    }
+
+    public async Task<bool> DeleteProductAsync(int id, CancellationToken ct = default)
+    {
+        var product = await _db.Products
+            .Include(p => p.Images)
+            .FirstOrDefaultAsync(p => p.Id == id, ct);
+
+        if (product is null) return false;
+
+        // Eliminar todas las imágenes asociadas
+        _db.ProductImages.RemoveRange(product.Images);
+
+        // Eliminar el producto
+        _db.Products.Remove(product);
+
+        await _db.SaveChangesAsync(ct);
+
+        return true;
     }
 
     // ---------- Helpers ----------

@@ -176,6 +176,44 @@ public static class EndpointExtensions
         .WithSummary("Elimina una categoría")
         .WithDescription("No permite eliminar categorías que aún tienen productos asociados.");
 
+        // DELETE /api/admin/catalog/categories/{id}/force
+        adminGroup.MapDelete("/categories/{id:int}/force", async (
+            [FromQuery] bool deleteProducts,
+            int id,
+            ICatalogService service,
+            CancellationToken ct) =>
+        {
+            var ok = await service.DeleteCategoryWithProductsAsync(id, deleteProducts, ct);
+            
+            if (!ok)
+            {
+                // Si devuelve false y deleteProducts es false, significa que tiene productos
+                if (!deleteProducts)
+                {
+                    // Obtener cantidad de productos para mostrar en el mensaje
+                    // Aquí podríamos obtener el count, pero por ahora retornamos el mensaje genérico
+                    return Results.Ok(new 
+                    { 
+                        success = false,
+                        message = "La categoría tiene productos asociados. ¿Deseas eliminarla y sus productos también?",
+                        hasProducts = true
+                    });
+                }
+                
+                // Si devuelve false en otro caso, categoría no existe
+                return Results.NotFound();
+            }
+            
+            // Éxito: categoría eliminada
+            return Results.Ok(new 
+            { 
+                success = true,
+                message = "Categoría eliminada correctamente"
+            });
+        })
+        .WithSummary("Elimina una categoría (con opción de eliminar productos)")
+        .WithDescription("Permite eliminar una categoría. Si deleteProducts=true, también elimina los productos asociados.");
+
         // ------ Productos ------
 
         // DELETE /api/admin/catalog/products/{productId}/images/{imageId}
@@ -216,6 +254,18 @@ public static class EndpointExtensions
         })
         .WithSummary("Actualiza un producto")
         .WithDescription("Permite modificar cualquier característica del producto de forma parcial.");
+
+        // DELETE /api/admin/catalog/products/{id}
+        adminGroup.MapDelete("/products/{id:int}", async (
+            int id,
+            ICatalogService service,
+            CancellationToken ct) =>
+        {
+            var ok = await service.DeleteProductAsync(id, ct);
+            return ok ? Results.NoContent() : Results.NotFound();
+        })
+        .WithSummary("Elimina un producto")
+        .WithDescription("Elimina un producto y todas sus imágenes asociadas.");
 
         // POST /api/admin/catalog/products/{id}/stock
         adminGroup.MapPost("/products/{id:int}/stock", async (
